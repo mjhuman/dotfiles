@@ -172,6 +172,7 @@ PS1="\[\033[0;34m\][\u@\h:\w]$\[\033[0m\]"
 alias rm="rm -i"
 alias mv="mv -i"
 alias cp="cp -i"
+alias rmf="rm"
 set -o noclobber
 
 # 2.2) Listing, directories, and motion
