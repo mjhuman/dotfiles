@@ -1,0 +1,81 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/mj/Downloads/mipmathlib/mipmatrix/" . "mipmatrixstorage/")
+ ("/home/mj/Downloads/" . "mipmathlib/")
+ ("/home/mj/Downloads/mipmathlib/" . "mipmatrix/")
+ ("/home/mj/" . ".emacs.d/")
+ ("/home/" . "mj/")
+ ("/" . "home/")
+ ("/home/mj/dotfiles/" . ".emacs.d/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/mj/cpp_concepts/"
+ "/home/mj/dotfiles/.emacs.d/"
+ "/home/mj/Downloads/mipmathlib/mipmatrix/mipmatrixstorage/"
+ "/home/mj/Downloads/mipmathlib/mipmatrix/matrixuserinterface/"
+ "/home/mj/Downloads/mipmathlib/mipmath/"
+ "/home/mj/Downloads/mipmathlib/mipmathlibconstants/"
+ "/home/mj/startup/python/google-python-exercises/basic/"
+ "/home/mj/.emacs.d/"
+ "/home/mj/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "pointers.h"
+ "makefile"
+ "datatypes.cpp"
+ "init_me.el"
+ "FullMatrix.h"
+ "Matrix.h"
+ "MIPCommonMethods.h.bak"
+ "MIPCommonMethods.h"
+ "MIPMathLibConstants.h"
+ "test.py"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/mj/cpp_concepts/" (22746 30708 210194 498000) "functions.cpp" "derived.cpp" "makefile" "smartpointers.cpp" "../" "pointers.h" "./" "pointers.cpp" "dllhost/" "main.cpp" "classes.cpp" "structures.cpp" "datatypes.cpp")
+
+ ("/home/mj/" (22718 29549 765881 971000) "Desktop/" "cpp_concepts/" ".bashrc" ".mplayer/" ".gitconfig" ".mtpaint_fonts" "node_modules/" ".netrc" "out.txt" ".cache/" ".bash_profile" ".xsession-errors.old" ".npm/" ".gtkrc-2.0" "Music/" "Mail/" ".bashrc_custom" "#out.txt#" ".nano/" "dotfiles/" ".Xauthority" ".emacs.d/" "startup/" "../" ".local/" ".thumbnails/" ".sylpheed-2.0/" ".config/" ".bash_logout" "./" ".trelby/" ".audacity-data/" ".gksu.lock" ".xsession-errors" ".gimp-2.8/" ".kde/" ".bashrc~" ".thunderbird/" "Public/" ".profile" ".icons/" ".ssh/" ".sudo_as_admin_successful" ".ipython/" ".bash_history" "Downloads/" ".dbus/" ".heroku/" ".pycrust/" ".gnupg/" "Videos/" "TypingMaster10/" ".gconf/" ".emacs.d~/" "Documents/" "screenshots/" "Applications/" ".macromedia/" ".xscreensaver" ".mozilla/" ".bash_aliases~" ".screenrc" ".adobe/" ".wine/" ".mtpaint" "setup/" ".gphoto/" "Templates/" "Pictures/" ".bash_eternal_history" ".lesshst" ".xrced" ".dmrc")
+
+ ("/home/mj/.emacs.d/" (22718 32319 495314 670000) "backups/" "auto-save-list/" "../" "ido.last" "./" "node_emacs" "init.el" "jade-mode/" "ido.last~" "snippets/" "init_py.el" "elpa/" "places" "lisp/")
+
+ ("/home/mj/dotfiles/.emacs.d/" (22718 32319 495314 670000) "backups/" "auto-save-list/" "../" "ido.last" "./" "node_emacs" "init.el" "jade-mode/" "ido.last~" "snippets/" "init_py.el" "elpa/" "places" "lisp/")
+
+ ("/home/mj/Downloads/mipmathlib/mipmatrix/mipmatrixstorage/" (22534 4364 0 0) "FullStoreHelper.h" "FullSymmetricMatrix.h" "SparseMatrix.h" "FullMatrix.h" "SparseSymmetricMatrix.h" "../" "./" "BaseMatrix.h" "SpCellData.h" "SparseVector.h" "FullVector.h" "MatrixFactory.h" "MIPMatrixStorage.h" "SparseStoreHelper.h" "IMatrix.h")
+
+ ("/home/mj/Downloads/mipmathlib/mipmatrix/matrixuserinterface/" (22515 38573 0 0) "../" "./" "Matrix.h" "MatTypeDef.h" "MatrixUserInterface.h" "MatrixOperationsHelper.h" "MatrixFunctionsHelper.h" "MatrixHelperLibrary.h")
+
+ ("/home/mj/Downloads/mipmathlib/mipmatrix/" (22515 38573 0 0) "matrixuserinterface/" "mipmatrixstorage/" "../" "./" "MIPMatrix.h" "mipmatrixoperations/")
+
+ ("/home/mj/Downloads/" (22707 64729 215366 340000) "Vinodh_MJ_Resume.pdf" "c++interviewquestions.pdf" "google-python-exercises.zip" "madhya_sthayi_varisai.pdf" "EAadhaar_637701785056_11022017134118_860451.pdf" "dllhost.rar" "../" "Appointment Reciept ADHI 17-02-17Passport.pdf" "wine-2.1/" "./" "alamy-qc-failure-reasons.pdf" "sarali-varisai.pdf" "trelby-2.2/" "mipmathlib.rar" "mipmathlib/" "bootstrap-3.3.7/" "wine-2.1.tar.xz" "R&MME_Demo_28Sep16.pptx" "FPBDocuments_Release.rar" "make.pdf" "bootstrap-3.3.7-dist/")
+
+ ("/home/mj/Downloads/mipmathlib/mipmath/" (22515 38573 0 0) "MathOp.h" "MIPCommonMethods.h.bak" "../" "MIPCommonMethods.h" "./" "MathOp.h.bak")
+
+ ("/home/mj/startup/python/google-python-exercises/basic/" (22692 60985 277959 936000) "string1.py" "wordcount.py" "../" "./" "#string1.py#" "small.txt" "list1.pyc" "mimic.py" "solution/" "string2.py~" "alice.txt" "test.py" "list2.py" "string2.py" "list1.py" "string1.py~")
+
+ ("/home/mj/Downloads/mipmathlib/mipmathlibconstants/" (22515 38573 0 0) "MIPMathLibConstants.h" "../" "./")
+
+ ("/home/mj/Downloads/mipmathlib/" (22515 39510 0 0) "mipmath/" "mipmatrix/" "../" "mipcomplex/" "./" "VersionInfo.txt" "MIPMathLib.h" "mipmathlibconstants/")
+
+ ("/home/mj/startup/" (22649 64414 474157 408000) "web_projects/" "../" "./" "python/")
+
+ ("/home/mj/startup/python/" (22664 60625 319208 449000) "../" "./" "google-python-exercises/" "algo/" "helloworld.py")
+
+ ("/home/mj/startup/python/google-python-exercises/" (22684 32680 118673 697000) "copyspecial/" "../" "./" "logpuzzle/" "LICENSE.txt" ".git/" "babynames/" "#hello.py#" "hello.py~" "NOTICE.txt" "basic/" "hello.py")
+
+ ("/home/mj/.emacs.d~/" (22563 20575 239250 107000) "auto-save-list/" "../" "./")
+
+ ("/home/" (22393 18544 4377 870000) "../" "./" "mj/")
+
+ ("/home/mj/dotfiles/" (22680 19513 335902 987000) ".bashrc" "README.md" ".bash_profile" ".bashrc_custom" ".emacs.d/" "../" "./" ".git/" ".bash_aliases~" ".screenrc")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

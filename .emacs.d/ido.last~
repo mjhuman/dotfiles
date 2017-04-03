@@ -1,0 +1,49 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/mj/" . ".emacs.d/")
+ ("/home/" . "mj/")
+ ("/" . "home/")
+ ("/home/mj/dotfiles/" . ".emacs.d/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/mj/"
+ "/home/mj/.emacs.d/"
+ "/home/mj/dotfiles/.emacs.d/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ ".emacs"
+ "init.el"
+ "cd.."
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/mj/startup/python/google-python-exercises/basic/" (22685 64692 747501 564000) "string1.py" "wordcount.py" "../" "./" "small.txt" "list1.pyc" "mimic.py" "solution/" "string2.py~" "alice.txt" "list2.py" "string2.py" "list1.py" "string1.py~")
+
+ ("/home/mj/dotfiles/.emacs.d/" (22685 54713 289309 59000) "backups/" "js-config.el" "defuns-config.el" "auto-save-list/" ".#init.el" "column-marker.el" "linum.el" "../" "ido.last" "./" "node_emacs" "init.el" "jade-mode/" "smooth-scrolling.el" "js-comint.el" "whitespace.el" "elpa/" "places")
+
+ ("/home/mj/.emacs.d/" (22685 54641 555850 120000) "backups/" "js-config.el" "defuns-config.el" "auto-save-list/" "column-marker.el" "linum.el" "../" "ido.last" "./" "node_emacs" "init.el" "jade-mode/" "smooth-scrolling.el" "js-comint.el" "whitespace.el" "elpa/" "places")
+
+ ("/home/mj/startup/" (22649 64414 474157 408000) "web_projects/" "../" "./" "python/")
+
+ ("/home/mj/startup/python/" (22664 60625 319208 449000) "../" "./" "google-python-exercises/" "algo/" "helloworld.py")
+
+ ("/home/mj/startup/python/google-python-exercises/" (22684 32680 118673 697000) "copyspecial/" "../" "./" "logpuzzle/" "LICENSE.txt" ".git/" "babynames/" "#hello.py#" "hello.py~" "NOTICE.txt" "basic/" "hello.py")
+
+ ("/home/mj/.emacs.d~/" (22563 20575 239250 107000) "auto-save-list/" "../" "./")
+
+ ("/home/" (22393 18544 4377 870000) "../" "./" "mj/")
+
+ ("/home/mj/" (22685 51741 95149 667000) "Desktop/" ".bashrc" ".mplayer/" ".gitconfig" ".mtpaint_fonts" "node_modules/" ".netrc" ".cache/" ".bash_profile" ".xsession-errors.old" ".npm/" ".gtkrc-2.0" "Music/" ".bashrc_custom" ".nano/" "dotfiles/" ".Xauthority" ".emacs.d/" "startup/" "../" ".local/" ".thumbnails/" ".config/" ".bash_logout" "./" ".trelby/" ".audacity-data/" ".gksu.lock" ".xsession-errors" ".emacs" ".gimp-2.8/" ".kde/" ".bashrc~" ".emacs~" "Public/" ".profile" ".icons/" ".ssh/" ".sudo_as_admin_successful" ".bash_history" "Downloads/" ".dbus/" ".heroku/" ".pycrust/" ".gnupg/" "Videos/" "TypingMaster10/" ".gconf/" ".emacs.d~/" "Documents/" "screenshots/" "Applications/" ".macromedia/" ".xscreensaver" ".mozilla/" ".bash_aliases~" ".screenrc" ".adobe/" ".wine/" ".mtpaint" "setup/" ".gphoto/" "Templates/" "Pictures/" ".bash_eternal_history" ".lesshst" ".xrced" ".dmrc")
+
+ ("/home/mj/dotfiles/" (22680 19513 335902 987000) ".bashrc" "README.md" ".bash_profile" ".bashrc_custom" ".emacs.d/" "../" "./" ".git/" ".bash_aliases~" ".screenrc")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t
