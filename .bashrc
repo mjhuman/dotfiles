@@ -225,5 +225,8 @@ fi
 ## -- 3) User-customized code  --
 ## ------------------------------
 
+export TERM=xterm-256color
+
 ## Define any user-specific variables you want here.
 source ~/.bashrc_custom
+
