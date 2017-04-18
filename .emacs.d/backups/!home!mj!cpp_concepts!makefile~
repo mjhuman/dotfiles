@@ -1,3 +1,0 @@
-all:
-	g++ -g datatypes.cpp -o datatypes.out
-	g++ -g pointers.cpp -o pointers.out

@@ -1,6 +1,0 @@
-print "hello"
-dicto = {}
-dicto['a'] = 2000
-print dicto
-dicto['a'] = 2017
-print dicto
