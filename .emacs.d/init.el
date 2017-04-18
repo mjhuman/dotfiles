@@ -17,6 +17,8 @@
 ; do default config for auto-complete
 (require 'auto-complete-config)
 (ac-config-default)
+;; auto complete for html
+(require 'ac-html)
 
 ; start yasnippet with emacs
 (require 'yasnippet)
@@ -68,7 +70,7 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (paradox auto-complete auto-complete-c-headers py-autopep8 material-theme flycheck elpy ein better-defaults ahungry-theme)))
+    (ac-html paradox auto-complete auto-complete-c-headers py-autopep8 material-theme flycheck elpy ein better-defaults ahungry-theme)))
  '(show-paren-mode t)
  '(tool-bar-mode nil))
 
@@ -98,4 +100,8 @@
  '(default ((t (:family "DejaVu Sans Mono" :foundry "PfEd" :slant normal :weight normal :height 180 :width normal))))
  '(cursor ((t (:background "deep sky blue")))))
 
-(set-frame-font "DejaVu Sans Mono 18" nil t)
+(set-frame-font "DejaVu Sans Mono 11" nil t)
+
+(setq tab-width 2) ; or any other preferred value
+(defvaralias 'c-basic-offset 'tab-width)
+(defvaralias 'cperl-indent-level 'tab-width)
