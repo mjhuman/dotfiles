@@ -80,7 +80,8 @@
 (global-set-key (kbd "<f5>") 'gdb)
 (global-set-key (kbd "<C-tab>") 'other-window)
 (global-set-key (kbd "<f7>")'compile)
-
+(global-set-key (kbd "<f9>") 'gud-break)
+(global-set-key (kbd "<C-iso-lefttab>") 'previous-multiframe-window)
 
 ;; Theme, startup and line number
 (load-theme 'misterioso)
