@@ -232,3 +232,4 @@ export TERM=xterm-256color
 ## Define any user-specific variables you want here.
 source ~/.bashrc_custom
 
+synclient MaxTapTime=0
