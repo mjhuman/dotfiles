@@ -1,7 +1,26 @@
-!Swap right control and right alt
-remove Control = Control_R
-remove Mod1 = Alt_R
+! key board remapping for X Keyboard in Xorg
+! author : Vinodh MJ Human
+
+! clear the existing handles
+clear lock
+clear control
+clear mod1
+
+!retain left control
+keycode 37 = Control_L
+
+! Map Caps lock to left Alt also, map  Shift+CapsLock to Caps Lock
+keycode 66 = Alt_L Caps_Lock NoSymbol NoSymbol
+
+! Map left alt to left control
+keycode 64 = Control_L
+
+! Map right alt to right control
 keycode 105 = Alt_R
+
+! Map right control to right alt
 keycode 108 = Control_R
-add Control = Control_R
-add Mod1 = Alt_R
+
+!Add the handles back to the system
+add control = Control_L Control_R
+add mod1 = Alt_R Alt_L Caps_Lock
