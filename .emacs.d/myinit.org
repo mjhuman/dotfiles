@@ -1,35 +1,39 @@
 #+STARTUP: overview
 
-
-
 * interface tweaks
 #+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-message t)
-(tool-bar-mode -1)
-(fset 'yes-or-no-p 'y-or-n-p)
-(global-set-key (kbd "<f6>") 'revert-buffer)
-(global-linum-mode t) ;; enable line numbers globally
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
+  (setq inhibit-startup-message t)
+  (tool-bar-mode -1)
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (global-set-key (kbd "<f5>") 'revert-buffer)
+
+  (defun goto-slcheck()
+
+   )
+
+  (global-linum-mode t) ;; enable line numbers globally
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  (global-set-key (kbd "C-|") "\C-a\C- \C-e\M-w") ;copy current line
+  (global-set-key (kbd "<f8>") 'read-only-mode)
+  (set-default 'truncate-lines 0)
+  (global-set-key (kbd "<C-f8>") 'toggle-truncate-lines)
+  ;(global-set-key (kbd "C-A") 'beginning-of-buffer)
+  ;(global-set-key (kbd "<C-E>") 'end-of-buffer)
+  (global-set-key (kbd "C-<return>") '(lambda () funcall move-end-of-line funcall newline ))
 #+END_SRC
 
-* try
-#+BEGIN_SRC emacs-lisp
-(use-package try
-	:ensure t)
-#+END_SRC
-  
 * which key
-  Brings up some help
-  #+BEGIN_SRC emacs-lisp
+Emacs package that displays available keybindings in pop up
+#+BEGIN_SRC emacs-lisp
   (use-package which-key
 	:ensure t 
 	:config
 	(which-key-mode))
-  #+END_SRC
+#+END_SRC
 
 * Org mode
-  Org bullets makes things look pretty
-  #+BEGIN_SRC emacs-lisp
+Org bullets makes things look pretty
+#+BEGIN_SRC emacs-lisp
 
     (setenv "BROWSER" "chromium-browser")
 
@@ -51,7 +55,7 @@
   		(append '(
           		  ("\\.pdf\\'" . "evince %s")
           		  ) org-file-apps ))
-
+;;scheduling 
             (global-set-key "\C-ca" 'org-agenda)
 
             (setq org-agenda-custom-commands
@@ -87,24 +91,7 @@
   					  ("n" "Note" entry (file+headline "~/Dropbox/orgfiles/i.org" "Note space")
           				   "* %?\n%u" :prepend t)
   					  ))
-            ;; (setq org-capture-templates
-        ;; 		    '(("a" "Appointment" entry (file  "~/Dropbox/orgfiles/gcal.org" )
-        ;; 			     "* TODO %?\n:PROPERTIES:\nDEADLINE: %^T \n\n:END:\n %i\n")
-        ;; 			    ("l" "Link" entry (file+headline "~/Dropbox/orgfiles/links.org" "Links")
-        ;; 			     "* %? %^L %^g \n%T" :prepend t)
-        ;; 			    ("b" "Blog idea" entry (file+headline "~/Dropbox/orgfiles/i.org" "Blog Topics:")
-        ;; 			     "* %?\n%T" :prepend t)
-        ;; 			    ("t" "To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
-        ;; 			     "* TODO %?\n%u" :prepend t)
-        ;; 			    ("n" "Note" entry (file+headline "~/Dropbox/orgfiles/i.org" "Note space")
-        ;; 			     "* %?\n%u" :prepend t)
-
-        ;; 			    ("j" "Journal" entry (file+datetree "~/Dropbox/journal.org")
-        ;; 			     "* %?\nEntered on %U\n  %i\n  %a")
-            ;;                                ("s" "Screencast" entry (file "~/Dropbox/orgfiles/screencastnotes.org")
-            ;;                                "* %?\n%i\n")))
-
-
+           
         (defadvice org-capture-finalize 
             (after delete-capture-frame activate)  
         "Advise capture-finalize to close the frame"  
@@ -131,13 +118,13 @@
 (require 'ox-beamer)
 (use-package epresent
 :ensure t)
-  #+END_SRC
+#+END_SRC
 
-  #+RESULTS:
-  : make-capture-frame
+#+RESULTS:
+: make-capture-frame
 
 * Ace windows for easy window switching
-  #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package ace-window
   :ensure t
   :init
@@ -149,27 +136,22 @@
      '(aw-leading-char-face
        ((t (:inherit ace-jump-face-foreground :height 3.0))))) 
     ))
-  #+END_SRC
+#+END_SRC
 
-  #+RESULTS:
+#+RESULTS:
 
 * Swiper / Ivy / Counsel
-  Swiper gives us a really efficient incremental search with regular expressions
-  and Ivy / Counsel replace a lot of ido or helms completion functionality
-  #+BEGIN_SRC emacs-lisp
+Swiper gives us a really efficient incremental search with regular expressions
+and Ivy / Counsel replace a lot of ido or helms completion functionality
+#+BEGIN_SRC emacs-lisp
   
 
-
-
    (use-package counsel
-:ensure t
-  :bind
-  (("M-y" . counsel-yank-pop)
+   :ensure t
+   :bind
+   (("M-y" . counsel-yank-pop)
    :map ivy-minibuffer-map
    ("M-y" . ivy-next-line)))
-
-
-
 
   (use-package ivy
   :ensure t
@@ -186,8 +168,9 @@
   :bind (("C-s" . swiper)
 	 ("C-r" . swiper)
 	 ("C-c C-r" . ivy-resume)
-	 ("M-x" . counsel-M-x))
-	 ;;("C-x C-f" . counsel-find-file))
+	 ("M-x" . counsel-M-x)
+       ("C-x r b" . counsel-bookmark)
+	 ("C-x C-f" . counsel-find-file))
   :config
   (progn
     (ivy-mode 1)
@@ -195,59 +178,48 @@
     (setq ivy-display-style 'fancy)
     (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
     ))
-  #+END_SRC
+
+#+END_SRC
 
 * Avy - navigate by searching for a letter on the screen and jumping to it
-  See https://github.com/abo-abo/avy for more info
-  #+BEGIN_SRC emacs-lisp
+See https://github.com/abo-abo/avy for more info
+#+BEGIN_SRC emacs-lisp
   (use-package avy
   :ensure t
   :bind ("M-s" . avy-goto-word-1)) ;; changed from char as per jcs
-  #+END_SRC
+#+END_SRC
 
 * Autocomplete
-  #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
   (use-package auto-complete
   :ensure t
   :init
   (progn
     (ac-config-default)
     (global-auto-complete-mode t)
+    (add-to-list 'ac-modes 'matlab-mode)
+    (add-to-list 'ac-modes 'nxml-mode)
     ))
-  #+END_SRC
+#+END_SRC
 
-* Themes and modeline
-  #+BEGIN_SRC emacs-lisp
+* Themes and modeline:
+#+BEGIN_SRC emacs-lisp
+  
+(use-package base16-theme
+:ensure t)
 
-   ; (use-package color-theme
-   ;   :ensure t)
+(use-package moe-theme
+:ensure t)
 
-    ;(use-package zenburn-theme
-    ;  :ensure t
-    ;  :config (load-theme 'zenburn t))
+(load-theme 'solarized t)
 
-    ;(use-package spacemacs-theme
-    ;  :ensure t
-    ;  ;:init
-    ;  ;(load-theme 'spacemacs-dark t)
-    ;  )
+(use-package powerline
+:ensure t
+:config
+(powerline-moe-theme)
+(setq moe-theme-highlight-buffer-id t)
+)
 
-;(use-package base16-theme
-;:ensure t
-;)
-
-;(use-package moe-theme
-;:ensure t)
-
-; (load-theme 'base16-flat t)
-;(moe-light)
-;(use-package powerline
-;:ensure t
-;:config
-;(powerline-moe-theme)
-;)
-
-(load-theme 'solarized-dark t)
 
 (setq tab-width 2) ; or any other preferred value
 (defvaralias 'c-basic-offset 'tab-width)
@@ -255,13 +227,12 @@
 
 (set-frame-font "DejaVu Sans Mono 13" nil t)
 
-  #+END_SRC
+#+END_SRC
 
-  #+RESULTS:
-  : t
-
+#+RESULTS:
+: t
 * Reveal.js
-  #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
     (use-package ox-reveal
     :ensure ox-reveal)
 
@@ -270,30 +241,30 @@
 
     (use-package htmlize
     :ensure t)
-  #+END_SRC
+#+END_SRC
 
-  #+RESULTS:
-  : t
+#+RESULTS:
+: t
   
 * Flycheck
-  #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
     (use-package flycheck
       :ensure t
       :init
       (global-flycheck-mode t))
 
-  #+END_SRC
+#+END_SRC
 * Python
-  #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 
     (setq py-python-command "python3")
     (setq python-shell-interpreter "python3")
 
-      (use-package jedi
-        :ensure t
-        :init
-        (add-hook 'python-mode-hook 'jedi:setup)
-        (add-hook 'python-mode-hook 'jedi:ac-setup))
+    ;;  (use-package jedi
+    ;;    :ensure t
+    ;;    :init
+    ;;    (add-hook 'python-mode-hook 'jedi:setup)
+    ;;    (add-hook 'python-mode-hook 'jedi:ac-setup))
 
 
         (use-package elpy
@@ -307,28 +278,28 @@
       (venv-initialize-interactive-shells)
       (venv-initialize-eshell))
 
-  #+END_SRC
+#+END_SRC
 
-  #+RESULTS:
-  : t
+#+RESULTS:
+: t
 
 * Yasnippet
-  #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
     (use-package yasnippet
       :ensure t
       :init
         (yas-global-mode 1))
 
-  #+END_SRC
+#+END_SRC
 * Undo Tree
-  #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
     (use-package undo-tree
       :ensure t
       :init
       (global-undo-tree-mode))
-  #+END_SRC
+#+END_SRC
 * Misc packages
-  #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 
   ; Highlights the current cursor line
   (global-hl-line-mode t)
@@ -355,20 +326,13 @@
 
 (setq save-interprogram-paste-before-kill t)
 
-
-;(global-auto-revert-mode 1) ;; you might not want this
-;(setq auto-revert-verbose nil) ;; or this
-;(global-set-key (kbd "<f5>") 'revert-buffer)
-;(global-set-key (kbd "<f6>") 'revert-buffer)
-
-
   
-  #+END_SRC
+#+END_SRC
 
 * iedit and narrow / widen dwim
 
-  #+BEGIN_SRC emacs-lisp
-  ; mark and edit all copies of the marked region simultaniously. 
+#+BEGIN_SRC emacs-lisp
+  ; mark and edit all copies of the marked region simultaneously. 
   (use-package iedit
   :ensure t)
   
@@ -402,11 +366,11 @@
   ;; how much I like this command. Only copy it if that's what you want.
   (define-key ctl-x-map "n" #'narrow-or-widen-dwim)
   
-  #+END_SRC
+#+END_SRC
 
 
-  #+RESULTS:
-  : narrow-or-widen-dwim
+#+RESULTS:
+: narrow-or-widen-dwim
 
 * Web Mode
 #+BEGIN_SRC emacs-lisp
@@ -431,53 +395,6 @@
 
 #+RESULTS:
 : t
-* Javascript
-#+BEGIN_SRC emacs-lisp
-(use-package js2-mode
-:ensure t
-:ensure ac-js2
-:init
-(progn
-(add-hook 'js-mode-hook 'js2-minor-mode)
-(add-hook 'js2-mode-hook 'ac-js2-mode)
-))
-
-(use-package js2-refactor
-:ensure t
-:config 
-(progn
-(js2r-add-keybindings-with-prefix "C-c C-m")
-;; eg. extract function with `C-c C-m ef`.
-(add-hook 'js2-mode-hook #'js2-refactor-mode)))
-(use-package tern
-:ensure tern
-:ensure tern-auto-complete
-:config
-(progn
-(add-hook 'js-mode-hook (lambda () (tern-mode t)))
-(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(tern-ac-setup)
-))
-
-;(use-package jade
-;:ensure t
-;)
-
-(use-package nodejs-repl
-:ensure t
-)
-
-(add-hook 'js-mode-hook
-          (lambda ()
-            (define-key js-mode-map (kbd "C-x C-e") 'nodejs-repl-send-last-sexp)
-            (define-key js-mode-map (kbd "C-c C-r") 'nodejs-repl-send-region)
-            (define-key js-mode-map (kbd "C-c C-l") 'nodejs-repl-load-file)
-            (define-key js-mode-map (kbd "C-c C-z") 'nodejs-repl-switch-to-repl)))
-#+END_SRC
-
-#+RESULTS:
-
 * DIRED
 #+BEGIN_SRC emacs-lisp
 (use-package dired+
@@ -492,34 +409,8 @@
   (dired-quick-sort-setup))
 
 #+END_SRC
-* Stuff to refile as I do more Screencasts
+* Stuff - Babel, projectile, smartparens, magit
 #+BEGIN_SRC emacs-lisp
-
-;(setq user-full-name "Mike Zamansky" user-mail-address "zamansky@gmail.com")
-;;--------------------------------------------------------------------------
-
-
-;(global-set-key (kbd "\e\ei")
-;		(lambda () (interactive) (find-file "~/Dropbox/orgfiles/i.org")))
-
-;(global-set-key (kbd "\e\el")
-;		(lambda () (interactive) (find-file "~/Dropbox/orgfiles/links.org")))
-
-;(global-set-key (kbd "\e\ec")
-;		(lambda () (interactive) (find-file "~/.emacs.d/myinit.org")))
-
-
-;;--------------------------------------------------------------------------
-;; latex
-;(use-package tex
-;:ensure auctex)
-
-;(defun tex-view ()
- ;   (interactive)
-  ;  (tex-send-command "evince" (tex-append tex-print-file ".pdf")))
-
-
-
 
 ;; babel stuff
 
@@ -540,16 +431,16 @@
 
 
 ;; projectile
-(use-package projectile
-  :ensure t
-  :config
-  (projectile-global-mode)
-(setq projectile-completion-system 'ivy))
+;;(use-package projectile
+;;  :ensure t
+;;  :config
+;;  (projectile-global-mode)
+;;(setq projectile-completion-system 'ivy))
 
-(use-package counsel-projectile
-  :ensure t
-  :config
-  (counsel-projectile-on))
+;;(use-package counsel-projectile
+;;  :ensure t
+;;  :config
+;;  (counsel-projectile-on))
 
 (use-package smartparens
 :ensure t
@@ -612,41 +503,13 @@
 
 ;;--------------------------------------------
 
+;;(use-package magit
+;;:ensure t
+;;:init
+;;(progn
+;;(bind-key "C-x g" 'magit-status)
+;;))
 
-
-(use-package cider
-  :ensure t 
-  :config
-  ; this is to make cider-jack-in-cljs work
-  (setq cider-cljs-lein-repl
-      "(do (require 'figwheel-sidecar.repl-api)
-           (figwheel-sidecar.repl-api/start-figwheel!)
-           (figwheel-sidecar.repl-api/cljs-repl))")
-
-  )
-
-(use-package ac-cider
-  :ensure t
-  :config
-  (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
-  (add-hook 'cider-mode-hook 'ac-cider-setup)
-  (add-hook 'cider-repl-mode-hook 'ac-cider-setup)
-  (eval-after-load "auto-complete"
-    '(progn
-       (add-to-list 'ac-modes 'cider-mode)
-       (add-to-list 'ac-modes 'cider-repl-mode)))
-  )
-
-(use-package magit
-:ensure t
-:init
-(progn
-(bind-key "C-x g" 'magit-status)
-))
-
-
-
-  
 ;; font scaling
 (use-package default-text-scale
   :ensure t
@@ -658,20 +521,6 @@
 
 #+END_SRC
 
-* Load other files
-   #+BEGIN_SRC emacs-lisp
-     (defun load-if-exists (f)
-       "load the elisp file only if it exists and is readable"
-       (if (file-readable-p f)
-           (load-file f)))
-
-     (load-if-exists "~/Dropbox/shared/mu4econfig.el")
-     (load-if-exists "~/Dropbox/shared/not-for-github.el")
-
-   #+END_SRC
-
-   #+RESULTS:
-   : t
 * Hydra
 #+BEGIN_SRC emacs-lisp
   (use-package hydra 
@@ -749,74 +598,6 @@
 	   ("C-x 4 '" . shell-switcher-switch-buffer-other-window)
 	   ("C-M-'" . shell-switcher-new-shell)))
 
-
-  ;; Visual commands
-  (setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
-				 "ncftp" "pine" "tin" "trn" "elm" "vim"
-				 "nmtui" "alsamixer" "htop" "el" "elinks"
-				 ))
-  (setq eshell-visual-subcommands '(("git" "log" "diff" "show")))
-  (setq eshell-list-files-after-cd t)
-  (defun eshell-clear-buffer ()
-    "Clear terminal"
-    (interactive)
-    (let ((inhibit-read-only t))
-      (erase-buffer)
-      (eshell-send-input)))
-  (add-hook 'eshell-mode-hook
-	    '(lambda()
-	       (local-set-key (kbd "C-l") 'eshell-clear-buffer)))
-
-  (defun eshell/magit ()
-    "Function to open magit-status for the current directory"
-    (interactive)
-    (magit-status default-directory)
-    nil)
-
-#+END_SRC
-
-Eshell prompt
-#+BEGIN_SRC emacs-lisp
- (defcustom dotemacs-eshell/prompt-git-info
-  t
-  "Turns on additional git information in the prompt."
-  :group 'dotemacs-eshell
-  :type 'boolean)
-
-;; (epe-colorize-with-face "abc" 'font-lock-comment-face)
-(defmacro epe-colorize-with-face (str face)
-  `(propertize ,str 'face ,face))
-
-(defface epe-venv-face
-  '((t (:inherit font-lock-comment-face)))
-  "Face of python virtual environment info in prompt."
-  :group 'epe)
-
-  (setq eshell-prompt-function
-      (lambda ()
-        (concat (propertize (abbreviate-file-name (eshell/pwd)) 'face 'eshell-prompt)
-                (when (and dotemacs-eshell/prompt-git-info
-                           (fboundp #'vc-git-branches))
-                  (let ((branch (car (vc-git-branches))))
-                    (when branch
-                      (concat
-                       (propertize " [" 'face 'font-lock-keyword-face)
-                       (propertize branch 'face 'font-lock-function-name-face)
-                       (let* ((status (shell-command-to-string "git status --porcelain"))
-                              (parts (split-string status "\n" t " "))
-                              (states (mapcar #'string-to-char parts))
-                              (added (count-if (lambda (char) (= char ?A)) states))
-                              (modified (count-if (lambda (char) (= char ?M)) states))
-                              (deleted (count-if (lambda (char) (= char ?D)) states)))
-                         (when (> (+ added modified deleted) 0)
-                           (propertize (format " +%d ~%d -%d" added modified deleted) 'face 'font-lock-comment-face)))
-                       (propertize "]" 'face 'font-lock-keyword-face)))))
-                (when (and (boundp #'venv-current-name) venv-current-name)
-                  (concat 
-                    (epe-colorize-with-face " [" 'epe-venv-face) 
-                    (propertize venv-current-name 'face `(:foreground "#2E8B57" :slant italic))
-                    (epe-colorize-with-face "]" 'epe-venv-face))) 
-                (propertize " $ " 'face 'font-lock-constant-face))))
 #+END_SRC
 #+RESULTS:
 : t
@@ -978,7 +759,7 @@ Eshell prompt
 (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
 
 ;; c++ mode debugging
-(global-set-key (kbd "<f5>") 'gdb)
+(global-set-key (kbd "<C-f5>") 'gdb)
 (global-set-key (kbd "<C-tab>") 'other-window)
 (global-set-key (kbd "<f7>")'compile)
 (global-set-key (kbd "<f9>") 'gud-break)
@@ -991,24 +772,6 @@ Eshell prompt
 
 #+RESULTS:
 
-* Dumb jump
-#+BEGIN_SRC emacs-lisp
-
-(use-package dumb-jump
-  :bind (("M-g o" . dumb-jump-go-other-window)
-         ("M-g j" . dumb-jump-go)
-         ("M-g x" . dumb-jump-go-prefer-external)
-         ("M-g z" . dumb-jump-go-prefer-external-other-window))
-  :config 
-  ;; (setq dumb-jump-selector 'ivy) ;; (setq dumb-jump-selector 'helm)
-:init
-(dumb-jump-mode)
-  :ensure
-)
-
-
-
-#+END_SRC
 * Origami folding
 #+BEGIN_SRC emacs-lisp
 (use-package origami
@@ -1017,40 +780,6 @@ Eshell prompt
 
 #+RESULTS:
 
-* personal keymap
-#+BEGIN_SRC emacs-lisp
-;; unset C- and M- digit keys
-(dotimes (n 10)
-  (global-unset-key (kbd (format "C-%d" n)))
-  (global-unset-key (kbd (format "M-%d" n)))
-  )
-
-
-(defun org-agenda-show-agenda-and-todo (&optional arg)
-  (interactive "P")
-  (org-agenda arg "c")
-  (org-agenda-fortnight-view))
-
-
-;; set up my own map
-(define-prefix-command 'z-map)
-(global-set-key (kbd "C-1") 'z-map)
-
-(define-key z-map (kbd "m") 'mu4e)
-(define-key z-map (kbd "e") 'bjm/elfeed-load-db-and-open)
-(define-key z-map (kbd "1") 'org-global-cycle)
-(define-key z-map (kbd "a") 'org-agenda-show-agenda-and-todo)
-(define-key z-map (kbd "g") 'counsel-ag)
-
-(define-key z-map (kbd "s") 'flyspell-correct-word-before-point)
-(define-key z-map (kbd "i") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/i.org")))
-(define-key z-map (kbd "f") 'origami-toggle-node)
-#+END_SRC
-
-#+RESULTS:
-: origami-toggle-node
-
-#  LocalWords:  DIRED Javascript Screencasts Autocomplete
 * IBUFFER
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -1063,8 +792,10 @@ Eshell prompt
 		  ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
 		  ("programming" (or
 				  (mode . python-mode)
+		                  (mode . matlab-mode)
 				  (mode . c++-mode)))
-		                  ("emacs" (or
+
+                                ("emacs" (or
                             (name . "^\\*scratch\\*$")
                             (name . "^\\*Messages\\*$")))
 				  ))))
@@ -1074,3 +805,40 @@ Eshell prompt
 
 
 #+END_SRC
+* Transpose lines
+#+BEGIN_SRC emacs-lisp
+
+(defun move-line (n)
+  "Move the current line up or down by N lines."
+  (interactive "p")
+  (setq col (current-column))
+  (beginning-of-line) (setq start (point))
+  (end-of-line) (forward-char) (setq end (point))
+  (let ((line-text (delete-and-extract-region start end)))
+    (forward-line n)
+    (insert line-text)
+    ;; restore point to original column in moved line
+    (forward-line -1)
+    (forward-char col)))
+
+(defun move-line-up (n)
+  "Move the current line up by N lines."
+  (interactive "p")
+  (move-line (if (null n) -1 (- n))))
+
+(defun move-line-down (n)
+  "Move the current line down by N lines."
+  (interactive "p")
+  (move-line (if (null n) 1 n)))
+
+(global-set-key (kbd "C-M-<up>") 'move-line-up)
+(global-set-key (kbd "C-M-<down>") 'move-line-down)
+#+END_SRC
+
+* Model Advisor 
+#+BEGIN_SRC emacs-lisp
+
+
+
+#+END_SRC
+
