@@ -1,0 +1,61 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("sna"
+ (filename . "/mathworks/devel/sbs/13/vjayakri.Badvisor_task.j685831.na_1922/matlab/toolbox/slcheck/styleguide/@slCustomizer/private/registerMFBChecks.m")
+ (front-context-string . "up);    \nend\n\nen")
+ (rear-context-string . "sh(rec, maab_gro")
+ (position . 627))
+("org-capture-last-stored"
+ (filename . "~/Dropbox/orgfiles/i.org")
+ (front-context-string . "** TODO Get Fore")
+ (rear-context-string . "Note s\n\n* To Do\n")
+ (position . 19))
+(#("ssd" 0 3
+   (face ivy-virtual))
+ (filename . "/local-ssd/vjayakri/")
+ (front-context-string . "Badvisor.experim")
+ (rear-context-string . "72 Aug 17 15:59 ")
+ (position . 219))
+(".cshrc.mine"
+ (filename . "/mathworks/home/vjayakri/.cshrc.mine")
+ (front-context-string . "# -*-shell-scrip")
+ (rear-context-string)
+ (position . 1))
+(#("vjayakri_scripts" 0 16
+   (face ivy-virtual))
+ (filename . "/mathworks/home/vjayakri/vjayakri_scripts/")
+ (front-context-string . "\n  -rwxr-xr-x  1")
+ (rear-context-string . "6:32 mtree_poc.m")
+ (position . 841))
+(#("home" 0 4
+   (face ivy-virtual))
+ (filename . "/mathworks/home/vjayakri/")
+ (front-context-string . " -rw-------  1 v")
+ (rear-context-string . " .ICEauthority\n ")
+ (position . 257))
+(#("fpy" 0 3
+   (face ivy-virtual))
+ (filename . "~/projects/python/")
+ (front-context-string . ".git\n  -rw-r--r-")
+ (rear-context-string . "13 Jun 14 16:42 ")
+ (position . 232))
+(#("sandboxes" 0 9
+   (face ivy-virtual))
+ (filename . "/mathworks/devel/sbs/13/")
+ (front-context-string . "vjayakri.Badviso")
+ (rear-context-string . "11 Jun 14 16:08 ")
+ (position . 263))
+(#("fcp" 0 3
+   (face ivy-virtual))
+ (filename . "~/projects/cpp/")
+ (front-context-string . ".git\n  -rw-r--r-")
+ (rear-context-string . "13 Jun  2 10:48 ")
+ (position . 222))
+("emacs init file"
+ (filename . "/mathworks/home/vjayakri/dotfiles/.emacs.d/myinit.org")
+ (front-context-string . "#+STARTUP: overv")
+ (rear-context-string)
+ (position . 1))
+)

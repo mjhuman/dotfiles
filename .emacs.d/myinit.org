@@ -1,27 +1,129 @@
 #+STARTUP: overview
+#+TITLE: Emacs Configuration
+#+AUTHOR: Vinodh MJ Human
+#+EMAIL: 
+#+OPTIONS: toc:nil num:nil
 
-* interface tweaks
+* Interface tweaks
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
   (tool-bar-mode -1)
   (fset 'yes-or-no-p 'y-or-n-p)
-  (global-set-key (kbd "<f5>") 'revert-buffer)
-
-  (defun goto-slcheck()
-
-   )
-
   (global-linum-mode t) ;; enable line numbers globally
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
-  (global-set-key (kbd "C-|") "\C-a\C- \C-e\M-w") ;copy current line
-  (global-set-key (kbd "<f8>") 'read-only-mode)
-  (set-default 'truncate-lines 0)
-  (global-set-key (kbd "<C-f8>") 'toggle-truncate-lines)
-  ;(global-set-key (kbd "C-A") 'beginning-of-buffer)
-  ;(global-set-key (kbd "<C-E>") 'end-of-buffer)
-  (global-set-key (kbd "C-<return>") '(lambda () funcall move-end-of-line funcall newline ))
+  (setq ivy-use-virtual-buffers t)
+  (defun jump-to-next-newline()
+  "Move to the end of the line and return"
+  (interactive)
+  (move-end-of-line)
+  (newline))
+
+;;(setq view-read-only t)
+
+(require 'atomic-chrome)
+(atomic-chrome-start-server)
+ 
+#+END_SRC
+* Stolen from hrs
+#+BEGIN_SRC emacs-lisp
+(defun vmj/view-buffer-name ()
+    "Display the filename of the current buffer."
+    (interactive)
+    (message (buffer-file-name)))
+
+(defun vmj/generate-scratch-buffer ()
+    "Create and switch to a temporary scratch buffer with a random
+       name."
+    (interactive)
+    (switch-to-buffer (make-temp-name "scratch-")))
+
+(defun hrs/kill-current-buffer ()
+    "Kill the current buffer without prompting."
+    (interactive)
+    (kill-buffer (current-buffer)))
+#+END_SRC
+** Frame title
+The default frame title isn't useful. This binds it to the name of the current
+project:
+
+#+BEGIN_SRC emacs-lisp
+;  (setq frame-title-format '((:eval (projectile-project-name))))
 #+END_SRC
 
+** Use fancy lambdas
+
+Why not?
+
+#+BEGIN_SRC emacs-lisp
+  (global-prettify-symbols-mode t)
+#+END_SRC
+
+** Custom solarized-dark theme
+
+I like the solarized-dark theme. I prefer keeping all the characters in the same
+side and font, though.
+
+#+BEGIN_SRC emacs-lisp
+  (defun vmj/apply-solarized-theme ()
+    (setq solarized-use-variable-pitch nil)
+    (setq solarized-height-plus-1 1.0)
+    (setq solarized-height-plus-2 1.0)
+    (setq solarized-height-plus-3 1.0)
+    (setq solarized-height-plus-4 1.0)
+    (setq solarized-high-contrast-mode-line t)
+    (load-theme 'solarized-dark t))
+#+END_SRC
+
+If this code is being evaluated by =emacs --daemon=, ensure that each subsequent
+frame is themed appropriately.
+
+#+BEGIN_SRC emacs-lisp
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                    (vmj/apply-solarized-theme)))
+    (vmj/apply-solarized-theme))
+#+END_SRC
+
+** Hide certain modes from the modeline
+
+I'd rather have only a few necessary mode identifiers on my modeline. This
+either hides or "renames" a variety of major or minor modes using the =diminish=
+package.
+
+#+BEGIN_SRC emacs-lisp
+  (defmacro diminish-minor-mode (filename mode &optional abbrev)
+    `(eval-after-load (symbol-name ,filename)
+       '(diminish ,mode ,abbrev)))
+
+  (defmacro diminish-major-mode (mode-hook abbrev)
+    `(add-hook ,mode-hook
+               (lambda () (setq mode-name ,abbrev))))
+
+  (diminish-minor-mode 'abbrev 'abbrev-mode)
+  (diminish-minor-mode 'simple 'auto-fill-function)
+  (diminish-minor-mode 'company 'company-mode)
+  (diminish-minor-mode 'eldoc 'eldoc-mode)
+  (diminish-minor-mode 'flycheck 'flycheck-mode)
+  (diminish-minor-mode 'flyspell 'flyspell-mode)
+  (diminish-minor-mode 'global-whitespace 'global-whitespace-mode)
+  (diminish-minor-mode 'projectile 'projectile-mode)
+  (diminish-minor-mode 'ruby-end 'ruby-end-mode)
+  (diminish-minor-mode 'subword 'subword-mode)
+  (diminish-minor-mode 'undo-tree 'undo-tree-mode)
+  (diminish-minor-mode 'yard-mode 'yard-mode)
+  (diminish-minor-mode 'yasnippet 'yas-minor-mode)
+  (diminish-minor-mode 'wrap-region 'wrap-region-mode)
+
+  (diminish-minor-mode 'paredit 'paredit-mode " π")
+
+  (diminish-major-mode 'emacs-lisp-mode-hook "el")
+  (diminish-major-mode 'haskell-mode-hook "λ=")
+  (diminish-major-mode 'lisp-interaction-mode-hook "λ")
+  (diminish-major-mode 'python-mode-hook "Py")
+#+END_SRC
+
+*
 * which key
 Emacs package that displays available keybindings in pop up
 #+BEGIN_SRC emacs-lisp
@@ -82,13 +184,15 @@ Org bullets makes things look pretty
           				   "* %? %^L %^g \n%T" :prepend t)
           				  ("b" "Blog idea" entry (file+headline "~/Dropbox/orgfiles/i.org" "Blog Topics:")
           				   "* %?\n%T" :prepend t)
+                                           ("y" "Youtube idea" entry (file+headline "~/Dropbox/orgfiles/i.org" "Youtube Topics:")
+          				   "* %?\n%T" :prepend t)
           				  ("t" "To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
           				   "* TODO %?\n%u" :prepend t)
   					  ("m" "Mail To Do" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
   					   "* TODO %a\n %?" :prepend t)
   					  ("g" "GMail To Do" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
   					   "* TODO %^L\n %?" :prepend t)
-  					  ("n" "Note" entry (file+headline "~/Dropbox/orgfiles/i.org" "Note space")
+  					  ("n" "Note" entry (file+headline "~/Dropbox/orgfiles/i.org" "Notes")
           				   "* %?\n%u" :prepend t)
   					  ))
            
@@ -136,6 +240,13 @@ Org bullets makes things look pretty
      '(aw-leading-char-face
        ((t (:inherit ace-jump-face-foreground :height 3.0))))) 
     ))
+
+(defun swap-window()
+"Swap windows and leave focus on the original window"
+(interactive)
+(ace-swap-window)
+(aw-flip-window))
+
 #+END_SRC
 
 #+RESULTS:
@@ -211,8 +322,6 @@ See https://github.com/abo-abo/avy for more info
 (use-package moe-theme
 :ensure t)
 
-(load-theme 'solarized t)
-
 (use-package powerline
 :ensure t
 :config
@@ -225,7 +334,7 @@ See https://github.com/abo-abo/avy for more info
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
 
-(set-frame-font "DejaVu Sans Mono 13" nil t)
+(set-frame-font "DejaVu Sans Mono 12" nil t)
 
 #+END_SRC
 
@@ -326,6 +435,13 @@ See https://github.com/abo-abo/avy for more info
 
 (setq save-interprogram-paste-before-kill t)
 
+;; font scaling
+(use-package default-text-scale
+  :ensure t
+  :config
+  (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
+  (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
+
   
 #+END_SRC
 
@@ -392,28 +508,22 @@ See https://github.com/abo-abo/avy for more info
   (setq web-mode-code-indent-offset 2)
 
 #+END_SRC
-
-#+RESULTS:
-: t
 * DIRED
-#+BEGIN_SRC emacs-lisp
-(use-package dired+
+  #+BEGIN_SRC emacs-lisp
+  (use-package dired+
   :ensure t
   :config (require 'dired+)
   )
-
-
-(use-package dired-quick-sort
+  (use-package dired-quick-sort
   :ensure t
   :config
   (dired-quick-sort-setup))
 
-#+END_SRC
-* Stuff - Babel, projectile, smartparens, magit
+  #+END_SRC
+* Programming essentials
+** Babel
+
 #+BEGIN_SRC emacs-lisp
-
-;; babel stuff
-
 (org-babel-do-load-languages
 'org-babel-load-languages
 '((python . t)
@@ -427,21 +537,24 @@ See https://github.com/abo-abo/avy for more info
    (shell . t )
 (latex . t )
    ))
+#+END_SRC
+** Projectile
+#+BEGIN_SRC emacs-lisp
+;; Projectile
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-global-mode)
+  (setq projectile-completion-system 'ivy))
 
+(use-package counsel-projectile
+  :ensure t
+  :config
+  (counsel-projectile-on))
 
-
-;; projectile
-;;(use-package projectile
-;;  :ensure t
-;;  :config
-;;  (projectile-global-mode)
-;;(setq projectile-completion-system 'ivy))
-
-;;(use-package counsel-projectile
-;;  :ensure t
-;;  :config
-;;  (counsel-projectile-on))
-
+#+END_SRC
+** Smart Parens
+#+BEGIN_SRC emacs-lisp
 (use-package smartparens
 :ensure t
 :config
@@ -501,24 +614,16 @@ See https://github.com/abo-abo/avy for more info
 ("C-c `"  . wrap-with-back-quotes)
 ))
 
-;;--------------------------------------------
 
-;;(use-package magit
-;;:ensure t
-;;:init
-;;(progn
-;;(bind-key "C-x g" 'magit-status)
-;;))
-
-;; font scaling
-(use-package default-text-scale
-  :ensure t
-  :config
-  (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
-  (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
-
-
-
+#+END_SRC
+** Magit
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+:ensure t
+:init
+(progn
+(bind-key "C-x g" 'magit-status)
+))
 #+END_SRC
 
 * Hydra
@@ -725,47 +830,47 @@ See https://github.com/abo-abo/avy for more info
 
 * c++
 #+BEGIN_SRC emacs-lisp
-(use-package ggtags
-:ensure t
-:config 
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-              (ggtags-mode 1))))
-)
-; let's define a function which initializes auto-complete-c-headers and gets called for c/c++ hooks
-(defun my:ac-c-header-init ()
-  (require 'auto-complete-c-headers)
-  (add-to-list 'ac-sources 'ac-source-c-headers)
-  (add-to-list 'achead:include-directories '"/Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/include")
-)
-; now let's call this function from c/c++ hooks
-(add-hook 'c++-mode-hook 'my:ac-c-header-init)
-(add-hook 'c-mode-hook 'my:ac-c-header-init)
+  (use-package ggtags
+  :ensure t
+  :config 
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+                (ggtags-mode 1))))
+  )
+  ; let's define a function which initializes auto-complete-c-headers and gets called for c/c++ hooks
+  (defun my:ac-c-header-init ()
+    (require 'auto-complete-c-headers)
+    (add-to-list 'ac-sources 'ac-source-c-headers)
+    (add-to-list 'achead:include-directories '"/Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/include")
+  )
+  ; now let's call this function from c/c++ hooks
+  (add-hook 'c++-mode-hook 'my:ac-c-header-init)
+  (add-hook 'c-mode-hook 'my:ac-c-header-init)
 
-; start google-c-style with emacs
-(require 'google-c-style)
-(add-hook 'c-mode-common-hook 'google-set-c-style)
-(add-hook 'c-mode-common-hook 'google-make-newline-indent)
+  ; start google-c-style with emacs
+  (require 'google-c-style)
+  (add-hook 'c-mode-common-hook 'google-set-c-style)
+  (add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
 
-; turn on Semantic
-(semantic-mode 1)
-; let's define a function which adds semantic as a suggestion backend to auto complete
-; and hook this function to c-mode-common-hook
-(defun my:add-semantic-to-autocomplete() 
-  (add-to-list 'ac-sources 'ac-source-semantic)
-)
-(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+  ; turn on Semantic
+  (semantic-mode 1)
+  ; let's define a function which adds semantic as a suggestion backend to auto complete
+  ; and hook this function to c-mode-common-hook
+  (defun my:add-semantic-to-autocomplete() 
+    (add-to-list 'ac-sources 'ac-source-semantic)
+  )
+  (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
 
-;; c++ mode debugging
-(global-set-key (kbd "<C-f5>") 'gdb)
-(global-set-key (kbd "<C-tab>") 'other-window)
-(global-set-key (kbd "<f7>")'compile)
-(global-set-key (kbd "<f9>") 'gud-break)
-(global-set-key (kbd "<C-iso-lefttab>") 'previous-multiframe-window)
-(global-set-key (kbd "<XF86AudioPlay>") 'compile)
-(global-set-key (kbd "<XF86Search>") 'gdb)
+  ;; c++ mode debugging
+  ;; (global-set-key (kbd "<C-f5>") 'gdb)
+
+  ;; (global-set-key (kbd "<f7>")'compile)
+  ;; (global-set-key (kbd "<f9>") 'gud-break)
+
+  ;; (global-set-key (kbd "<XF86AudioPlay>") 'compile)
+  ;; (global-set-key (kbd "<XF86Search>") 'gdb)
 
 
 #+END_SRC
@@ -802,7 +907,7 @@ See https://github.com/abo-abo/avy for more info
    (add-hook 'ibuffer-mode-hook
              (lambda ()
                (ibuffer-switch-to-saved-filter-groups "default")))
-
+               
 
 #+END_SRC
 * Transpose lines
@@ -837,8 +942,100 @@ See https://github.com/abo-abo/avy for more info
 
 * Model Advisor 
 #+BEGIN_SRC emacs-lisp
+(defun sb-goto()
+(interactive)
+(setq where (read-string "Where are you heading? : " ))
+ (setq testornot "c") 
+ (let (fldr)
+  (setq fldr "styleguide")
+  ;;check whether input 'where' starts with 't'
+  (if (> (length where) 1)
+  (when (string-equal "t" (substring where 0 1))
+    (setq testornot "t")
+    (setq where (substring where 1 2))
+    )
+  (setq where (substring where 0 1))
+  )
+  
+  (if (string-equal where "m")
+  (setq fldr "styleguide")
+  )
+  (if (string-equal where "d")
+  (setq fldr "do178b")
+  )
+  (if (string-equal where "i")
+  (setq fldr "iec61508")
+  )
+  (when (string-equal where "x")
+  (setq fldr "matlab/resources/ModelAdvisor/en/")
+  (setq testornot "x")
+  )
+  (when (string-equal where "b")
+  (setq fldr "matlab/test/tools/slrtw/mdladv/")
+  (setq testornot "b")
+  )
+  (when (string-equal where "c")
+  (setq fldr "matlab/toolbox/simulink/simulink/modeladvisor/+ModelAdvisor/+Common/")
+  (setq testornot "u")
+  )
 
 
 
+(if (string-equal testornot "c")
+(setq fldr (concatenate 'string "matlab/toolbox/slcheck/" fldr "/@slCustomizer/private/")))
+
+(if (string-equal testornot "t")
+(setq fldr (concatenate 'string "matlab/test/toolbox/slcheck/" fldr)))
+
+  (counsel-find-file fldr)
+) ;; end of let
+) ;; end of sb-goto
+
+(global-set-key (kbd "<f6>") 'sb-goto)
 #+END_SRC
 
+* Key bindings 
+#+BEGIN_SRC emacs-lisp
+ ;;Keyboard mappings
+ (global-set-key (kbd "<f4>") 'kmacro-end-and-call-macro)
+  (global-set-key (kbd "<f5>") 'revert-buffer)
+  (global-set-key (kbd "C-|") "\C-a\C- \C-e\M-w") ;copy current line
+  (global-set-key (kbd "<C-f8>") 'p4-add)
+  (global-set-key (kbd "<f8>") 'p4-edit)
+  (global-set-key (kbd "<C-f7>") 'toggle-truncate-lines)
+  (global-set-key (kbd "<C-tab>") 'other-window)
+  (global-set-key (kbd "<C-iso-lefttab>") 'other-window)
+  (global-set-key (kbd "C-<return>") 'jump-to-next-newline)
+  (global-set-key (kbd "C-x o") 'swap-window)
+  (global-set-key (kbd "<C-f6>") 'mlint-clear-warnings)
+#+END_SRC
+* mu4e
+#+BEGIN_SRC emacs-lisp
+;; example configuration for mu4e
+
+;; make sure mu4e is in your load-path
+(require 'mu4e)
+
+;; Only needed if your maildir is _not_ ~/Maildir
+;; Must be a real dir, not a symlink
+;;(setq mu4e-maildir "/home/user/Maildir")
+
+;; these must start with a "/", and must exist
+;; (i.e.. /home/user/Maildir/sent must exist)
+;; you use e.g. 'mu mkdir' to make the Maildirs if they don't
+;; already exist
+
+;; below are the defaults; if they do not exist yet, mu4e offers to
+;; create them. they can also functions; see their docstrings.
+;; (setq mu4e-sent-folder   "/sent")
+;; (setq mu4e-drafts-folder "/drafts")
+;; (setq mu4e-trash-folder  "/trash")
+
+;; smtp mail setting; these are the same that `gnus' uses.
+(setq
+   message-send-mail-function   'smtpmail-send-it
+   smtpmail-default-smtp-server "outlook.office365.com"
+   smtpmail-smtp-server         "smtp.example.com"
+   smtpmail-local-domain        "example.com")
+
+#+END_SRC
