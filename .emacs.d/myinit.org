@@ -3,7 +3,12 @@
 #+AUTHOR: Vinodh MJ Human
 #+EMAIL: 
 #+OPTIONS: toc:nil num:nil
-
+* Pre-requisites
+#+BEGIN_SRC emacs-lisp
+;;Install paradox package manager and solarized theme
+(use-package paradox
+:ensure t)
+#+END_SRC
 * Interface tweaks
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
@@ -19,9 +24,6 @@
   (newline))
 
 ;;(setq view-read-only t)
-
-(require 'atomic-chrome)
-(atomic-chrome-start-server)
  
 #+END_SRC
 * Stolen from hrs
@@ -848,11 +850,6 @@ See https://github.com/abo-abo/avy for more info
   (add-hook 'c++-mode-hook 'my:ac-c-header-init)
   (add-hook 'c-mode-hook 'my:ac-c-header-init)
 
-  ; start google-c-style with emacs
-  (require 'google-c-style)
-  (add-hook 'c-mode-common-hook 'google-set-c-style)
-  (add-hook 'c-mode-common-hook 'google-make-newline-indent)
-
 
   ; turn on Semantic
   (semantic-mode 1)
@@ -1014,7 +1011,7 @@ See https://github.com/abo-abo/avy for more info
 ;; example configuration for mu4e
 
 ;; make sure mu4e is in your load-path
-(require 'mu4e)
+;;(require 'mu4e)
 
 ;; Only needed if your maildir is _not_ ~/Maildir
 ;; Must be a real dir, not a symlink
