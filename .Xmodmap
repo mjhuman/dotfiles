@@ -5,12 +5,11 @@
 clear lock
 clear control
 clear mod1
-clear mod4
 
 !retain left control and left Super
 keycode 37 = Control_L
-keycode 133 = Super_L
-! Map Caps lock to left Alt also, map  Shift+CapsLock to Caps Lock
+
+! Map Caps lock to left Alt
 keycode 66 = Alt_L
 
 ! Map left alt to left control
@@ -19,13 +18,9 @@ keycode 64 = Control_L
 ! Map right alt to right control
 keycode 108 = Control_R
 
-! Map right ctrl to right super/win
-keycode 105 = Super_R
-
-! Map right super/win to right alt
-keycode 134 = Alt_R
+! Map right ctrl to right Alt
+keycode 105 = Alt_R
 
 !Add the handles back to the system
 add control = Control_L Control_R
 add mod1 = Alt_R Alt_L Caps_Lock
-add mod4 = Super_L Super_R
