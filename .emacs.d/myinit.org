@@ -545,16 +545,16 @@ See https://github.com/abo-abo/avy for more info
 ** Projectile
 #+BEGIN_SRC emacs-lisp
 ;; Projectile
-(use-package projectile
-  :ensure t
-  :config
-  (projectile-global-mode)
-  (setq projectile-completion-system 'ivy))
+;(use-package projectile
+;  :ensure t
+;  :config
+;  (projectile-global-mode)
+;  (setq projectile-completion-system 'ivy))
 
-(use-package counsel-projectile
-  :ensure t
-  :config
-  (counsel-projectile-on))
+;(use-package counsel-projectile
+;  :ensure t
+;  :config
+;  (counsel-projectile-on))
 
 #+END_SRC
 ** Smart Parens
@@ -977,6 +977,10 @@ See https://github.com/abo-abo/avy for more info
   )
   (when (string-equal where "c")
   (setq fldr "matlab/toolbox/simulink/simulink/modeladvisor/+ModelAdvisor/+Common/")
+  (setq testornot "u")
+  )
+  (when (string-equal where "u")
+  (setq fldr "matlab/toolbox/simulink/simulink/modeladvisor/+Advisor/+Utils")
   (setq testornot "u")
   )
 
