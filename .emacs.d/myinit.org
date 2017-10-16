@@ -178,7 +178,7 @@ Org bullets makes things look pretty
 
             (setq org-agenda-files (list "~/Dropbox/orgfiles/gcal.org"
           			       "~/Dropbox/orgfiles/i.org"
-          			       "~/Dropbox/orgfiles/schedule.org"))
+          			       "~/Dropbox/orgfiles/word.org"))
             (setq org-capture-templates
           			  '(("a" "Appointment" entry (file  "~/Dropbox/orgfiles/gcal.org" )
           				   "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
@@ -190,11 +190,11 @@ Org bullets makes things look pretty
           				   "* %?\n%T" :prepend t)
           				  ("t" "To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
           				   "* TODO %?\n%u" :prepend t)
-  					  ("m" "Mail To Do" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
-  					   "* TODO %a\n %?" :prepend t)
-  					  ("g" "GMail To Do" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
-  					   "* TODO %^L\n %?" :prepend t)
   					  ("n" "Note" entry (file+headline "~/Dropbox/orgfiles/i.org" "Notes")
+          				   "* %?\n%u" :prepend t)
+  					  ("w" "Word" entry (file+headline "~/Dropbox/orgfiles/word.org" "Words")
+          				   "* %?\n%u" :prepend t)
+  					  ("p" "Phrase" entry (file+headline "~/Dropbox/orgfiles/word.org" "Phrases")
           				   "* %?\n%u" :prepend t)
   					  ))
            
@@ -336,7 +336,7 @@ See https://github.com/abo-abo/avy for more info
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
 
-(set-frame-font "DejaVu Sans Mono 12" nil t)
+(set-frame-font "DejaVu Sans Mono 16" nil t)
 
 #+END_SRC
 
@@ -435,16 +435,18 @@ See https://github.com/abo-abo/avy for more info
   :config 
   (global-set-key (kbd "C-=") 'er/expand-region))
 
-(setq save-interprogram-paste-before-kill t)
+  (setq save-interprogram-paste-before-kill t)
 
-;; font scaling
-(use-package default-text-scale
+  ; font scaling
+  (use-package default-text-scale
   :ensure t
   :config
   (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
   (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
 
-  
+  ;origami folding
+  (use-package origami
+  :ensure t)
 #+END_SRC
 
 * iedit and narrow / widen dwim
@@ -626,6 +628,17 @@ See https://github.com/abo-abo/avy for more info
 (progn
 (bind-key "C-x g" 'magit-status)
 ))
+#+END_SRC
+** LaTeX
+#+BEGIN_SRC emacs-lisp
+
+;; latex
+;(use-package tex
+;:ensure auctex)
+
+;(defun tex-view ()
+;    (interactive)
+;    (tex-send-command "evince" (tex-append tex-print-file ".pdf")))
 #+END_SRC
 
 * Hydra
@@ -873,15 +886,6 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 
 #+RESULTS:
-
-* Origami folding
-#+BEGIN_SRC emacs-lisp
-(use-package origami
-:ensure t)
-#+END_SRC
-
-#+RESULTS:
-
 * IBUFFER
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -994,17 +998,23 @@ See https://github.com/abo-abo/avy for more info
 * Key bindings 
 #+BEGIN_SRC emacs-lisp
  ;;Keyboard mappings
- (global-set-key (kbd "<f4>") 'kmacro-end-and-call-macro)
-  (global-set-key (kbd "<f5>") 'revert-buffer)
-  (global-set-key (kbd "C-|") "\C-a\C- \C-e\M-w") ;copy current line
-  (global-set-key (kbd "<C-f8>") 'p4-add)
-  (global-set-key (kbd "<f8>") 'p4-edit)
-  (global-set-key (kbd "<C-f7>") 'toggle-truncate-lines)
-  (global-set-key (kbd "<C-tab>") 'other-window)
-  (global-set-key (kbd "<C-iso-lefttab>") 'other-window)
-  (global-set-key (kbd "C-<return>") 'jump-to-next-newline)
-  (global-set-key (kbd "C-x o") 'swap-window)
-  (global-set-key (kbd "<C-f6>") 'mlint-clear-warnings)
+(setq user-full-name "Vinodh MJ Human" user-mail-address "vinodhmjhuman@gmail.com")
+(global-set-key (kbd "\e\ei") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/i.org")))
+(global-set-key (kbd "\e\el") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/links.org")))
+(global-set-key (kbd "\e\ew") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/word.org")))
+(global-set-key (kbd "\e\ec") (lambda () (interactive) (find-file "~/.emacs.d/myinit.org")))
+
+(global-set-key (kbd "<f4>") 'kmacro-end-and-call-macro)
+(global-set-key (kbd "<f5>") 'revert-buffer)
+(global-set-key (kbd "C-|") "\C-a\C- \C-e\M-w") ;copy current line
+(global-set-key (kbd "<C-f8>") 'p4-add)
+(global-set-key (kbd "<f8>") 'p4-edit)
+(global-set-key (kbd "<C-f7>") 'toggle-truncate-lines)
+(global-set-key (kbd "<C-tab>") 'other-window)
+(global-set-key (kbd "<C-iso-lefttab>") 'other-window)
+(global-set-key (kbd "C-<return>") 'jump-to-next-newline)
+(global-set-key (kbd "C-x o") 'swap-window)
+(global-set-key (kbd "<C-f6>") 'mlint-clear-warnings)
 #+END_SRC
 * mu4e
 #+BEGIN_SRC emacs-lisp
