@@ -336,7 +336,7 @@ See https://github.com/abo-abo/avy for more info
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
 
-(set-frame-font "DejaVu Sans Mono 16" nil t)
+(set-frame-font "DejaVu Sans Mono 12" nil t)
 
 #+END_SRC
 
