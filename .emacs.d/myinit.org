@@ -138,55 +138,55 @@ Emacs package that displays available keybindings in pop up
 * Org mode
 Org bullets makes things look pretty
 #+BEGIN_SRC emacs-lisp
+(setenv "BROWSER" "chromium-browser")
 
-    (setenv "BROWSER" "chromium-browser")
+(use-package org-bullets
+:ensure t
+:config
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-        (use-package org-bullets
-        :ensure t
-        :config
-        (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+(custom-set-variables
+'(org-directory "~/Dropbox/orgfiles")
+'(org-default-notes-file (concat org-directory "/notes.org"))
+'(org-export-html-postamble nil)
+'(org-hide-leading-stars t)
+'(org-startup-folded (quote overview))
+'(org-startup-indented t)
+)
 
-            (custom-set-variables
-             '(org-directory "~/Dropbox/orgfiles")
-             '(org-default-notes-file (concat org-directory "/notes.org"))
-             '(org-export-html-postamble nil)
-             '(org-hide-leading-stars t)
-             '(org-startup-folded (quote overview))
-             '(org-startup-indented t)
-             )
-
-            (setq org-file-apps
-  		(append '(
-          		  ("\\.pdf\\'" . "evince %s")
-          		  ) org-file-apps ))
+(setq org-file-apps
+(append '(
+("\\.pdf\\'" . "evince %s")
+) org-file-apps ))
 ;;scheduling 
-            (global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-ca" 'org-agenda)
 
-            (setq org-agenda-custom-commands
-            '(("c" "Simple agenda view"
-            ((agenda "")
-            (alltodo "")))))
+(setq org-agenda-custom-commands
+'(("c" "Simple agenda view"
+((agenda "")
+(alltodo "")))))
 
-            (use-package org-ac
-          	  :ensure t
-          	  :init (progn
-          		  (require 'org-ac)
-          		  (org-ac/config-default)
-          		  ))
+(use-package org-ac
+:ensure t
+:init (progn
+(require 'org-ac)
+(org-ac/config-default)
+))
 
-            (global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c c") 'org-capture)
 
             (setq org-agenda-files (list "~/Dropbox/orgfiles/gcal.org"
           			       "~/Dropbox/orgfiles/i.org"
+          			       "~/Dropbox/orgfiles/y.org"
           			       "~/Dropbox/orgfiles/word.org"))
             (setq org-capture-templates
           			  '(("a" "Appointment" entry (file  "~/Dropbox/orgfiles/gcal.org" )
           				   "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
           				  ("l" "Link" entry (file+headline "~/Dropbox/orgfiles/links.org" "Links")
           				   "* %? %^L %^g \n%T" :prepend t)
-          				  ("b" "Blog idea" entry (file+headline "~/Dropbox/orgfiles/i.org" "Blog Topics:")
+          				  ("b" "Blog idea" entry (file+headline "~/Dropbox/orgfiles/y.org" "Blog Topics:")
           				   "* %?\n%T" :prepend t)
-                                           ("y" "Youtube idea" entry (file+headline "~/Dropbox/orgfiles/i.org" "Youtube Topics:")
+                                           ("y" "Youtube idea" entry (file+headline "~/Dropbox/orgfiles/y.org" "Youtube Topics:")
           				   "* %?\n%T" :prepend t)
           				  ("t" "To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
           				   "* TODO %?\n%u" :prepend t)
@@ -198,7 +198,14 @@ Org bullets makes things look pretty
           				   "* %?\n%u" :prepend t)
   					  ))
            
-        (defadvice org-capture-finalize 
+        
+;; Set to the name of the file where new notes will be stored
+(setq org-mobile-inbox-for-pull "~/Dropbox/orgfiles/i.org")
+;; Set to <your Dropbox root directory>/MobileOrg.
+(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+
+
+(defadvice org-capture-finalize 
             (after delete-capture-frame activate)  
         "Advise capture-finalize to close the frame"  
         (if (equal "capture" (frame-parameter nil 'name))  
@@ -222,8 +229,8 @@ Org bullets makes things look pretty
             (org-capture)))
 
 (require 'ox-beamer)
-(use-package epresent
-:ensure t)
+;(use-package epresent
+;:ensure t)
 #+END_SRC
 
 #+RESULTS:
