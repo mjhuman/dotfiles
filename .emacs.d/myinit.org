@@ -189,7 +189,7 @@ Org bullets makes things look pretty
                                         ("y" "Youtube idea" entry (file+headline "~/Dropbox/orgfiles/y.org" "Youtube Topics:")
           				   "* %?\n%T" :prepend t)
           				  ("t" "To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
-          				   "* TODO %? %^g\n%u" :prepend t)
+          				   "* TODO %? \n%u" :prepend t)
   					  ("dt" "Detailed To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
           				   "* TODO %^C %? %^g\n%u" :prepend t)
   					  ("n" "Note" entry (file+headline "~/Dropbox/orgfiles/i.org" "Notes")
