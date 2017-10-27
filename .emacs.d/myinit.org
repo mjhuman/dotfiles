@@ -303,7 +303,8 @@ and Ivy / Counsel replace a lot of ido or helms completion functionality
 
 #+END_SRC
 
-* Avy - navigate by searching for a letter on the screen and jumping to it
+* Avy
+navigate by searching for a letter on the screen and jumping to it
 See https://github.com/abo-abo/avy for more info
 #+BEGIN_SRC emacs-lisp
   (use-package avy
@@ -553,17 +554,17 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 ** Projectile
 #+BEGIN_SRC emacs-lisp
-;; Projectile
-;(use-package projectile
-;  :ensure t
-;  :config
-;  (projectile-global-mode)
-;  (setq projectile-completion-system 'ivy))
+  ;; Projectile
+  (use-package projectile
+   :ensure t
+   :config
+   (projectile-global-mode)
+   (setq projectile-completion-system 'ivy))
 
-;(use-package counsel-projectile
-;  :ensure t
-;  :config
-;  (counsel-projectile-on))
+  (use-package counsel-projectile
+   :ensure t
+   :config
+   (counsel-projectile-on))
 
 #+END_SRC
 ** Smart Parens
