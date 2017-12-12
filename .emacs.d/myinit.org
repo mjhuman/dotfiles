@@ -191,7 +191,7 @@ Org bullets makes things look pretty
           				  ("t" "To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
           				   "* TODO %? \n%u" :prepend t)
   					  ("dt" "Detailed To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
-          				   "* TODO %^C %? %^g\n%u" :prepend t)
+       g   				   "* TODO %^C %? %^g\n%u" :prepend t)
   					  ("n" "Note" entry (file+headline "~/Dropbox/orgfiles/i.org" "Notes")
           				   "* %?\n%u" :prepend t)
   					  ("w" "Word" entry (file+headline "~/Dropbox/orgfiles/word.org" "Words")
@@ -554,18 +554,22 @@ See https://github.com/abo-abo/avy for more info
 ** Projectile
 #+BEGIN_SRC emacs-lisp
 ;; Projectile
-;(use-package projectile
-;  :ensure t
-;  :config
-;  (projectile-global-mode)
-;  (setq projectile-completion-system 'ivy))
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-global-mode)
+  (setq projectile-completion-system 'ivy))
 
-;(use-package counsel-projectile
-;  :ensure t
-;  :config
-;  (counsel-projectile-on))
+(use-package counsel-projectile
+  :ensure t
+  :config
+  (counsel-projectile-on))
 
 #+END_SRC
+
+#+RESULTS:
+: t
+
 ** Smart Parens
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
