@@ -987,7 +987,7 @@ See https://github.com/abo-abo/avy for more info
 
 (global-set-key (kbd "<f4>") 'kmacro-end-and-call-macro)
 (global-set-key (kbd "<f5>") 'revert-buffer)
-(global-set-key (kbd "C-|") "\C-a\C- \C-e\M-w") ;copy current line
+(global-set-key (kbd "C-\\") "\C-a\C- \C-e\M-w") ;copy current line
 (global-set-key (kbd "<C-f8>") 'p4-add)
 (global-set-key (kbd "<f8>") 'p4-edit)
 (global-set-key (kbd "<C-f7>") 'toggle-truncate-lines)
@@ -996,6 +996,10 @@ See https://github.com/abo-abo/avy for more info
 (global-set-key (kbd "C-<return>") 'jump-to-next-newline)
 (global-set-key (kbd "C-x o") 'swap-window)
 (global-set-key (kbd "<C-f6>") 'mlint-clear-warnings)
+
+(global-set-key (kbd "C-<") 'beginning-of-buffer)
+(global-set-key (kbd "C->") 'end-of-buffer)
+
 #+END_SRC
 * mu4e
 #+BEGIN_SRC emacs-lisp
