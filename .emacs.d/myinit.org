@@ -180,7 +180,9 @@ Org bullets makes things look pretty
             (setq org-agenda-files (list "~/Dropbox/orgfiles/gcal.org"
           			       "~/Dropbox/orgfiles/i.org"
           			       "~/Dropbox/orgfiles/y.org"
-          			       "~/Dropbox/orgfiles/word.org"))
+          			       "~/Dropbox/orgfiles/word.org"
+                                       "~/house/orgfiles/mw.org"
+                                       "~/house/orgfiles/guidelines.org"))
             (setq org-capture-templates
           			  '(("a" "Appointment" entry (file  "~/Dropbox/orgfiles/gcal.org" )
           				   "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
@@ -908,72 +910,6 @@ See https://github.com/abo-abo/avy for more info
 (global-set-key (kbd "C-M-<down>") 'move-line-down)
 #+END_SRC
 
-* Model Advisor 
-#+BEGIN_SRC emacs-lisp
-(defun slcheck-goto(where)
-(setq testornot "k")
- (let (fldr)
-  (when (> (length where) 1)
-  (progn 
-  (setq testornot (substring where 0 1))
-  (setq where (substring where 1 2))))
-
-  (cond 
-  ((string-equal where "m") (setq fldr "styleguide"))
-  ((string-equal where "d") (setq fldr "do178b"))
-  ((string-equal where "i") (setq fldr "iec61508"))
-  ((string-equal where "b") (setq fldr "matlab/test/tools/slrtw/mdladv/"))
-  ((string-equal where "c") (setq fldr "matlab/toolbox/simulink/simulink/modeladvisor/+ModelAdvisor/+Common/"))
-  ((string-equal where "u") (setq fldr "matlab/toolbox/simulink/simulink/modeladvisor/+Advisor/+Utils/"))
-  ((string-equal where "z") (setq fldr "matlab/test/toolbox/simulink/mdladv/UnitTests/Utils/")))
-
-  (if (string-equal testornot "c") (setq fldr (concatenate 'string "matlab/toolbox/slcheck/" fldr "/@slCustomizer/private/")))
-  (if (string-equal testornot "t") (setq fldr (concatenate 'string "matlab/test/toolbox/slcheck/" fldr)))
-;  (if (string-equal testornot "x") (setq fldr (concatenate 'string "matlab/resources/ModelAdvisor/en/")))
-  (if (string-equal testornot "x") 
-  (find-file (concatenate 'string "matlab/resources/ModelAdvisor/en/" fldr ".xml"))
-  (counsel-find-file fldr))
-
-
-  ))
-
-;; Model Advisor keybindings, hydra
-
-(global-set-key
-    (kbd "C-x w")
-	    (defhydra coders (:color blue)
-	      "modeladvisor"
-	      ("m" (slcheck-goto "cm") "maab")
-	      ("d" (slcheck-goto "cd") "do178b")
-	      ("i" (slcheck-goto "ci") "iec61508")
-	      ("tm" (slcheck-goto "tm") "t_maab")
-	      ("td" (slcheck-goto "td") "t_do")
-	      ("ti" (slcheck-goto "ti") "t_iec")
-	      ("tu" (slcheck-goto "z") "t_utils")
-	      ("xm" (slcheck-goto "xm") "x_maab")
-	      ("xd" (slcheck-goto "xd") "x_do")
-	      ("xi" (slcheck-goto "xi") "x_iec")
-	      ("c" (slcheck-goto "c") "Common")
-	      ("u" (slcheck-goto "u") "Utils")
-	      ("b" (slcheck-goto "b") "baseline")
-	      ("q" nil "cancel")))
-
-(global-set-key
-    (kbd "C-x p")
-	    (defhydra perfours (:color blue)
-	      "toggle"
-	      ("a" (p4-add) "add")
-	      ("e" (p4-edit) "edit")
-	      ("r" (p4-revert) "revert")
-	      ("d" (p4-delete) "delete")
-	      ("o" (slcheck-goto ) "opened")
-	      ("q" nil "cancel")))
-
-#+END_SRC
-
-#+RESULTS:
-: perfours/body
-
 * Key bindings 
 #+BEGIN_SRC emacs-lisp
  ;;Keyboard mappings
@@ -987,15 +923,20 @@ See https://github.com/abo-abo/avy for more info
 
 (global-set-key (kbd "<f4>") 'kmacro-end-and-call-macro)
 (global-set-key (kbd "<f5>") 'revert-buffer)
-(global-set-key (kbd "C-|") "\C-a\C- \C-e\M-w") ;copy current line
-(global-set-key (kbd "<C-f8>") 'p4-add)
-(global-set-key (kbd "<f8>") 'p4-edit)
+(global-set-key (kbd "C-\\") "\C-a\C- \C-e\M-w") ;copy current line
 (global-set-key (kbd "<C-f7>") 'toggle-truncate-lines)
 (global-set-key (kbd "<C-tab>") 'other-window)
 (global-set-key (kbd "<C-iso-lefttab>") 'other-window)
 (global-set-key (kbd "C-<return>") 'jump-to-next-newline)
 (global-set-key (kbd "C-x o") 'swap-window)
 (global-set-key (kbd "<C-f6>") 'mlint-clear-warnings)
+
+(global-set-key (kbd "C-<") 'beginning-of-buffer)
+(global-set-key (kbd "C->") 'end-of-buffer)
+
+(global-set-key (kbd "<f8>") 'view-mode)
+
+
 #+END_SRC
 * mu4e
 #+BEGIN_SRC emacs-lisp
