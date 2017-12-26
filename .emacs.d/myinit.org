@@ -10,24 +10,6 @@
 :ensure t)
 (server-start)
 #+END_SRC
-* Interface tweaks
-#+BEGIN_SRC emacs-lisp
-  (setq inhibit-startup-message t)
-  (tool-bar-mode -1)
-  (fset 'yes-or-no-p 'y-or-n-p)
-  (global-linum-mode t) ;; enable line numbers globally
-  (add-to-list 'default-frame-alist '(fullscreen . maximized))
-  (setq ivy-use-virtual-buffers t)
-  (defun jump-to-next-newline()
-  "Move to the end of the line and return"
-  (interactive)
-  (move-end-of-line)
-  (newline))
-(setq ivy-format-function 'ivy-format-function-line)
-(setq ivy-display-style 'fancy)
-;;(setq view-read-only t)
- 
-#+END_SRC
 * Stolen from hrs
 #+BEGIN_SRC emacs-lisp
 (defun vmj/view-buffer-name ()
@@ -128,6 +110,24 @@ package.
 #+END_SRC
 
 *
+* Interface tweaks
+#+BEGIN_SRC emacs-lisp
+  (setq inhibit-startup-message t)
+  (tool-bar-mode -1)
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (global-linum-mode t) ;; enable line numbers globally
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  (setq ivy-use-virtual-buffers t)
+  (defun jump-to-next-newline()
+  "Move to the end of the line and return"
+  (interactive)
+  (move-end-of-line)
+  (newline))
+(setq ivy-format-function 'ivy-format-function-line)
+(setq ivy-display-style 'fancy)
+;;(setq view-read-only t)
+ 
+#+END_SRC
 * which key
 Emacs package that displays available keybindings in pop up
 #+BEGIN_SRC emacs-lisp
