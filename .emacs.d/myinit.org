@@ -180,9 +180,7 @@ Org bullets makes things look pretty
             (setq org-agenda-files (list "~/Dropbox/orgfiles/gcal.org"
           			       "~/Dropbox/orgfiles/i.org"
           			       "~/Dropbox/orgfiles/y.org"
-          			       "~/Dropbox/orgfiles/word.org"
-                                       "~/house/orgfiles/mw.org"
-                                       "~/house/orgfiles/guidelines.org"))
+          			       "~/Dropbox/orgfiles/word.org"))
             (setq org-capture-templates
           			  '(("a" "Appointment" entry (file  "~/Dropbox/orgfiles/gcal.org" )
           				   "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
@@ -194,8 +192,8 @@ Org bullets makes things look pretty
           				   "* %?\n%T" :prepend t)
           				  ("t" "To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
           				   "* TODO %? \n%u" :prepend t)
-  					  ("dt" "Detailed To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
-       g   				   "* TODO %^C %? %^g\n%u" :prepend t)
+  					  ("d" "Detailed To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
+          				   "* TODO %^C %? %^g\n%u" :prepend t)
   					  ("n" "Note" entry (file+headline "~/Dropbox/orgfiles/i.org" "Notes")
           				   "* %?\n%u" :prepend t)
   					  ("w" "Word" entry (file+headline "~/Dropbox/orgfiles/word.org" "Words")
@@ -353,7 +351,7 @@ See https://github.com/abo-abo/avy for more info
 )
 
 
-(setq tab-width 2) ; or any other preferred value
+;;(setq tab-width 2) ; or any other preferred value
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
 
@@ -710,9 +708,18 @@ See https://github.com/abo-abo/avy for more info
        ("o" org-clock-out "Clock-Out") ; you might also want (setq org-log-note-clock-out t)
        ("j" org-clock-goto "Clock Goto") ; global visit the clocked task
        ("c" org-capture "Capture") ; Don't forget to define the captures you want http://orgmode.org/manual/Capture.html
-	     ("l" (or )rg-capture-goto-last-stored "Last Capture"))
+	     ("l" (or )rg-capture-goto-last-stored "Last Capture"))))
 
-     ))
+
+(global-set-key
+     (kbd "C-x f")
+     (defhydra frequent (:color blue)
+       "frequent"
+       ("f" counsel-find-file "find-file")
+       ("l" mlint-clear-warnings "mlint clear")
+       ("t" toggle-truncate-lines "toggle truncate")))
+
+     
 #+END_SRC
 
 #+RESULTS:
@@ -918,8 +925,6 @@ See https://github.com/abo-abo/avy for more info
 (global-set-key (kbd "\e\el") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/links.org")))
 (global-set-key (kbd "\e\ew") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/word.org")))
 (global-set-key (kbd "\e\ec") (lambda () (interactive) (find-file "~/.emacs.d/myinit.org")))
-(global-set-key (kbd "\e\eg") (lambda () (interactive) (find-file "~/house/orgfiles/guidelines.org")))
-(global-set-key (kbd "\e\em") (lambda () (interactive) (find-file "~/house/orgfiles/mw.org")))
 
 (global-set-key (kbd "<f4>") 'kmacro-end-and-call-macro)
 (global-set-key (kbd "<f5>") 'revert-buffer)
