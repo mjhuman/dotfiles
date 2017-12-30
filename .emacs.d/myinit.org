@@ -180,18 +180,18 @@ Org bullets makes things look pretty
             (setq org-agenda-files (list "~/Dropbox/orgfiles/gcal.org"
           			       "~/Dropbox/orgfiles/i.org"
           			       "~/Dropbox/orgfiles/y.org"
-          			       "~/Dropbox/orgfiles/word.org"
-                                       "~/house/orgfiles/mw.org"
-                                       "~/house/orgfiles/guidelines.org"))
+          			       "~/Dropbox/orgfiles/word.org"))
+;;                                       "~/house/orgfiles/mw.org"
+;;                                       "~/house/orgfiles/guidelines.org"))
             (setq org-capture-templates
           			  '(("a" "Appointment" entry (file  "~/Dropbox/orgfiles/gcal.org" )
           				   "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
           				  ("l" "Link" entry (file+headline "~/Dropbox/orgfiles/links.org" "Links")
           				   "* %? %^L %^g \n%T" :prepend t)
           				  ("b" "Blog idea" entry (file+headline "~/Dropbox/orgfiles/y.org" "Blog Topics:")
-          				   "* %?\n%T" :prepend t)
+          				   "* %?\n" :prepend t)
                                         ("y" "Youtube idea" entry (file+headline "~/Dropbox/orgfiles/y.org" "Youtube Topics:")
-          				   "* %?\n%T" :prepend t)
+          				   "* %?\n" :prepend t)
           				  ("t" "To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
           				   "* TODO %? \n%u" :prepend t)
   					  ("dt" "Detailed To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
@@ -199,9 +199,9 @@ Org bullets makes things look pretty
   					  ("n" "Note" entry (file+headline "~/Dropbox/orgfiles/i.org" "Notes")
           				   "* %?\n%u" :prepend t)
   					  ("w" "Word" entry (file+headline "~/Dropbox/orgfiles/word.org" "Words")
-          				   "* %?\n%u" :prepend t)
+          				   "* %?\n" :prepend t)
   					  ("p" "Phrase" entry (file+headline "~/Dropbox/orgfiles/word.org" "Phrases")
-          				   "* %?\n%u" :prepend t)
+          				   "* %?\n" :prepend t)
   					  ))
            
         
@@ -572,10 +572,10 @@ See https://github.com/abo-abo/avy for more info
    (projectile-global-mode)
    (setq projectile-completion-system 'ivy))
 
-  (use-package counsel-projectile
-   :ensure t
-   :config
-   (counsel-projectile-on))
+;;  (use-package counsel-projectile
+  ;; :ensure t
+  ;; :config
+  ;; (counsel-projectile-on))
 
 #+END_SRC
 
