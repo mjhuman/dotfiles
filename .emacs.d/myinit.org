@@ -357,7 +357,7 @@ See https://github.com/abo-abo/avy for more info
 (defvaralias 'cperl-indent-level 'tab-width)
 
 (set-frame-font "DejaVu Sans Mono 12" nil t)
-
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 12"))
 #+END_SRC
 
 #+RESULTS:
@@ -839,6 +839,21 @@ See https://github.com/abo-abo/avy for more info
     (add-to-list 'ac-sources 'ac-source-c-headers)
     (add-to-list 'achead:include-directories '"/Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/include")
   )
+(c-add-style "my-style" 
+	     '("stroustrup"
+	       (indent-tabs-mode . nil)        ; use spaces rather than tabs
+	       (c-basic-offset . 2)            ; indent by four spaces
+	       (c-offsets-alist . ((inline-open . 0)  ; custom indentation rules
+				   (brace-list-open . 0)
+				   (statement-case-open . +)))))
+
+(defun my-c++-mode-hook ()
+  (c-set-style "my-style")        ; use my-style defined above
+  (auto-fill-mode)         
+  (c-toggle-auto-hungry-state 1))
+
+(add-hook 'c++-mode-hook 'my-c++-mode-hook)
+
   ; now let's call this function from c/c++ hooks
   (add-hook 'c++-mode-hook 'my:ac-c-header-init)
   (add-hook 'c-mode-hook 'my:ac-c-header-init)
@@ -866,6 +881,7 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 
 #+RESULTS:
+| (lambda nil (when (derived-mode-p (quote c-mode) (quote c++-mode) (quote java-mode)) (ggtags-mode 1))) | my:add-semantic-to-autocomplete | (lambda nil (if (derived-mode-p (quote c-mode) (quote c++-mode) (quote java-mode)) (progn (ggtags-mode 1)))) | ac-cc-mode-setup |
 * IBUFFER
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
