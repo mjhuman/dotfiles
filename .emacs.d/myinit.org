@@ -186,7 +186,7 @@ Org bullets makes things look pretty
           			  '(("a" "Appointment" entry (file  "~/Dropbox/orgfiles/gcal.org" )
           				   "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
           				  ("l" "Link" entry (file+headline "~/Dropbox/orgfiles/links.org" "Links")
-          				   "* %? %^L %^g \n%T" :prepend t)
+          				   "* %? %^L %^g" :prepend t)
           				  ("b" "Blog idea" entry (file+headline "~/Dropbox/orgfiles/y.org" "Blog Topics:")
           				   "* %?\n" :prepend t)
                                         ("y" "Youtube idea" entry (file+headline "~/Dropbox/orgfiles/y.org" "Youtube Topics:")
@@ -351,13 +351,13 @@ See https://github.com/abo-abo/avy for more info
 (setq moe-theme-highlight-buffer-id t)
 )
 
-
+;;(indent-tabs-mode . nil)        ; use spaces rather than tabs
 ;;(setq tab-width 2) ; or any other preferred value
-(defvaralias 'c-basic-offset 'tab-width)
-(defvaralias 'cperl-indent-level 'tab-width)
+;;(defvaralias 'c-basic-offset 'tab-width)
+;;(defvaralias 'cperl-indent-level 'tab-width)
 
-(set-frame-font "DejaVu Sans Mono 12" nil t)
-(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 12"))
+(set-frame-font "DejaVu Sans Mono 10" nil t)
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 10"))
 #+END_SRC
 
 #+RESULTS:
@@ -664,7 +664,11 @@ See https://github.com/abo-abo/avy for more info
 ;    (interactive)
 ;    (tex-send-command "evince" (tex-append tex-print-file ".pdf")))
 #+END_SRC
+** misc
+#+BEGIN_SRC emacs-lisp
+ (global-auto-revert-mode 1)
 
+#+END_SRC
 * Hydra
 #+BEGIN_SRC emacs-lisp
   (use-package hydra 
@@ -719,6 +723,8 @@ See https://github.com/abo-abo/avy for more info
        ("l" mlint-clear-warnings "mlint clear")
        ("b" counsel-bookmark "bookmarks")
        ("a" mark-whole-buffer "select all")
+       ("r" revert-buffer "refresh")
+       ("p" crepro "projectile")
        ("s" (find-file "/local-ssd/vjayakri") "ssd")
        ("n" (find-file "/mathworks/devel/sbs/13") "sbs")
        ("t" toggle-truncate-lines "toggle truncate")))
@@ -869,10 +875,14 @@ See https://github.com/abo-abo/avy for more info
   (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
 
   ;; c++ mode debugging
-  ;; (global-set-key (kbd "<C-f5>") 'gdb)
+  (global-set-key (kbd "<C-f5>") 'gdb)
 
-  ;; (global-set-key (kbd "<f7>")'compile)
-  ;; (global-set-key (kbd "<f9>") 'gud-break)
+  (global-set-key (kbd "<f7>")'compile)
+  (global-set-key (kbd "<f9>") 'gud-break)
+
+  (global-set-key (kbd "<f10>") 'gud-next)
+  (global-set-key (kbd "<f11>") 'gud-step)
+
 
   ;; (global-set-key (kbd "<XF86AudioPlay>") 'compile)
   ;; (global-set-key (kbd "<XF86Search>") 'gdb)
