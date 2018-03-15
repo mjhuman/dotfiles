@@ -8,7 +8,6 @@
 ;;Install paradox package manager and solarized theme
 (use-package paradox
 :ensure t)
-(server-start)
 #+END_SRC
 * Stolen from hrs
 #+BEGIN_SRC emacs-lisp
@@ -140,7 +139,7 @@ Emacs package that displays available keybindings in pop up
 * Org mode
 Org bullets makes things look pretty
 #+BEGIN_SRC emacs-lisp
-(setenv "BROWSER" "chromium-browser")
+(setenv "BROWSER" "chromium")
 
 (use-package org-bullets
 :ensure t
@@ -960,7 +959,7 @@ See https://github.com/abo-abo/avy for more info
 (global-set-key (kbd "<f5>") 'revert-buffer)
 (global-set-key (kbd "C-\\") "\C-a\C- \C-e\M-w") ;copy current line
 (global-set-key (kbd "<C-f7>") 'toggle-truncate-lines)
-(global-set-key (kbd "<C-tab>") 'other-window)
+(global-set-key (kbd "C-`") 'other-window)
 (global-set-key (kbd "<C-iso-lefttab>") 'other-window)
 (global-set-key (kbd "C-<return>") 'jump-to-next-newline)
 (global-set-key (kbd "C-x o") 'swap-window)
