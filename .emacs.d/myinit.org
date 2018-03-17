@@ -8,7 +8,6 @@
 ;;Install paradox package manager and solarized theme
 (use-package paradox
 :ensure t)
-(server-start)
 #+END_SRC
 * Stolen from hrs
 #+BEGIN_SRC emacs-lisp
@@ -140,7 +139,7 @@ Emacs package that displays available keybindings in pop up
 * Org mode
 Org bullets makes things look pretty
 #+BEGIN_SRC emacs-lisp
-(setenv "BROWSER" "chromium-browser")
+(setenv "BROWSER" "chromium")
 
 (use-package org-bullets
 :ensure t
@@ -186,7 +185,7 @@ Org bullets makes things look pretty
           			  '(("a" "Appointment" entry (file  "~/Dropbox/orgfiles/gcal.org" )
           				   "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
           				  ("l" "Link" entry (file+headline "~/Dropbox/orgfiles/links.org" "Links")
-          				   "* %? %^L %^g \n%T" :prepend t)
+          				   "* %? %^L %^g" :prepend t)
           				  ("b" "Blog idea" entry (file+headline "~/Dropbox/orgfiles/y.org" "Blog Topics:")
           				   "* %?\n" :prepend t)
                                         ("y" "Youtube idea" entry (file+headline "~/Dropbox/orgfiles/y.org" "Youtube Topics:")
@@ -351,13 +350,13 @@ See https://github.com/abo-abo/avy for more info
 (setq moe-theme-highlight-buffer-id t)
 )
 
-
+;;(indent-tabs-mode . nil)        ; use spaces rather than tabs
 ;;(setq tab-width 2) ; or any other preferred value
-(defvaralias 'c-basic-offset 'tab-width)
-(defvaralias 'cperl-indent-level 'tab-width)
+;;(defvaralias 'c-basic-offset 'tab-width)
+;;(defvaralias 'cperl-indent-level 'tab-width)
 
-(set-frame-font "DejaVu Sans Mono 12" nil t)
-(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 12"))
+(set-frame-font "DejaVu Sans Mono 10" nil t)
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 10"))
 #+END_SRC
 
 #+RESULTS:
@@ -664,7 +663,11 @@ See https://github.com/abo-abo/avy for more info
 ;    (interactive)
 ;    (tex-send-command "evince" (tex-append tex-print-file ".pdf")))
 #+END_SRC
+** misc
+#+BEGIN_SRC emacs-lisp
+ (global-auto-revert-mode 1)
 
+#+END_SRC
 * Hydra
 #+BEGIN_SRC emacs-lisp
   (use-package hydra 
@@ -711,13 +714,18 @@ See https://github.com/abo-abo/avy for more info
        ("c" org-capture "Capture") ; Don't forget to define the captures you want http://orgmode.org/manual/Capture.html
 	     ("l" (or )rg-capture-goto-last-stored "Last Capture"))))
 
-
 (global-set-key
      (kbd "C-x f")
      (defhydra frequent (:color blue)
        "frequent"
        ("f" counsel-find-file "find-file")
        ("l" mlint-clear-warnings "mlint clear")
+       ("b" counsel-bookmark "bookmarks")
+       ("a" mark-whole-buffer "select all")
+       ("r" revert-buffer "refresh")
+       ("p" crepro "projectile")
+       ("s" (find-file "/local-ssd/vjayakri") "ssd")
+       ("n" (find-file "/mathworks/devel/sbs/13") "sbs")
        ("t" toggle-truncate-lines "toggle truncate")))
 
      
@@ -870,10 +878,14 @@ See https://github.com/abo-abo/avy for more info
   (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
 
   ;; c++ mode debugging
-  ;; (global-set-key (kbd "<C-f5>") 'gdb)
+  (global-set-key (kbd "<C-f5>") 'gdb)
 
-  ;; (global-set-key (kbd "<f7>")'compile)
-  ;; (global-set-key (kbd "<f9>") 'gud-break)
+  (global-set-key (kbd "<f7>")'compile)
+  (global-set-key (kbd "<f9>") 'gud-break)
+
+  (global-set-key (kbd "<f10>") 'gud-next)
+  (global-set-key (kbd "<f11>") 'gud-step)
+
 
   ;; (global-set-key (kbd "<XF86AudioPlay>") 'compile)
   ;; (global-set-key (kbd "<XF86Search>") 'gdb)
@@ -951,7 +963,7 @@ See https://github.com/abo-abo/avy for more info
 (global-set-key (kbd "<f5>") 'revert-buffer)
 (global-set-key (kbd "C-\\") "\C-a\C- \C-e\M-w") ;copy current line
 (global-set-key (kbd "<C-f7>") 'toggle-truncate-lines)
-(global-set-key (kbd "<C-tab>") 'other-window)
+(global-set-key (kbd "C-`") 'other-window)
 (global-set-key (kbd "<C-iso-lefttab>") 'other-window)
 (global-set-key (kbd "C-<return>") 'jump-to-next-newline)
 (global-set-key (kbd "C-x o") 'swap-window)
@@ -964,33 +976,14 @@ See https://github.com/abo-abo/avy for more info
 
 
 #+END_SRC
-* mu4e
+* edit server & emacs chrome
 #+BEGIN_SRC emacs-lisp
-;; example configuration for mu4e
-;;(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e") 
-;; make sure mu4e is in your load-path
-;;(require 'mu4e)
-
-;; Only needed if your maildir is _not_ ~/Maildir
-;; Must be a real dir, not a symlink
-;;(setq mu4e-maildir "/home/user/Maildir")
-
-;; these must start with a "/", and must exist
-;; (i.e.. /home/user/Maildir/sent must exist)
-;; you use e.g. 'mu mkdir' to make the Maildirs if they don't
-;; already exist
-
-;; below are the defaults; if they do not exist yet, mu4e offers to
-;; create them. they can also functions; see their docstrings.
-;;(setq mu4e-sent-folder   "/sent")
-;; (setq mu4e-drafts-folder "/drafts")
-;; (setq mu4e-trash-folder  "/trash")
-
-;; smtp mail setting; these are the same that `gnus' uses.
-;;(setq
-;;   message-send-mail-function   'smtpmail-send-it
-;;   smtpmail-default-smtp-server "outlook.office365.com"
-;;   smtpmail-smtp-server         "smtp.example.com"
-;;   smtpmail-local-domain        "example.com")
-
+(use-package edit-server
+	:ensure t 
+	:config
+        (when (locate-library "edit-server")
+        (setq edit-server-new-frame nil)
+        (edit-server-start)))
 #+END_SRC
+
+#+RESULTS:
