@@ -27,3 +27,5 @@
 /.isyncrc
 /.offlineimaprc
 /.offlineimaprc~
+/.emacs.d/%backup%~
+/.emacs.d/.org-id-locations

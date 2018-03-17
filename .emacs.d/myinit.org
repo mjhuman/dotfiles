@@ -205,7 +205,7 @@ Org bullets makes things look pretty
            
         
 ;; Set to the name of the file where new notes will be stored
-(setq org-mobile-inbox-for-pull "~/Dropbox/orgfiles/i.org")
+(setq org-mobile-inbox-for-pull "~/Dropbox/orgfiles/mobile.org")
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
 
@@ -848,6 +848,10 @@ See https://github.com/abo-abo/avy for more info
   (c-set-style "my-style")        ; use my-style defined above
   (auto-fill-mode)         
   (c-toggle-auto-hungry-state 1))
+
+(setq-default c-basic-offset 2
+                  tab-width 2
+                  indent-tabs-mode t)
 
 (add-hook 'c++-mode-hook 'my-c++-mode-hook)
 
