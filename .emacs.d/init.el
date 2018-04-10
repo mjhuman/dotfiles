@@ -10,7 +10,6 @@
 
 ; add MELPA to repository list
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                         ("marmalade" . "https://marmalade-repo.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")))
 
 ; initialize package.el
@@ -25,7 +24,6 @@
 (prefer-coding-system 'utf-8)
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/myinit.org"))
-(org-babel-load-file (expand-file-name "~/house/orgfiles/mlinit.org"))
 (org-babel-load-file (expand-file-name "~/.emacs.d/personal.org"))
 
 
@@ -75,9 +73,12 @@
  '(org-directory "~/Dropbox/orgfiles")
  '(org-export-html-postamble nil)
  '(org-hide-leading-stars t)
- '(org-mobile-inbox-for-pull "~/Dropbox/orgfiles/mobile.org")
+ '(org-mobile-inbox-for-pull "~/Dropbox/orgfiles/mobile.org" t)
  '(org-startup-folded (quote overview))
  '(org-startup-indented t)
+ '(package-selected-packages
+	 (quote
+		(undo-tree tern-auto-complete shell-switcher ox-reveal org-gcal org-bullets org-ac iedit hungry-delete ggtags flycheck expand-region epresent elpy elfeed-org elfeed-goodies edit-server dired-quick-sort dired+ diminish default-text-scale counsel-projectile beacon base16-theme ace-window)))
  '(paradox-github-token t)
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")

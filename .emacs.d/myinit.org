@@ -10,6 +10,7 @@
 :ensure t)
 #+END_SRC
 * Stolen from hrs
+** General
 #+BEGIN_SRC emacs-lisp
 (defun vmj/view-buffer-name ()
     "Display the filename of the current buffer."
@@ -56,7 +57,9 @@ side and font, though.
     (setq solarized-height-plus-3 1.0)
     (setq solarized-height-plus-4 1.0)
     (setq solarized-high-contrast-mode-line t)
-    (load-theme 'solarized-dark t))
+;    (load-theme 'solarized-dark t))
+
+(load-theme 'spacemacs-dark t))
 #+END_SRC
 
 If this code is being evaluated by =emacs --daemon=, ensure that each subsequent
@@ -235,6 +238,9 @@ Org bullets makes things look pretty
 (require 'ox-beamer)
 ;(use-package epresent
 ;:ensure t)
+
+(add-to-list 'ac-modes 'org-mode)
+
 #+END_SRC
 
 #+RESULTS:
@@ -264,7 +270,8 @@ Org bullets makes things look pretty
 
 #+RESULTS:
 
-* Swiper / Ivy / Counsel
+* abo-abo
+** Swiper / Ivy / Counsel
 Swiper gives us a really efficient incremental search with regular expressions
 and Ivy / Counsel replace a lot of ido or helms completion functionality
 #+BEGIN_SRC emacs-lisp
@@ -312,7 +319,7 @@ and Ivy / Counsel replace a lot of ido or helms completion functionality
 
 #+END_SRC
 
-* Avy
+** Avy
 navigate by searching for a letter on the screen and jumping to it
 See https://github.com/abo-abo/avy for more info
 #+BEGIN_SRC emacs-lisp
@@ -336,10 +343,6 @@ See https://github.com/abo-abo/avy for more info
 
 * Themes and modeline:
 #+BEGIN_SRC emacs-lisp
-  
-(use-package base16-theme
-:ensure t)
-
 (use-package moe-theme
 :ensure t)
 
@@ -349,12 +352,6 @@ See https://github.com/abo-abo/avy for more info
 (powerline-moe-theme)
 (setq moe-theme-highlight-buffer-id t)
 )
-
-;;(indent-tabs-mode . nil)        ; use spaces rather than tabs
-;;(setq tab-width 2) ; or any other preferred value
-;;(defvaralias 'c-basic-offset 'tab-width)
-;;(defvaralias 'cperl-indent-level 'tab-width)
-
 (set-frame-font "DejaVu Sans Mono 10" nil t)
 (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 10"))
 #+END_SRC
@@ -958,6 +955,8 @@ See https://github.com/abo-abo/avy for more info
 (global-set-key (kbd "\e\el") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/links.org")))
 (global-set-key (kbd "\e\ew") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/word.org")))
 (global-set-key (kbd "\e\ec") (lambda () (interactive) (find-file "~/.emacs.d/myinit.org")))
+(global-set-key (kbd "\e\eb") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/books.org")))
+
 
 (global-set-key (kbd "<f4>") 'kmacro-end-and-call-macro)
 (global-set-key (kbd "<f5>") 'revert-buffer)
