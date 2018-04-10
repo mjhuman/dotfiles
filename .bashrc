@@ -195,7 +195,7 @@ alias fqt='cd ~/projects/qt'
 # 2.3) Text and editor commands
 alias em='emacs -nw'     # No X11 windows
 alias eqq='emacs -nw -Q' # No config and no X11
-ec = emacsclient -c -a ""
+alias ec='emacsclient -c -a ""'
 # 2.4) grep options
 export GREP_OPTIONS='--color=auto'
 export GREP_COLOR='1;31' # green for matches
@@ -217,5 +217,6 @@ export TERM=xterm-256color
 ## Define any user-specific variables you want here.
 source ~/.bashrc_custom
 
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/projects
 source /usr/local/bin/virtualenvwrapper.sh
-

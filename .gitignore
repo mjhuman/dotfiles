@@ -27,3 +27,8 @@
 /.isyncrc
 /.offlineimaprc
 /.offlineimaprc~
+/.emacs.d/%backup%~
+/.emacs.d/.org-id-locations
+/.emacs.d/auto-save-list/.saves-1499-debian~
+/.emacs.d/auto-save-list/.saves-1876-debian~
+/.emacs.d/elpa/ace-jump-mode-20140616.115/ace-jump-mode-autoloads.el
