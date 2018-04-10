@@ -1,3 +1,4 @@
+
 #+STARTUP: overview
 #+TITLE: Emacs Configuration
 #+AUTHOR: Vinodh MJ Human
@@ -8,6 +9,8 @@
 ;;Install paradox package manager and solarized theme
 (use-package paradox
 :ensure t)
+
+(setq browse-url-browser-function 'browse-url-firefox)
 #+END_SRC
 * Stolen from hrs
 #+BEGIN_SRC emacs-lisp
@@ -139,7 +142,6 @@ Emacs package that displays available keybindings in pop up
 * Org mode
 Org bullets makes things look pretty
 #+BEGIN_SRC emacs-lisp
-(setenv "BROWSER" "chromium")
 
 (use-package org-bullets
 :ensure t
@@ -356,7 +358,7 @@ See https://github.com/abo-abo/avy for more info
 ;;(defvaralias 'cperl-indent-level 'tab-width)
 
 (set-frame-font "DejaVu Sans Mono 10" nil t)
-(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 10"))
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 11"))
 #+END_SRC
 
 #+RESULTS:
@@ -387,26 +389,26 @@ See https://github.com/abo-abo/avy for more info
 * Python
 #+BEGIN_SRC emacs-lisp
 
-    (setq py-python-command "python3")
-    (setq python-shell-interpreter "python3")
+  (setq py-python-command "python3")
+  (setq python-shell-interpreter "python3")
 
-    ;;  (use-package jedi
-    ;;    :ensure t
-    ;;    :init
-    ;;    (add-hook 'python-mode-hook 'jedi:setup)
-    ;;    (add-hook 'python-mode-hook 'jedi:ac-setup))
+  ;;  (use-package jedi
+  ;;    :ensure t
+  ;;    :init
+  ;;    (add-hook 'python-mode-hook 'jedi:setup)
+  ;;    (add-hook 'python-mode-hook 'jedi:ac-setup))
 
 
-        (use-package elpy
-        :ensure t
-        :config 
-        (elpy-enable))
+;      (use-package elpy                   
+;      :ensure t
+   ;   :config 
+    ;  (elpy-enable))
 
-    (use-package virtualenvwrapper
-      :ensure t
-      :config
-      (venv-initialize-interactive-shells)
-      (venv-initialize-eshell))
+  (use-package virtualenvwrapper
+    :ensure t
+    :config
+    (venv-initialize-interactive-shells)
+    (venv-initialize-eshell))
 
 #+END_SRC
 
@@ -725,7 +727,7 @@ See https://github.com/abo-abo/avy for more info
        ("r" revert-buffer "refresh")
        ("p" crepro "projectile")
        ("s" (find-file "/local-ssd/vjayakri") "ssd")
-       ("n" (find-file "/mathworks/devel/sbs/13") "sbs")
+       ("n" (find-file "/mathworks/devel/sbs/22") "sbs")
        ("t" toggle-truncate-lines "toggle truncate")))
 
      
