@@ -60,9 +60,7 @@ side and font, though.
     (setq solarized-height-plus-3 1.0)
     (setq solarized-height-plus-4 1.0)
     (setq solarized-high-contrast-mode-line t)
-;    (load-theme 'solarized-dark t))
-
-(load-theme 'spacemacs-dark t))
+    (load-theme 'solarized-dark t))
 #+END_SRC
 
 If this code is being evaluated by =emacs --daemon=, ensure that each subsequent
@@ -190,7 +188,7 @@ Org bullets makes things look pretty
           			  '(("a" "Appointment" entry (file  "~/Dropbox/orgfiles/gcal.org" )
           				   "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
           				  ("l" "Link" entry (file+headline "~/Dropbox/orgfiles/links.org" "Links")
-          				   "* %? %^L %^g" :prepend t)
+          				   "* %? %^L" :prepend t)
           				  ("b" "Blog idea" entry (file+headline "~/Dropbox/orgfiles/y.org" "Blog Topics:")
           				   "* %?\n" :prepend t)
                                         ("y" "Youtube idea" entry (file+headline "~/Dropbox/orgfiles/y.org" "Youtube Topics:")
@@ -354,8 +352,8 @@ See https://github.com/abo-abo/avy for more info
 (powerline-moe-theme)
 (setq moe-theme-highlight-buffer-id t)
 )
-(set-frame-font "DejaVu Sans Mono 10" nil t)
-(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 11"))
+(set-frame-font "DejaVu Sans Mono 14" nil t)
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 14"))
 #+END_SRC
 
 #+RESULTS:
@@ -382,6 +380,8 @@ See https://github.com/abo-abo/avy for more info
       :init
       (global-flycheck-mode t))
 
+;(add-hook 'text-mode-hook 'flyspell-mode)
+;(add-hook 'prog-mode-hook 'flyspell-prog-mode)
 #+END_SRC
 * Python
 #+BEGIN_SRC emacs-lisp
@@ -724,9 +724,8 @@ See https://github.com/abo-abo/avy for more info
        ("r" revert-buffer "refresh")
        ("p" crepro "projectile")
        ("s" (find-file "/local-ssd/vjayakri") "ssd")
-       ("n" (find-file "/mathworks/devel/sbs/22") "sbs")
+       ("n" (find-file "/mathworks/devel/sandbox/vjayakri") "sbs")
        ("t" toggle-truncate-lines "toggle truncate")))
-
      
 #+END_SRC
 
@@ -734,10 +733,10 @@ See https://github.com/abo-abo/avy for more info
 
 * Testing Stuff
 #+BEGIN_SRC emacs-lisp
-(add-hook 'org-mode-hook 'turn-on-flyspell)
-(add-hook 'org-mode-hook 'turn-on-auto-fill)
-(add-hook 'mu4e-compose-mode-hook 'turn-on-flyspell)
-(add-hook 'mu4e-compose-mode-hook 'turn-on-auto-fill)
+;;(add-hook 'org-mode-hook 'turn-on-flyspell)
+;;(add-hook 'org-mode-hook 'turn-on-auto-fill)
+;;(add-hook 'mu4e-compose-mode-hook 'turn-on-flyspell)
+;;(add-hook 'mu4e-compose-mode-hook 'turn-on-auto-fill)
 
 #+END_SRC
 * Better Shell
@@ -974,6 +973,9 @@ See https://github.com/abo-abo/avy for more info
 (global-set-key (kbd "C->") 'end-of-buffer)
 
 (global-set-key (kbd "<f8>") 'view-mode)
+
+(global-set-key (kbd "C-;") 'iedit-mode)
+
 
 
 #+END_SRC
