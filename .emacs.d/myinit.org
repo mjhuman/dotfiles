@@ -540,7 +540,7 @@ See https://github.com/abo-abo/avy for more info
 
 #+RESULTS:
 : narrow-or-widen-dwim
-** DIRED
+** Dired
   #+BEGIN_SRC emacs-lisp
   (use-package dired+
   :ensure t
@@ -552,7 +552,7 @@ See https://github.com/abo-abo/avy for more info
   (dired-quick-sort-setup))
 
   #+END_SRC
-** IBUFFER
+** Ibuffer
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
    (setq ibuffer-saved-filter-groups
