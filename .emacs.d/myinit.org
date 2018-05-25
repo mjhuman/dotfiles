@@ -1,4 +1,3 @@
-
 #+STARTUP: overview
 #+TITLE: Emacs Configuration
 #+AUTHOR: Vinodh MJ Human
@@ -6,10 +5,11 @@
 #+OPTIONS: toc:nil num:nil
 * Pre-requisites
 #+BEGIN_SRC emacs-lisp
-;;Install paradox package manager and solarized theme
+;;Install paradox package manager
 (use-package paradox
 :ensure t)
 
+;; set browser to firefox
 (setq browse-url-browser-function 'browse-url-firefox)
 #+END_SRC
 * Stolen from hrs
@@ -111,8 +111,6 @@ package.
   (diminish-major-mode 'lisp-interaction-mode-hook "λ")
   (diminish-major-mode 'python-mode-hook "Py")
 #+END_SRC
-
-*
 * Interface tweaks
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
@@ -126,20 +124,11 @@ package.
   (interactive)
   (move-end-of-line)
   (newline))
-(setq ivy-format-function 'ivy-format-function-line)
-(setq ivy-display-style 'fancy)
+  (setq ivy-format-function 'ivy-format-function-line)
+  (setq ivy-display-style 'fancy)
 ;;(setq view-read-only t)
  
 #+END_SRC
-* which key
-Emacs package that displays available keybindings in pop up
-#+BEGIN_SRC emacs-lisp
-  (use-package which-key
-	:ensure t 
-	:config
-	(which-key-mode))
-#+END_SRC
-
 * Org mode
 Org bullets makes things look pretty
 #+BEGIN_SRC emacs-lisp
@@ -383,35 +372,6 @@ See https://github.com/abo-abo/avy for more info
 ;(add-hook 'text-mode-hook 'flyspell-mode)
 ;(add-hook 'prog-mode-hook 'flyspell-prog-mode)
 #+END_SRC
-* Python
-#+BEGIN_SRC emacs-lisp
-
-  (setq py-python-command "python3")
-  (setq python-shell-interpreter "python3")
-
-  ;;  (use-package jedi
-  ;;    :ensure t
-  ;;    :init
-  ;;    (add-hook 'python-mode-hook 'jedi:setup)
-  ;;    (add-hook 'python-mode-hook 'jedi:ac-setup))
-
-
-;      (use-package elpy                   
-;      :ensure t
-   ;   :config 
-    ;  (elpy-enable))
-
-  (use-package virtualenvwrapper
-    :ensure t
-    :config
-    (venv-initialize-interactive-shells)
-    (venv-initialize-eshell))
-
-#+END_SRC
-
-#+RESULTS:
-: t
-
 * Yasnippet
 #+BEGIN_SRC emacs-lisp
     (use-package yasnippet
@@ -465,6 +425,12 @@ See https://github.com/abo-abo/avy for more info
   ;origami folding
   (use-package origami
   :ensure t)
+
+  (use-package which-key
+	:ensure t 
+	:config
+	(which-key-mode))
+
 #+END_SRC
 
 * iedit and narrow / widen dwim
@@ -667,6 +633,74 @@ See https://github.com/abo-abo/avy for more info
  (global-auto-revert-mode 1)
 
 #+END_SRC
+* Programming
+** c++
+#+BEGIN_SRC emacs-lisp
+  (use-package ggtags
+  :ensure t
+  :config 
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+                (ggtags-mode 1))))
+  )
+  ; let's define a function which initializes auto-complete-c-headers and gets called for c/c++ hooks
+  (defun my:ac-c-header-init ()
+    (require 'auto-complete-c-headers)
+    (add-to-list 'ac-sources 'ac-source-c-headers)
+    (add-to-list 'achead:include-directories '"/Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/include")
+  )
+(c-add-style "my-style" 
+	     '("stroustrup"
+	       (indent-tabs-mode . nil)        ; use spaces rather than tabs
+	       (c-basic-offset . 2)            ; indent by four spaces
+	       (c-offsets-alist . ((inline-open . 0)  ; custom indentation rules
+				   (brace-list-open . 0)
+				   (statement-case-open . +)))))
+
+(defun my-c++-mode-hook ()
+  (c-set-style "my-style")        ; use my-style defined above
+  (auto-fill-mode)         
+  (c-toggle-auto-hungry-state 1))
+
+(setq-default c-basic-offset 2
+                  tab-width 2
+                  indent-tabs-mode t)
+
+(add-hook 'c++-mode-hook 'my-c++-mode-hook)
+
+  ; now let's call this function from c/c++ hooks
+  (add-hook 'c++-mode-hook 'my:ac-c-header-init)
+  (add-hook 'c-mode-hook 'my:ac-c-header-init)
+
+
+  ; turn on Semantic
+  (semantic-mode 1)
+  ; let's define a function which adds semantic as a suggestion backend to auto complete
+  ; and hook this function to c-mode-common-hook
+  (defun my:add-semantic-to-autocomplete() 
+    (add-to-list 'ac-sources 'ac-source-semantic)
+  )
+  (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+
+  ;; c++ mode debugging
+  (global-set-key (kbd "<C-f5>") 'gdb)
+
+  (global-set-key (kbd "<f7>")'compile)
+  (global-set-key (kbd "<f9>") 'gud-break)
+
+  (global-set-key (kbd "<f10>") 'gud-next)
+  (global-set-key (kbd "<f11>") 'gud-step)
+
+
+  ;; (global-set-key (kbd "<XF86AudioPlay>") 'compile)
+  ;; (global-set-key (kbd "<XF86Search>") 'gdb)
+
+
+#+END_SRC
+
+#+RESULTS:
+| (lambda nil (when (derived-mode-p (quote c-mode) (quote c++-mode) (quote java-mode)) (ggtags-mode 1))) | my:add-semantic-to-autocomplete | (lambda nil (if (derived-mode-p (quote c-mode) (quote c++-mode) (quote java-mode)) (progn (ggtags-mode 1)))) | ac-cc-mode-setup |
 * Hydra
 #+BEGIN_SRC emacs-lisp
   (use-package hydra 
@@ -825,74 +859,6 @@ See https://github.com/abo-abo/avy for more info
    )
 
 #+END_SRC
-
-* c++
-#+BEGIN_SRC emacs-lisp
-  (use-package ggtags
-  :ensure t
-  :config 
-  (add-hook 'c-mode-common-hook
-            (lambda ()
-              (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-                (ggtags-mode 1))))
-  )
-  ; let's define a function which initializes auto-complete-c-headers and gets called for c/c++ hooks
-  (defun my:ac-c-header-init ()
-    (require 'auto-complete-c-headers)
-    (add-to-list 'ac-sources 'ac-source-c-headers)
-    (add-to-list 'achead:include-directories '"/Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/include")
-  )
-(c-add-style "my-style" 
-	     '("stroustrup"
-	       (indent-tabs-mode . nil)        ; use spaces rather than tabs
-	       (c-basic-offset . 2)            ; indent by four spaces
-	       (c-offsets-alist . ((inline-open . 0)  ; custom indentation rules
-				   (brace-list-open . 0)
-				   (statement-case-open . +)))))
-
-(defun my-c++-mode-hook ()
-  (c-set-style "my-style")        ; use my-style defined above
-  (auto-fill-mode)         
-  (c-toggle-auto-hungry-state 1))
-
-(setq-default c-basic-offset 2
-                  tab-width 2
-                  indent-tabs-mode t)
-
-(add-hook 'c++-mode-hook 'my-c++-mode-hook)
-
-  ; now let's call this function from c/c++ hooks
-  (add-hook 'c++-mode-hook 'my:ac-c-header-init)
-  (add-hook 'c-mode-hook 'my:ac-c-header-init)
-
-
-  ; turn on Semantic
-  (semantic-mode 1)
-  ; let's define a function which adds semantic as a suggestion backend to auto complete
-  ; and hook this function to c-mode-common-hook
-  (defun my:add-semantic-to-autocomplete() 
-    (add-to-list 'ac-sources 'ac-source-semantic)
-  )
-  (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
-
-  ;; c++ mode debugging
-  (global-set-key (kbd "<C-f5>") 'gdb)
-
-  (global-set-key (kbd "<f7>")'compile)
-  (global-set-key (kbd "<f9>") 'gud-break)
-
-  (global-set-key (kbd "<f10>") 'gud-next)
-  (global-set-key (kbd "<f11>") 'gud-step)
-
-
-  ;; (global-set-key (kbd "<XF86AudioPlay>") 'compile)
-  ;; (global-set-key (kbd "<XF86Search>") 'gdb)
-
-
-#+END_SRC
-
-#+RESULTS:
-| (lambda nil (when (derived-mode-p (quote c-mode) (quote c++-mode) (quote java-mode)) (ggtags-mode 1))) | my:add-semantic-to-autocomplete | (lambda nil (if (derived-mode-p (quote c-mode) (quote c++-mode) (quote java-mode)) (progn (ggtags-mode 1)))) | ac-cc-mode-setup |
 * IBUFFER
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -950,31 +916,31 @@ See https://github.com/abo-abo/avy for more info
 
 * Key bindings 
 #+BEGIN_SRC emacs-lisp
- ;;Keyboard mappings
-(setq user-full-name "Vinodh MJ Human" user-mail-address "vinodhmjhuman@gmail.com")
-(global-set-key (kbd "\e\ei") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/i.org")))
-(global-set-key (kbd "\e\el") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/links.org")))
-(global-set-key (kbd "\e\ew") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/word.org")))
-(global-set-key (kbd "\e\ec") (lambda () (interactive) (find-file "~/.emacs.d/myinit.org")))
-(global-set-key (kbd "\e\eb") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/books.org")))
+   ;;Keyboard mappings
+  (setq user-full-name "Vinodh MJ Human" user-mail-address "vinodhmjhuman@gmail.com")
+  (global-set-key (kbd "\e\ei") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/i.org")))
+  (global-set-key (kbd "\e\el") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/links.org")))
+  (global-set-key (kbd "\e\ew") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/word.org")))
+  (global-set-key (kbd "\e\ec") (lambda () (interactive) (find-file "~/.emacs.d/myinit.org")))
+  (global-set-key (kbd "\e\eb") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/books.org")))
 
 
-(global-set-key (kbd "<f4>") 'kmacro-end-and-call-macro)
-(global-set-key (kbd "<f5>") 'revert-buffer)
-(global-set-key (kbd "C-\\") "\C-a\C- \C-e\M-w") ;copy current line
-(global-set-key (kbd "<C-f7>") 'toggle-truncate-lines)
-(global-set-key (kbd "C-`") 'other-window)
-(global-set-key (kbd "<C-iso-lefttab>") 'other-window)
-(global-set-key (kbd "C-<return>") 'jump-to-next-newline)
-(global-set-key (kbd "C-x o") 'swap-window)
-(global-set-key (kbd "<C-f6>") 'mlint-clear-warnings)
+  (global-set-key (kbd "<f4>") 'kmacro-end-and-call-macro)
+  (global-set-key (kbd "<f5>") 'revert-buffer)
+  (global-set-key (kbd "C-\\") "\C-a\C- \C-e\M-w") ;copy current line
+  (global-set-key (kbd "<C-f7>") 'toggle-truncate-lines)
+  (global-set-key (kbd "C-`") 'other-window)
+  (global-set-key (kbd "<C-iso-lefttab>") 'other-window)
+  (global-set-key (kbd "C-<return>") 'jump-to-next-newline)
+  (global-set-key (kbd "C-x o") 'swap-window)
+  (global-set-key (kbd "<C-f6>") 'mlint-clear-warnings)
 
-(global-set-key (kbd "C-<") 'beginning-of-buffer)
-(global-set-key (kbd "C->") 'end-of-buffer)
+  (global-set-key (kbd "C-<") 'beginning-of-buffer)
+  (global-set-key (kbd "C->") 'end-of-buffer)
 
-(global-set-key (kbd "<f8>") 'view-mode)
+  (global-set-key (kbd "<f8>") 'view-mode)
 
-(global-set-key (kbd "C-;") 'iedit-mode)
+  (global-set-key (kbd "C-;") 'iedit-mode)
 
 
 
@@ -990,3 +956,42 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 
 #+RESULTS:
+* engine mode 
+Enable [[https://github.com/hrs/engine-mode][engine-mode]] and define a few useful engines.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'engine-mode)
+
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s"
+    :keybinding "d")
+
+  (defengine github
+    "https://github.com/search?ref=simplesearch&q=%s"
+    :keybinding "g")
+
+  (defengine google
+    "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s")
+
+  (defengine rfcs
+    "http://pretty-rfc.herokuapp.com/search?q=%s")
+
+  (defengine stack-overflow
+    "https://stackoverflow.com/search?q=%s"
+    :keybinding "s")
+
+  (defengine wikipedia
+    "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
+    :keybinding "w")
+
+  (defengine wiktionary
+    "https://www.wikipedia.org/search-redirect.php?family=wiktionary&language=en&go=Go&search=%s")
+
+  (defengine youtube
+    "https://www.youtube.com/results?search_query=%s")
+
+  (engine-mode t)
+#+END_SRC
+
+#+RESULTS:
+: t
