@@ -984,9 +984,6 @@ Enable [[https://github.com/hrs/engine-mode][engine-mode]] and define a few usef
   (defengine youtube
     "https://www.youtube.com/results?search_query=%s")
 
-    (defengine inside 
-    "http://sharepoint.mathworks.com/searchcenter/pages/results.aspx?k=%s")
-
   (engine-mode t)
 
 #+END_SRC
