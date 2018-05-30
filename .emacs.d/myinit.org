@@ -965,7 +965,8 @@ Enable [[https://github.com/hrs/engine-mode][engine-mode]] and define a few usef
     :keybinding "g")
 
   (defengine google
-    "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s")
+    "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+    :keybinding "l")
 
   (defengine rfcs
     "http://pretty-rfc.herokuapp.com/search?q=%s")
@@ -982,11 +983,16 @@ Enable [[https://github.com/hrs/engine-mode][engine-mode]] and define a few usef
     "https://www.wikipedia.org/search-redirect.php?family=wiktionary&language=en&go=Go&search=%s")
 
   (defengine youtube
-    "https://www.youtube.com/results?search_query=%s")
+    "https://www.youtube.com/results?search_query=%s"
+    :keybinding "y")
 
   (engine-mode t)
 
 #+END_SRC
+
+#+RESULTS:
+: t
+
 * ediff
 #+BEGIN_SRC emacs-lisp
   (setq ediff-split-window-function 'split-window-vertically)
