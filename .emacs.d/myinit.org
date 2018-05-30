@@ -173,14 +173,18 @@ package.
 #+RESULTS:
 : t
 * Org mode
+** org bullets
 Org bullets makes things look pretty
-#+BEGIN_SRC emacs-lisp
 
+#+BEGIN_SRC emacs-lisp
 (use-package org-bullets
 :ensure t
 :config
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
+#+END_SRC
+** org custom variables
+#+BEGIN_SRC emacs-lisp
 (custom-set-variables
 '(org-directory "~/Dropbox/orgfiles")
 '(org-default-notes-file (concat org-directory "/notes.org"))
@@ -194,6 +198,11 @@ Org bullets makes things look pretty
 (append '(
 ("\\.pdf\\'" . "evince %s")
 ) org-file-apps ))
+
+#+END_SRC
+** org agenda
+#+BEGIN_SRC emacs-lisp
+
 ;;scheduling 
 (global-set-key "\C-ca" 'org-agenda)
 
@@ -202,12 +211,22 @@ Org bullets makes things look pretty
 ((agenda "")
 (alltodo "")))))
 
+#+END_SRC
+** org ac
+#+BEGIN_SRC emacs-lisp
+
 (use-package org-ac
 :ensure t
 :init (progn
 (require 'org-ac)
 (org-ac/config-default)
 ))
+
+(add-to-list 'ac-modes 'org-mode)
+
+#+END_SRC
+** org capture
+#+BEGIN_SRC emacs-lisp
 
 (global-set-key (kbd "C-c c") 'org-capture)
 
@@ -236,8 +255,10 @@ Org bullets makes things look pretty
   					  ("p" "Phrase" entry (file+headline "~/Dropbox/orgfiles/word.org" "Phrases")
           				   "* %?\n" :prepend t)
   					  ))
-           
-        
+#+END_SRC
+
+** org mobile   
+#+BEGIN_SRC emacs-lisp        
 ;; Set to the name of the file where new notes will be stored
 (setq org-mobile-inbox-for-pull "~/Dropbox/orgfiles/mobile.org")
 ;; Set to <your Dropbox root directory>/MobileOrg.
@@ -245,10 +266,18 @@ Org bullets makes things look pretty
 (run-with-idle-timer 120 1 'org-mobile-pull)
 (run-with-idle-timer 60 1 'org-mobile-push)
 
+#+END_SRC
+
+** org refile
+#+BEGIN_SRC emacs-lisp
+
 (setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
 (setq org-refile-use-outline-path 'file)
 (setq org-outline-path-complete-in-steps nil)
+#+END_SRC
 
+** org other stuff
+#+BEGIN_SRC emacs-lisp
 
 (defadvice org-capture-finalize 
             (after delete-capture-frame activate)  
@@ -277,8 +306,6 @@ Org bullets makes things look pretty
 ;(use-package epresent
 ;:ensure t)
 
-(add-to-list 'ac-modes 'org-mode)
-
 #+END_SRC
 
 #+RESULTS:
@@ -289,9 +316,7 @@ Org bullets makes things look pretty
 Swiper gives us a really efficient incremental search with regular expressions
 and Ivy / Counsel replace a lot of ido or helms completion functionality
 #+BEGIN_SRC emacs-lisp
-  
-
-   (use-package counsel
+  (use-package counsel
    :ensure t
    :bind
    (("M-y" . counsel-yank-pop)
@@ -306,7 +331,6 @@ and Ivy / Counsel replace a lot of ido or helms completion functionality
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq ivy-display-style 'fancy))
-
 
   (use-package swiper
   :ensure t
