@@ -263,10 +263,12 @@ Org bullets makes things look pretty
 (setq org-mobile-inbox-for-pull "~/Dropbox/orgfiles/mobile.org")
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
-(run-with-idle-timer 120 1 'org-mobile-pull)
+(run-with-idle-timer 100 1 'org-mobile-pull)
 (run-with-idle-timer 60 1 'org-mobile-push)
 
 #+END_SRC
+
+#+RESULTS:
 
 ** org refile
 #+BEGIN_SRC emacs-lisp
