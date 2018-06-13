@@ -293,10 +293,12 @@ Org bullets makes things look pretty
 (setq org-mobile-inbox-for-pull "~/Dropbox/orgfiles/mobile.org")
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
-(run-with-idle-timer 120 1 'org-mobile-pull)
+(run-with-idle-timer 100 1 'org-mobile-pull)
 (run-with-idle-timer 60 1 'org-mobile-push)
 
 #+END_SRC
+
+#+RESULTS:
 
 ** org refile
 #+BEGIN_SRC emacs-lisp
@@ -345,6 +347,20 @@ Org bullets makes things look pretty
 
 #+RESULTS:
 : make-capture-frame
+* smex
+#+BEGIN_SRC emacs-lisp
+
+  ;; (use-package smex
+  ;; :ensure t
+  ;; :config 
+  ;; (global-set-key (kbd "M-x") 'smex)
+  ;; (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+  ;; ;; This is your old M-x.
+ ;; (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command))
+#+END_SRC
+
+#+RESULTS:
+: t
 
 * abo-abo
 ** Swiper / Ivy / Counsel
@@ -365,7 +381,9 @@ and Ivy / Counsel replace a lot of ido or helms completion functionality
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
-  (setq ivy-display-style 'fancy))
+  (setq ivy-display-style 'fancy)
+  (setq ivy-height 20)
+  (setq ivy-format-function 'ivy-format-function-line))
 
   (use-package swiper
   :ensure t
@@ -391,6 +409,9 @@ and Ivy / Counsel replace a lot of ido or helms completion functionality
   "Face used by Ivy for highlighting first match.")
 
 #+END_SRC
+
+#+RESULTS:
+: ivy-current-match
 
 ** Avy
 navigate by searching for a letter on the screen and jumping to it
@@ -459,6 +480,7 @@ See https://github.com/abo-abo/avy for more info
        ("s" (find-file "/local-ssd/vjayakri") "ssd")
        ("n" (find-file "/mathworks/devel/sandbox/vjayakri") "sbs")
        ("w" auto-fill-mode "auto wrap")
+       ("g" (find-file "~/projects/cpp/graph") "graph")
        ("t" toggle-truncate-lines "toggle truncate")))
      
 #+END_SRC
@@ -541,7 +563,13 @@ See https://github.com/abo-abo/avy for more info
       :init
         (yas-global-mode 1))
 
+(use-package yasnippet-snippets
+:ensure t)
+
 #+END_SRC
+
+#+RESULTS:
+
 ** Undo Tree
 #+BEGIN_SRC emacs-lisp
     (use-package undo-tree
@@ -780,54 +808,43 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 * Programming
 ** c++
+*** ggtags
 #+BEGIN_SRC emacs-lisp
   (use-package ggtags
   :ensure t
   :config 
   (add-hook 'c-mode-common-hook
             (lambda ()
-              (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+              (when (derived-mode-p 'c-mode 'c++-mode)
                 (ggtags-mode 1))))
   )
-  ; let's define a function which initializes auto-complete-c-headers and gets called for c/c++ hooks
-  (defun my:ac-c-header-init ()
-    (require 'auto-complete-c-headers)
-    (add-to-list 'ac-sources 'ac-source-c-headers)
-    (add-to-list 'achead:include-directories '"/Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/include")
-  )
-(c-add-style "my-style" 
-	     '("stroustrup"
-	       (indent-tabs-mode . nil)        ; use spaces rather than tabs
-	       (c-basic-offset . 2)            ; indent by four spaces
-	       (c-offsets-alist . ((inline-open . 0)  ; custom indentation rules
-				   (brace-list-open . 0)
-				   (statement-case-open . +)))))
+#+END_SRC
+*** indentation
+#+BEGIN_SRC emacs-lisp
+(defun my-c-mode-common-hook ()
+ ;; my customizations for all of c-mode, c++-mode
+ (c-set-offset 'substatement-open 0)
+ setq-default c-indent-tabs-mode t     ; Pressing TAB should cause indentation
+                c-indent-level 4         ; A TAB is equivilent to four spaces
+                c-argdecl-indent 0       ; Do not indent argument decl's extra
+                c-tab-always-indent t
+                backward-delete-function nil) ; DO NOT expand tabs when deleting
+  (c-add-style "my-c-style" '((c-continued-statement-offset 4))) ; If a statement continues on the next line, indent the continuation by 4
 
-(defun my-c++-mode-hook ()
-  (c-set-style "my-style")        ; use my-style defined above
-  (auto-fill-mode)         
-  (c-toggle-auto-hungry-state 1))
+  (defun my-c-mode-hook ()
+    (c-set-style "my-c-style")
+    (c-set-offset 'substatement-open '0) ; brackets should be at same indentation level as the statements they open
+    (c-set-offset 'inline-open '+)
+    (c-set-offset 'block-open '+)
+    (c-set-offset 'brace-list-open '+)   ; all "opens" should be indented by the c-indent-level
+    (c-set-offset 'case-label '+))       ; indent case labels by c-indent-level, too
+  (add-hook 'c-mode-hook 'my-c-mode-hook)
+  (add-hook 'c++-mode-hook 'my-c-mode-hook)
 
-(setq-default c-basic-offset 2
-                  tab-width 2
-                  indent-tabs-mode t)
+#+END_SRC
 
-(add-hook 'c++-mode-hook 'my-c++-mode-hook)
-
-  ; now let's call this function from c/c++ hooks
-  (add-hook 'c++-mode-hook 'my:ac-c-header-init)
-  (add-hook 'c-mode-hook 'my:ac-c-header-init)
-
-
-  ; turn on Semantic
-  (semantic-mode 1)
-  ; let's define a function which adds semantic as a suggestion backend to auto complete
-  ; and hook this function to c-mode-common-hook
-  (defun my:add-semantic-to-autocomplete() 
-    (add-to-list 'ac-sources 'ac-source-semantic)
-  )
-  (add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
-
+*** keybindings
+#+BEGIN_SRC emacs-lisp 
   ;; c++ mode debugging
   (global-set-key (kbd "<C-f5>") 'gdb)
 
@@ -836,16 +853,7 @@ See https://github.com/abo-abo/avy for more info
 
   (global-set-key (kbd "<f10>") 'gud-next)
   (global-set-key (kbd "<f11>") 'gud-step)
-
-
-  ;; (global-set-key (kbd "<XF86AudioPlay>") 'compile)
-  ;; (global-set-key (kbd "<XF86Search>") 'gdb)
-
-
 #+END_SRC
-
-#+RESULTS:
-| (lambda nil (when (derived-mode-p (quote c-mode) (quote c++-mode) (quote java-mode)) (ggtags-mode 1))) | my:add-semantic-to-autocomplete | (lambda nil (if (derived-mode-p (quote c-mode) (quote c++-mode) (quote java-mode)) (progn (ggtags-mode 1)))) | ac-cc-mode-setup |
 
 ** Web Mode
 #+BEGIN_SRC emacs-lisp
@@ -1075,6 +1083,7 @@ Enable [[https://github.com/vmj/engine-mode][engine-mode]] and define a few usef
 
 #+RESULTS:
 : split-window-vertically
+
 * Writing prose
 ** Look up definitions in Webster 1913
 
