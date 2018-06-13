@@ -4,7 +4,19 @@
 #+EMAIL: 
 #+OPTIONS: toc:nil num:nil
 * Pre-requisites
+
+I've stolen many a configuration from Mike Zamansky and Harry R Schwartz
+
 #+BEGIN_SRC emacs-lisp
+
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
+(setq use-package-verbose t)
+(setq use-package-always-ensure t)
+
+(require 'use-package)
+
 ;;Install paradox package manager
 (use-package paradox
 :ensure t)
@@ -12,7 +24,7 @@
 ;; set browser to firefox
 (setq browse-url-browser-function 'browse-url-firefox)
 #+END_SRC
-* Stolen from hrs
+* Stolen from vmj
 ** General
 #+BEGIN_SRC emacs-lisp
 (defun vmj/view-buffer-name ()
@@ -26,7 +38,7 @@
     (interactive)
     (switch-to-buffer (make-temp-name "scratch-")))
 
-(defun hrs/kill-current-buffer ()
+(defun vmj/kill-current-buffer ()
     "Kill the current buffer without prompting."
     (interactive)
     (kill-buffer (current-buffer)))
@@ -45,33 +57,6 @@ Why not?
 
 #+BEGIN_SRC emacs-lisp
   (global-prettify-symbols-mode t)
-#+END_SRC
-
-** Custom solarized-dark theme
-
-I like the solarized-dark theme. I prefer keeping all the characters in the same
-side and font, though.
-
-#+BEGIN_SRC emacs-lisp
-  (defun vmj/apply-solarized-theme ()
-    (setq solarized-use-variable-pitch nil)
-    (setq solarized-height-plus-1 1.0)
-    (setq solarized-height-plus-2 1.0)
-    (setq solarized-height-plus-3 1.0)
-    (setq solarized-height-plus-4 1.0)
-    (setq solarized-high-contrast-mode-line t)
-    (load-theme 'solarized-dark t))
-#+END_SRC
-
-If this code is being evaluated by =emacs --daemon=, ensure that each subsequent
-frame is themed appropriately.
-
-#+BEGIN_SRC emacs-lisp
-  (if (daemonp)
-      (add-hook 'after-make-frame-functions
-                (lambda (frame)
-                    (vmj/apply-solarized-theme)))
-    (vmj/apply-solarized-theme))
 #+END_SRC
 
 ** Hide certain modes from the modeline
@@ -166,12 +151,38 @@ package.
 (powerline-moe-theme)
 (setq moe-theme-highlight-buffer-id t)
 )
-(set-frame-font "DejaVu Sans Mono 14" nil t)
-(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 12"))
+(set-frame-font "DejaVu Sans Mono 11" nil t)
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 11"))
 #+END_SRC
 
 #+RESULTS:
-: t
+: t 
+** Custom solarized-dark theme
+
+I like the solarized-dark theme. I prefer keeping all the characters in the same
+side and font, though.
+
+#+BEGIN_SRC emacs-lisp
+  (defun vmj/apply-solarized-theme ()
+    (setq solarized-use-variable-pitch nil)
+    (setq solarized-height-plus-1 1.0)
+    (setq solarized-height-plus-2 1.0)
+    (setq solarized-height-plus-3 1.0)
+    (setq solarized-height-plus-4 1.0)
+    (setq solarized-high-contrast-mode-line t)
+    (load-theme 'solarized-dark t))
+#+END_SRC
+
+If this code is being evaluated by =emacs --daemon=, ensure that each subsequent
+frame is themed appropriately.
+
+#+BEGIN_SRC emacs-lisp
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                    (vmj/apply-solarized-theme)))
+    (vmj/apply-solarized-theme))
+#+END_SRC
 * Org mode
 ** org bullets
 Org bullets makes things look pretty
@@ -181,6 +192,25 @@ Org bullets makes things look pretty
 :ensure t
 :config
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+;;I like seeing a little downward-pointing arrow instead of the usual ellipsis (...) that org displays when there’s stuff under a header.
+(setq org-ellipsis "⤵")
+
+;; Use syntax highlighting in source blocks while editing.
+(setq org-src-fontify-natively t)
+
+;; Make TAB act as if it were issued in a buffer of the language’s major mode.
+(setq org-src-tab-acts-natively t)
+
+;; When editing a code snippet, use the current window rather than popping open a new one (which shows the same information).
+(setq org-src-window-setup 'current-window)
+
+;; Quickly insert a block of elisp:
+(add-to-list 'org-structure-template-alist
+             '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+
+;; Enable spell-checking in Org-mode.
+(add-hook 'org-mode-hook 'flyspell-mode)
 
 #+END_SRC
 ** org custom variables
@@ -279,32 +309,37 @@ Org bullets makes things look pretty
 ** org other stuff
 #+BEGIN_SRC emacs-lisp
 
-(defadvice org-capture-finalize 
-            (after delete-capture-frame activate)  
-        "Advise capture-finalize to close the frame"  
-        (if (equal "capture" (frame-parameter nil 'name))  
-        (delete-frame)))
+  (defadvice org-capture-finalize 
+              (after delete-capture-frame activate)  
+          "Advise capture-finalize to close the frame"  
+          (if (equal "capture" (frame-parameter nil 'name))  
+          (delete-frame)))
 
-        (defadvice org-capture-destroy 
-            (after delete-capture-frame activate)  
-        "Advise capture-destroy to close the frame"  
-        (if (equal "capture" (frame-parameter nil 'name))  
-        (delete-frame)))  
+          (defadvice org-capture-destroy 
+              (after delete-capture-frame activate)  
+          "Advise capture-destroy to close the frame"  
+          (if (equal "capture" (frame-parameter nil 'name))  
+          (delete-frame)))  
 
-        (use-package noflet
-        :ensure t )
-        (defun make-capture-frame ()
-        "Create a new frame and run org-capture."
-        (interactive)
-        (make-frame '((name . "capture")))
-        (select-frame-by-name "capture")
-        (delete-other-windows)
-        (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
-            (org-capture)))
+          (use-package noflet
+          :ensure t )
+          (defun make-capture-frame ()
+          "Create a new frame and run org-capture."
+          (interactive)
+          (make-frame '((name . "capture")))
+          (select-frame-by-name "capture")
+          (delete-other-windows)
+          (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
+              (org-capture)))
 
-(require 'ox-beamer)
-;(use-package epresent
-;:ensure t)
+  (require 'ox-md)
+  (require 'ox-beamer)
+
+  ;; Don’t ask before evaluating code blocks.
+  (setq org-confirm-babel-evaluate nil)
+
+  ;(use-package epresent
+  ;:ensure t)
 
 #+END_SRC
 
@@ -423,6 +458,7 @@ See https://github.com/abo-abo/avy for more info
        ("p" crepro "projectile")
        ("s" (find-file "/local-ssd/vjayakri") "ssd")
        ("n" (find-file "/mathworks/devel/sandbox/vjayakri") "sbs")
+       ("w" auto-fill-mode "auto wrap")
        ("t" toggle-truncate-lines "toggle truncate")))
      
 #+END_SRC
@@ -433,7 +469,8 @@ See https://github.com/abo-abo/avy for more info
 #+BEGIN_SRC emacs-lisp
 
   ; Highlights the current cursor line
-  (global-hl-line-mode t)
+  (when window-system
+  (global-hl-line-mode))
   
   ; flashes the cursor's line when you scroll
   (use-package beacon
@@ -580,6 +617,7 @@ See https://github.com/abo-abo/avy for more info
   :config
   (dired-quick-sort-setup))
 
+(setq dired-recursive-copies 'always)
   #+END_SRC
 ** Ibuffer
 #+BEGIN_SRC emacs-lisp
@@ -709,11 +747,11 @@ See https://github.com/abo-abo/avy for more info
 ** Magit
 #+BEGIN_SRC emacs-lisp
 (use-package magit
-:ensure t
-:init
-(progn
-(bind-key "C-x g" 'magit-status)
-))
+  :bind ("C-x g" . magit-status)
+  :config
+  (setq git-commit-summary-max-length 50)
+  (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
+
 #+END_SRC
 ** LaTeX
 #+BEGIN_SRC emacs-lisp
@@ -728,8 +766,17 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 ** misc
 #+BEGIN_SRC emacs-lisp
- (global-auto-revert-mode 1)
+  (global-auto-revert-mode 1)
 
+  ;; Treating terms in CamelCase symbols as separate words makes editing
+  ;; a little easier for me, so I like to use subword-mode everywhere.
+  (global-subword-mode 1)
+
+  ;; Compilation output goes to the *compilation* buffer. I rarely have
+  ;; that window selected, so the compilation output disappears past the
+  ;; bottom of the window. This automatically scrolls the compilation
+  ;; window so I can always see the output.
+  (setq compilation-scroll-output t)
 #+END_SRC
 * Programming
 ** c++
@@ -978,7 +1025,7 @@ See https://github.com/abo-abo/avy for more info
         (edit-server-start)))
 #+END_SRC
 * Engine mode 
-Enable [[https://github.com/hrs/engine-mode][engine-mode]] and define a few useful engines.
+Enable [[https://github.com/vmj/engine-mode][engine-mode]] and define a few useful engines.
 
 #+BEGIN_SRC emacs-lisp
   (require 'engine-mode)
@@ -1028,5 +1075,138 @@ Enable [[https://github.com/hrs/engine-mode][engine-mode]] and define a few usef
 
 #+RESULTS:
 : split-window-vertically
+* Writing prose
+** Look up definitions in Webster 1913
+
+I look up definitions by hitting =C-x w=, which shells out to =sdcv=. I've
+loaded that with the (beautifully lyrical) 1913 edition of Webster's dictionary,
+so these definitions are a lot of fun.
+
+#+BEGIN_SRC emacs-lisp
+  (defun vmj/region-or-word ()
+    (if mark-active
+        (buffer-substring-no-properties (region-beginning)
+                                        (region-end))
+      (thing-at-point 'word)))
 
 
+  (defun vmj/dictionary-prompt ()
+    (read-string
+     (format "Word (%s): " (or (vmj/region-or-word) ""))
+     nil
+     nil
+     (vmj/region-or-word)))
+
+  (defun vmj/dictionary-define-word ()
+    (interactive)
+    (let* ((word (vmj/dictionary-prompt))
+           (buffer-name (concat "Definition: " word)))
+      (with-output-to-temp-buffer buffer-name
+        (shell-command (format "sdcv -n %s" word) buffer-name))))
+
+  (define-key global-map (kbd "C-x l") 'vmj/dictionary-define-word)
+#+END_SRC
+
+#+RESULTS:
+: vmj/dictionary-define-word
+
+** Look up words in a thesaurus
+
+Synosaurus is hooked up to wordnet to provide access to a thesaurus. Hitting
+=C-c s= summons it.
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default synosaurus-backend 'synosaurus-backend-wordnet)
+  (add-hook 'after-init-hook #'synosaurus-mode)
+  (global-set-key (kbd "C-c l") 'synosaurus-lookup)
+  (global-set-key (kbd "C-c r") 'synosaurus-choose-and-replace)
+
+#+END_SRC
+
+** Editing with Markdown
+
+Because I can't always use =org=.
+
+- Associate =.md= files with GitHub-flavored Markdown.
+- I'd like spell-checking running when editing Markdown.
+- Use =pandoc= to render the results.
+- Leave the code block font unchanged.
+
+#+BEGIN_SRC emacs-lisp
+;;  (use-package markdown-mode
+;;    :commands gfm-mode
+
+;;    :mode (("\\.md$" . gfm-mode))
+
+;;    :config
+;;    (setq markdown-command "pandoc --standalone --mathjax --from=markdown")
+;;    (add-hook 'gfm-mode-hook 'flyspell-mode)
+;;    (custom-set-faces
+;;     '(markdown-code-face ((t nil)))))
+#+END_SRC
+
+** Wrap paragraphs automatically
+
+=AutoFillMode= automatically wraps paragraphs, kinda like hitting =M-q=. I wrap
+a lot of paragraphs, so this automatically wraps 'em when I'm writing text,
+Markdown, or Org.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  (add-hook 'gfm-mode-hook 'turn-on-auto-fill)
+  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+#+END_SRC
+
+** Cycle between spacing alternatives
+
+Successive calls to =cycle-spacing= rotate between changing the whitespace
+around point to:
+
+- A single space,
+- No spaces, or
+- The original spacing.
+
+Binding this to =M-SPC= it strictly better than the original binding of
+=just-one-space=.
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "M-SPC") 'cycle-spacing)
+#+END_SRC
+
+** Linting prose
+
+I use [[http://proselint.com/][proselint]] to check my prose for common errors. This creates a flycheck
+checker that runs proselint in texty buffers and displays my errors.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'flycheck)
+
+  (flycheck-define-checker proselint
+    "A linter for prose."
+    :command ("proselint" source-inplace)
+    :error-patterns
+    ((warning line-start (file-name) ":" line ":" column ": "
+              (id (one-or-more (not (any " "))))
+              (message (one-or-more not-newline)
+                       (zero-or-more "\n" (any " ") (one-or-more not-newline)))
+              line-end))
+    :modes (text-mode markdown-mode gfm-mode org-mode))
+
+  (add-to-list 'flycheck-checkers 'proselint)
+#+END_SRC
+
+Use flycheck in the appropriate buffers:
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'markdown-mode-hook #'flycheck-mode)
+  (add-hook 'gfm-mode-hook #'flycheck-mode)
+  (add-hook 'text-mode-hook #'flycheck-mode)
+  (add-hook 'org-mode-hook #'flycheck-mode)
+#+END_SRC
+
+** Enable region case modification
+
+#+BEGIN_SRC emacs-lisp
+  (put 'downcase-region 'disabled nil)
+  (put 'upcase-region 'disabled nil)
+#+END_SRC
