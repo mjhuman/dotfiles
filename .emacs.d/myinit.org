@@ -831,13 +831,13 @@ See https://github.com/abo-abo/avy for more info
 	company-dabbrev-downcase        nil
 	company-backends                '((company-irony company-gtags))
 	)
-  :bind ((kbd "M-RET") . company-complete-common)
   )
 
 (global-set-key (kbd "M-RET") 'company-complete)
 #+END_SRC
 
 #+RESULTS:
+: company-complete
 
 ** misc
 #+BEGIN_SRC emacs-lisp
