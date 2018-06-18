@@ -293,12 +293,13 @@ Org bullets makes things look pretty
 (setq org-mobile-inbox-for-pull "~/Dropbox/orgfiles/mobile.org")
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
-(run-with-idle-timer 100 1 'org-mobile-pull)
-(run-with-idle-timer 60 1 'org-mobile-push)
+(run-with-idle-timer 360 1 'org-mobile-pull)
+(run-with-idle-timer 300 1 'org-mobile-push)
 
 #+END_SRC
 
 #+RESULTS:
+: [nil 0 300 0 1 org-mobile-push nil idle 0]
 
 ** org refile
 #+BEGIN_SRC emacs-lisp
@@ -714,10 +715,6 @@ See https://github.com/abo-abo/avy for more info
 (use-package smartparens
 :ensure t
 :config
-(use-package smartparens-config)
-(use-package smartparens-html)
-(use-package smartparens-python)
-(use-package smartparens-latex)
 (smartparens-global-mode t)
 (show-smartparens-global-mode t)
 :bind
@@ -772,6 +769,10 @@ See https://github.com/abo-abo/avy for more info
 
 
 #+END_SRC
+
+#+RESULTS:
+: wrap-with-back-quotes
+
 ** Magit
 #+BEGIN_SRC emacs-lisp
 (use-package magit
@@ -831,10 +832,10 @@ See https://github.com/abo-abo/avy for more info
 	company-dabbrev-downcase        nil
 	company-backends                '((company-irony company-gtags))
 	)
-  :bind ((kbd "M-RET") . company-complete-common)
   )
 
 (global-set-key (kbd "M-RET") 'company-complete)
+
 #+END_SRC
 
 #+RESULTS:

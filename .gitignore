@@ -34,3 +34,5 @@
 /.emacs.d/elpa/ace-jump-mode-20140616.115/ace-jump-mode-autoloads.el
 /.emacs.d/temp.hpp
 /.emacs.d/init.el~
+init.el
+.emacs.d/init.el
