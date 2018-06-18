@@ -839,6 +839,7 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 
 #+RESULTS:
+: company-complete
 
 ** misc
 #+BEGIN_SRC emacs-lisp
