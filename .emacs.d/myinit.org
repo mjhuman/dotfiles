@@ -645,8 +645,13 @@ See https://github.com/abo-abo/avy for more info
   :config
   (dired-quick-sort-setup))
 
+(setq dired-dwim-target t)
 (setq dired-recursive-copies 'always)
   #+END_SRC
+
+  #+RESULTS:
+  : always
+
 ** Ibuffer
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -715,9 +720,6 @@ See https://github.com/abo-abo/avy for more info
 :ensure t
 :config
 (use-package smartparens-config)
-(use-package smartparens-html)
-(use-package smartparens-python)
-(use-package smartparens-latex)
 (smartparens-global-mode t)
 (show-smartparens-global-mode t)
 :bind
@@ -772,6 +774,10 @@ See https://github.com/abo-abo/avy for more info
 
 
 #+END_SRC
+
+#+RESULTS:
+: wrap-with-back-quotes
+
 ** Magit
 #+BEGIN_SRC emacs-lisp
 (use-package magit
