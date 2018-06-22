@@ -293,8 +293,8 @@ Org bullets makes things look pretty
 (setq org-mobile-inbox-for-pull "~/Dropbox/orgfiles/mobile.org")
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
-(run-with-idle-timer 360 1 'org-mobile-pull)
-(run-with-idle-timer 300 1 'org-mobile-push)
+;;(run-with-idle-timer 360 1 'org-mobile-pull)
+;;(run-with-idle-timer 300 1 'org-mobile-push)
 
 #+END_SRC
 
@@ -645,8 +645,15 @@ See https://github.com/abo-abo/avy for more info
   :ensure t
   :config
   (dired-quick-sort-setup))
-
+ ; copy to the other open dired buffer
+(setq dired-dwim-target t)
 (setq dired-recursive-copies 'always)
+
+(set-face-foreground 'diredp-dir-name "IndianRed")
+(set-face-foreground 'diredp-file-name "gray")
+(set-face-foreground 'diredp-file-suffix "dark cyan")
+(set-face-background 'diredp-dir-name "#002b36")
+
   #+END_SRC
 ** Ibuffer
 #+BEGIN_SRC emacs-lisp
@@ -1174,12 +1181,20 @@ Synosaurus is hooked up to wordnet to provide access to a thesaurus. Hitting
 =C-c s= summons it.
 
 #+BEGIN_SRC emacs-lisp
+
+(use-package synosaurus
+:ensure t)
+
   (setq-default synosaurus-backend 'synosaurus-backend-wordnet)
+  (setq-default synosaurus-choose-method 'popup)
   (add-hook 'after-init-hook #'synosaurus-mode)
   (global-set-key (kbd "C-c l") 'synosaurus-lookup)
   (global-set-key (kbd "C-c r") 'synosaurus-choose-and-replace)
 
 #+END_SRC
+
+#+RESULTS:
+: synosaurus-choose-and-replace
 
 ** Editing with Markdown
 
