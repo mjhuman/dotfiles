@@ -646,15 +646,22 @@ See https://github.com/abo-abo/avy for more info
   :config
   (dired-quick-sort-setup))
  ; copy to the other open dired buffer
+(setq dired-listing-switches "-al --group-directories-first")
+
 (setq dired-dwim-target t)
 (setq dired-recursive-copies 'always)
 
+
 (set-face-foreground 'diredp-dir-name "IndianRed")
 (set-face-foreground 'diredp-file-name "gray")
+(set-face-foreground 'diredp-ignored-file-name "dim gray")
 (set-face-foreground 'diredp-file-suffix "dark cyan")
 (set-face-background 'diredp-dir-name "#002b36")
 
   #+END_SRC
+
+  #+RESULTS:
+
 ** Ibuffer
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
