@@ -260,8 +260,7 @@ Org bullets makes things look pretty
 
 (global-set-key (kbd "C-c c") 'org-capture)
 
-            (setq org-agenda-files (list "~/Dropbox/orgfiles/gcal.org"
-          			       "~/Dropbox/orgfiles/i.org"
+            (setq org-agenda-files (list "~/Dropbox/orgfiles/i.org"
           			       "~/Dropbox/orgfiles/y.org"
           			       "~/Dropbox/orgfiles/word.org"))
 
