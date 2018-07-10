@@ -292,12 +292,13 @@ Org bullets makes things look pretty
 (setq org-mobile-inbox-for-pull "~/Dropbox/orgfiles/mobile.org")
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
-(run-with-idle-timer 100 1 'org-mobile-pull)
-(run-with-idle-timer 60 1 'org-mobile-push)
+;;(run-with-idle-timer 360 1 'org-mobile-pull)
+;;(run-with-idle-timer 300 1 'org-mobile-push)
 
 #+END_SRC
 
 #+RESULTS:
+: [nil 0 300 0 1 org-mobile-push nil idle 0]
 
 ** org refile
 #+BEGIN_SRC emacs-lisp
@@ -480,6 +481,7 @@ See https://github.com/abo-abo/avy for more info
        ("n" (find-file "/mathworks/devel/sandbox/vjayakri") "sbs")
        ("w" auto-fill-mode "auto wrap")
        ("g" (find-file "~/projects/cpp/graph") "graph")
+       ("v" peep-dired "peep view")
        ("t" toggle-truncate-lines "toggle truncate")))
      
 #+END_SRC
@@ -635,14 +637,38 @@ See https://github.com/abo-abo/avy for more info
 : narrow-or-widen-dwim
 ** Dired
   #+BEGIN_SRC emacs-lisp
-  (use-package dired+
-  :ensure t
-  :config (require 'dired+)
-  )
-  (use-package dired-quick-sort
-  :ensure t
-  :config
-  (dired-quick-sort-setup))
+      (use-package dired+
+      :ensure t
+      :config (require 'dired+)
+      )
+      (use-package dired-quick-sort
+      :ensure t
+      :config
+      (dired-quick-sort-setup))
+
+    (use-package peep-dired
+      :ensure t
+      :defer t ; don't access `dired-mode-map' until `peep-dired' is loaded
+      :bind (:map dired-mode-map
+                  ("P" . peep-dired))
+      :config
+      (setq peep-dired-cleanup-on-disable t)
+      (setq peep-dired-enable-on-directories t)
+      (setq peep-dired-ignored-extensions '("mkv" "iso" "mp4" "slx" "mdl")))
+
+
+     ; copy to the other open dired buffer
+    (setq dired-listing-switches "-al --group-directories-first")
+
+    (setq dired-dwim-target t)
+    (setq dired-recursive-copies 'always)
+
+
+    (set-face-foreground 'diredp-dir-name "IndianRed")
+    (set-face-foreground 'diredp-file-name "gray")
+    (set-face-foreground 'diredp-ignored-file-name "dim gray")
+    (set-face-foreground 'diredp-file-suffix "dark cyan")
+    (set-face-background 'diredp-dir-name "#002b36")
 
 (setq dired-dwim-target t)
 (setq dired-recursive-copies 'always)
@@ -696,17 +722,20 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 ** Projectile
 #+BEGIN_SRC emacs-lisp
-  ;; Projectile
-  (use-package projectile
-   :ensure t
-   :config
-   (projectile-global-mode)
-   (setq projectile-completion-system 'ivy))
+    ;; Projectile
+    ;; (use-package projectile
+    ;;  :ensure t
+    ;;  :config
+    ;;  (projectile-global-mode)
+    ;;  (setq projectile-mode-line
+    ;;        '(:eval (format " Projectile[%s(%s)]"
+    ;;                       (projectile-project-name))))
+    ;;  (setq projectile-completion-system 'ivy))
 
-;;  (use-package counsel-projectile
-  ;; :ensure t
-  ;; :config
-  ;; (counsel-projectile-on))
+  ;;  (use-package counsel-projectile
+    ;; :ensure t
+    ;; :config
+    ;; (counsel-projectile-on))
 
 #+END_SRC
 
@@ -718,7 +747,6 @@ See https://github.com/abo-abo/avy for more info
 (use-package smartparens
 :ensure t
 :config
-(use-package smartparens-config)
 (smartparens-global-mode t)
 (show-smartparens-global-mode t)
 :bind
@@ -839,10 +867,89 @@ See https://github.com/abo-abo/avy for more info
   )
 
 (global-set-key (kbd "M-RET") 'company-complete)
+
 #+END_SRC
 
 #+RESULTS:
 : company-complete
+** hideshow
+#+BEGIN_SRC emacs-lisp
+(use-package hideshow-org
+    :ensure t)
+
+(global-set-key "\C-ch" 'hs-org/minor-mode)
+
+#+END_SRC
+
+#+RESULTS:
+: hs-org/minor-mode
+** find other file
+#+BEGIN_SRC emacs-lisp
+    ; Non-nil means ignore cases in matches (see `case-fold-search').
+    ; If you have extensions in different cases, you will want this to be nil.
+    (setq ff-case-fold-search "on")
+
+    (setq ff-always-in-other-window "on")
+
+    ; If non-nil, always attempt to create the other file if it was not found.
+    (setq ff-always-try-to-create nil)
+
+    ;;   If non-nil, ignores #include lines.
+    (setq ff-ignore-include "on")
+
+    ; ff-quiet-mode
+    ;  If non-nil, traces which directories are being searched.
+
+    ;;   A list of regular expressions specifying how to recognize special
+    ;;   constructs such as include files etc, and an associated method for
+    ;;   extracting the filename from that construct.
+    ;; - ff-special-constructs'
+
+    ;      Alist of extensions to find given the current file's extension.
+    (defvar my-cpp-other-file-alist
+    '(("\\.cpp\\'" (".hpp" ".ipp"))
+      ("\\.ipp\\'" (".hpp" ".cpp"))
+      ("\\.hpp\\'" (".ipp" ".cpp"))
+      ("\\.cxx\\'" (".hxx" ".ixx"))
+      ("\\.ixx\\'" (".cxx" ".hxx"))
+      ("\\.hxx\\'" (".ixx" ".cxx"))
+      ("\\.c\\'" (".h"))
+      ("\\.h\\'" (".c"))
+      ))
+
+    (setq-default ff-other-file-alist 'my-cpp-other-file-alist)
+
+  (setq ff-search-directories '("." "./export/include/*" "./include/*"))
+  (setq cc-search-directories '("." "./export/include/*" "./include/*"))
+           ;    List of directories searched through with each extension specified in
+            ;   `ff-other-file-alist' that matches this file's extension.
+
+
+             ;; - `ff-pre-find-hook'
+             ;;   List of functions to be called before the search for the file starts.
+
+             ;; - `ff-pre-load-hook'
+             ;;   List of functions to be called before the other file is loaded.
+
+             ;; - `ff-post-load-hook'
+             ;;   List of functions to be called after the other file is loaded.
+
+             ;; - `ff-not-found-hook'
+             ;;   List of functions to be called if the other file could not be found.
+
+             ;; - `ff-file-created-hook'
+             ;;   List of functions to be called if the other file has been created.
+
+
+
+
+        (define-key c-mode-map (kbd "M-o") 'ff-find-other-file)
+        (define-key c++-mode-map (kbd "M-o") 'ff-find-other-file)
+
+#+END_SRC
+
+#+RESULTS:
+: ff-find-other-file
 
 ** misc
 #+BEGIN_SRC emacs-lisp
@@ -873,9 +980,19 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 *** indentation
 #+BEGIN_SRC emacs-lisp
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)
+(c-set-offset 'substatement-open 0)
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC
 (defun my-c-mode-common-hook ()
  ;; my customizations for all of c-mode, c++-mode
- (c-set-offset 'substatement-open 0)
+(c-set-offset 'substatement-open 0)
+
+
  setq-default c-indent-tabs-mode t     ; Pressing TAB should cause indentation
                 c-indent-level 4         ; A TAB is equivilent to four spaces
                 c-argdecl-indent 0       ; Do not indent argument decl's extra
@@ -894,6 +1011,9 @@ See https://github.com/abo-abo/avy for more info
   (add-hook 'c++-mode-hook 'my-c-mode-hook)
 
 #+END_SRC
+
+#+RESULTS:
+| my-c-mode-hook | irony-mode | er/add-cc-mode-expansions | (lambda nil (sb-rtags--menu-adds C++)) | (lambda nil (easy-menu-add-item nil (quote (C++)) (rtags-submenu-list))) |
 
 *** keybindings
 #+BEGIN_SRC emacs-lisp 
@@ -1177,12 +1297,20 @@ Synosaurus is hooked up to wordnet to provide access to a thesaurus. Hitting
 =C-c s= summons it.
 
 #+BEGIN_SRC emacs-lisp
+
+(use-package synosaurus
+:ensure t)
+
   (setq-default synosaurus-backend 'synosaurus-backend-wordnet)
+  (setq-default synosaurus-choose-method 'popup)
   (add-hook 'after-init-hook #'synosaurus-mode)
   (global-set-key (kbd "C-c l") 'synosaurus-lookup)
   (global-set-key (kbd "C-c r") 'synosaurus-choose-and-replace)
 
 #+END_SRC
+
+#+RESULTS:
+: synosaurus-choose-and-replace
 
 ** Editing with Markdown
 
