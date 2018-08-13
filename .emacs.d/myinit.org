@@ -289,8 +289,7 @@ Org bullets makes things look pretty
 
 (global-set-key (kbd "C-c c") 'org-capture)
 
-            (setq org-agenda-files (list "~/Dropbox/orgfiles/gcal.org"
-          			       "~/Dropbox/orgfiles/i.org"
+            (setq org-agenda-files (list "~/Dropbox/orgfiles/i.org"
           			       "~/Dropbox/orgfiles/y.org"
           			       "~/Dropbox/orgfiles/word.org"))
 
@@ -721,9 +720,12 @@ See https://github.com/abo-abo/avy for more info
     (set-face-foreground 'diredp-file-suffix "dark cyan")
     (set-face-background 'diredp-dir-name "#002b36")
 
+(setq dired-dwim-target t)
+(setq dired-recursive-copies 'always)
   #+END_SRC
 
   #+RESULTS:
+  : always
 
 ** Ibuffer
 #+BEGIN_SRC emacs-lisp
