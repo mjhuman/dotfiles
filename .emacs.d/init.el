@@ -73,7 +73,7 @@
  '(org-directory "~/Dropbox/orgfiles")
  '(org-export-html-postamble nil)
  '(org-hide-leading-stars t)
- '(org-mobile-inbox-for-pull "~/Dropbox/orgfiles/mobile.org")
+ '(org-mobile-inbox-for-pull "~/Dropbox/orgfiles/mobile.org" t)
  '(org-startup-folded (quote overview))
  '(org-startup-indented t)
  '(package-selected-packages
