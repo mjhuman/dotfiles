@@ -1574,13 +1574,20 @@ Synosaurus is hooked up to wordnet to provide access to a thesaurus. Hitting
 #+BEGIN_SRC emacs-lisp
 
   (use-package synosaurus
-    :ensure t)
+  :ensure t)
 
-  (setq-default synosaurus-backend 'synosaurus-backend-wordnet)
-  (setq-default synosaurus-choose-method 'popup)
-  (add-hook 'after-init-hook #'synosaurus-mode)
-  (global-set-key (kbd "C-c l") 'synosaurus-lookup)
-  (global-set-key (kbd "C-c r") 'synosaurus-choose-and-replace)
+    (setq-default synosaurus-backend 'synosaurus-backend-wordnet)
+    (setq-default synosaurus-choose-method 'popup)
+    (add-hook 'after-init-hook #'synosaurus-mode)
+    (global-set-key (kbd "C-c l") 'synosaurus-lookup)
+    (global-set-key (kbd "C-c r") 'synosaurus-choose-and-replace)
+
+
+  (use-package mw-thesaurus
+  :ensure t
+  :config
+  (setq mw-thesaurus--api-key "353fc03f-5f64-4d61-84a5-0e630f1c96ea"))
+
 
 #+END_SRC
 
