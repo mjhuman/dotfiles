@@ -39,3 +39,4 @@ init.el
 .emacs.d/init.el
 /.emacs.d/.mbsyncpass.gpg
 /.emacs.d/.mbsyncrc~
+/.emacs.d/init.el

@@ -291,6 +291,7 @@ Org bullets makes things look pretty
 
             (setq org-agenda-files (list "~/Dropbox/orgfiles/i.org"
           			       "~/Dropbox/orgfiles/y.org"
+          			       "~/Dropbox/orgfiles/gcal.org"
           			       "~/Dropbox/orgfiles/word.org"))
 
             (setq org-capture-templates
@@ -388,6 +389,42 @@ Org bullets makes things look pretty
 ** org  colors
 #+BEGIN_SRC emacs-lisp
     (set-face-foreground 'org-link "MistyRose4")
+#+END_SRC
+** org capture screen
+#+BEGIN_SRC emacs-lisp
+(defadvice org-capture-finalize
+(after delete-capture-frame activate)
+"Advise capture-finalize to close the frame"
+(if (equal "capture" (frame-parameter nil 'name))
+(delete-frame)))
+
+(defadvice org-capture-destroy
+(after delete-capture-frame activate)
+"Advise capture-destroy to close the frame"
+(if (equal "capture" (frame-parameter nil 'name))
+(delete-frame)))
+
+(use-package noflet
+:ensure t )
+(defun make-capture-frame ()
+"Create a new frame and run org-capture."
+(interactive)
+(make-frame '((name . "capture")))
+(select-frame-by-name "capture")
+(delete-other-windows)
+(noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
+  (org-capture)))
+
+#+END_SRC
+** org journal
+#+BEGIN_SRC emacs-lisp
+(use-package org-journal
+  :ensure t
+  :defer t
+  :custom
+  (org-journal-dir "~/Dropbox/orgfiles/journal/"))
+
+;(icalendar-import-file "~/Downloads/fixturelist.ics" "~/.emacs.d/diary")
 #+END_SRC
 * smex
 #+BEGIN_SRC emacs-lisp
@@ -1454,3 +1491,62 @@ Use flycheck in the appropriate buffers:
   (put 'downcase-region 'disabled nil)
   (put 'upcase-region 'disabled nil)
 #+END_SRC
+* excorporate
+#+BEGIN_SRC 
+
+     (setq-default
+      ;; configure email address and office 365 exchange server adddress for exchange web services
+      excorporate-configuration
+       (quote
+        ("vjayakri@mathworks.com" . "https://outlook.office365.com/EWS/Exchange.asmx"))
+       ;; integrate emacs diary entries into org agenda
+       org-agenda-include-diary t
+       )
+
+  (add-hook 'diary-mark-entries-hook 'diary-mark-included-diary-files)
+
+  (defun my/agenda-update-diary ()
+    "Update exchange diary."
+    (interactive)
+    (exco-diary-diary-advice
+     (calendar-current-date)
+     (calendar-current-date)
+     #'message "Diary updated"))
+
+  (add-hook 'org-agenda-cleanup-fancy-diary-hook 'my/agenda-update-diary)
+  (excorporate)
+  (excorporate-diary-enable)
+
+     ;; ;; enable the diary integration (i.e. write exchange calendar to emacs diary file -> ~/.emacs.d/diary must exist)
+     ;; (excorporate-diary-enable)
+     ;; (defun ab/agenda-update-diary ()
+     ;;   "call excorporate to update the diary for today"
+     ;;   (exco-diary-diary-advice (calendar-current-date) (calendar-current-date) #'message "diary updated")
+     ;;   )
+
+     ;; ;; update the diary every time the org agenda is refreshed
+     ;; (add-hook 'org-agenda-cleanup-fancy-diary-hook 'ab/agenda-update-diary )
+
+#+END_SRC
+
+#+RESULTS:
+: Excorporate diary support enabled.
+* manjari font
+#+BEGIN_SRC 
+  (defun use-ml-font (&optional frame)
+    "Call function to set fonts for FRAME with an override for malayalam."
+    (when frame
+      (select-frame frame))
+    (set-face-font 'default "DejaVu Sans Mono 11")
+  (set-fontset-font t
+                        (cons (decode-char 'ucs #x0D00)
+                              (decode-char 'ucs #x0D7f))
+                        "Manjari"))
+
+  ;; Make sure this function is called when frames are created
+  (add-hook 'after-make-frame-functions #'use-ml-font)
+
+#+END_SRC
+
+#+RESULTS:
+| use-ml-font | (lambda (frame) (vmj/apply-solarized-theme)) | x-dnd-init-frame |
