@@ -18,7 +18,7 @@ I've stolen many a configuration from Mike Zamansky and Harry R Schwartz
                                ("melpa" . "https://melpa.org/packages/")                        
                                ("org" . "https://orgmode.org/elpa/")))
 
-      (setq package-user-dir "/ssd2/dotfiles/.emacs.d/packages")
+;;      (setq package-user-dir "/ssd2/dotfiles/.emacs.d/packages")
 
   ; initialize package.el
   (package-initialize)
@@ -203,11 +203,11 @@ package.
                                           ;(powerline-moe-theme)
     (setq moe-theme-highlight-buffer-id t)
     )
-;;  (set-frame-font "DejaVu Sans Mono 11" nil t)
-;;  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 11"))
+  (set-frame-font "DejaVu Sans Mono 11" nil t)
+  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 11"))
 
-(set-frame-font "Inconsolata Medium 14" nil t)
-(add-to-list 'default-frame-alist '(font . "Inconsolata Medium 14"))
+;;(set-frame-font "Inconsolata Medium 14" nil t)
+;;(add-to-list 'default-frame-alist '(font . "Inconsolata Medium 14"))
 
 #+END_SRC
 
@@ -316,7 +316,16 @@ Org bullets makes things look pretty
            ((agenda "")
             (alltodo "")))))
 
+  (setq org-agenda-files (list "~/Dropbox/orgfiles/i.org"
+                               "~/Dropbox/orgfiles/arts.org"
+                               "~/Dropbox/orgfiles/books.org"
+                               "~/Dropbox/orgfiles/eee.org"
+                               "~/Dropbox/orgfiles/gcal.org"
+                               "~/Dropbox/orgfiles/inbox.org"
+                               "~/Dropbox/orgfiles/movies.org"))
+
 #+END_SRC
+
 ** org ac
 #+BEGIN_SRC emacs-lisp
 
@@ -335,32 +344,33 @@ Org bullets makes things look pretty
 
   (global-set-key (kbd "C-c c") 'org-capture)
 
-    (setq org-agenda-files (list "~/Dropbox/orgfiles/i.org"
-                                 "~/Dropbox/orgfiles/y.org"
-                                 "~/Dropbox/orgfiles/gcal.org"
-                                 "~/Dropbox/orgfiles/word.org"))
-
     (setq org-capture-templates
           '(("a" "Appointment" entry (file  "~/Dropbox/orgfiles/gcal.org" )
              "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
             ("l" "Link" entry (file+headline "~/Dropbox/orgfiles/links.org" "Links")
              "* %? %^L" :prepend t)
-            ("b" "Blog idea" entry (file+headline "~/Dropbox/orgfiles/y.org" "Blog Topics:")
+            ("b" "Blog idea" entry (file+headline "~/Dropbox/orgfiles/arts.org" "Blog Topics:")
              "* %?\n" :prepend t)
-            ("y" "Youtube idea" entry (file+headline "~/Dropbox/orgfiles/y.org" "Youtube Topics:")
+            ("y" "Youtube idea" entry (file+headline "~/Dropbox/orgfiles/arts.org" "Youtube Topics:")
              "* %?\n" :prepend t)
             ("t" "To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
              "* TODO %? \n%u" :prepend t)
             ("d" "Detailed To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do")
              "* TODO %^C %? %^g\n%u" :prepend t)
-            ("n" "Note" entry (file+headline "~/Dropbox/orgfiles/i.org" "Notes")
+            ("n" "Note" entry (file+headline "~/Dropbox/orgfiles/notes.org" "Notes")
              "* %?\n%u" :prepend t)
-            ("w" "Word" entry (file+headline "~/Dropbox/orgfiles/word.org" "Words")
+            ("w" "Word" entry (file+headline "~/Dropbox/orgfiles/books.org" "Words")
              "* %?\n" :prepend t)
-            ("p" "Phrase" entry (file+headline "~/Dropbox/orgfiles/word.org" "Phrases")
+            ("p" "Phrase" entry (file+headline "~/Dropbox/orgfiles/Words.org" "Phrases")
              "* %?\n" :prepend t)
             ))
 #+END_SRC
+
+#+RESULTS:
+| a | Appointment | entry | (file ~/Dropbox/orgfiles/gcal.org) | * %? |
+
+
+
 
 ** org mobile   
 #+BEGIN_SRC emacs-lisp        
@@ -1464,7 +1474,8 @@ See https://github.com/abo-abo/avy for more info
 
     (global-set-key (kbd "\e\ei") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/i.org")))
     (global-set-key (kbd "\e\el") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/links.org")))
-    (global-set-key (kbd "\e\ew") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/word.org")))
+    (global-set-key (kbd "\e\ea") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/arts.org")))
+    (global-set-key (kbd "\e\en") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/notes.org")))
     (global-set-key (kbd "\e\ec") (lambda () (interactive) (find-file "~/.emacs.d/myinit.org")))
     (global-set-key (kbd "\e\eb") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/books.org")))
 
@@ -1915,3 +1926,11 @@ Use flycheck in the appropriate buffers:
 
 #+RESULTS:
 : highlight-error-lines
+* Start with scratch buffer always
+#+BEGIN_SRC emacs-lisp
+  ;; Forces the messages to 0, and kills the *Messages* buffer
+  (switch-to-buffer "*scratch*")
+  (delete-other-windows)
+#+END_SRC
+
+#+RESULTS:
