@@ -1380,7 +1380,7 @@ See https://github.com/abo-abo/avy for more info
 #+RESULTS:
 : t
 * Elfeed
-#+BEGIN_SRC 
+#+BEGIN_SRC emacs-lisp
   (setq elfeed-db-directory "~/Dropbox/shared/elfeeddb")
 
   ;; use an org file to organise feeds
@@ -1788,7 +1788,7 @@ Use flycheck in the appropriate buffers:
 #+RESULTS:
 : Excorporate diary support enabled.
 * manjari font
-#+BEGIN_SRC 
+#+BEGIN_SRC elisp
   (defun use-ml-font (&optional frame)
     "Call function to set fonts for FRAME with an override for malayalam."
     (when frame
