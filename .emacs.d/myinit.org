@@ -25,6 +25,7 @@ I've stolen many a configuration from Mike Zamansky and Harry R Schwartz
   (package-initialize)
 
   (package-install 'org-plus-contrib)
+;;(load /ssd2/dotfiles/contrib/lisp/ox-confluence.el)
 
 
   ;; Bootstrap `use-package'
@@ -117,6 +118,8 @@ either hides or "renames" a variety of major or minor modes using the =diminish=
 package.
 
 #+BEGIN_SRC emacs-lisp
+(use-package diminish) 
+
   (defmacro diminish-minor-mode (filename mode &optional abbrev)
     `(eval-after-load (symbol-name ,filename)
        '(diminish ,mode ,abbrev)))
@@ -147,6 +150,10 @@ package.
   (diminish-major-mode 'lisp-interaction-mode-hook "λ")
   (diminish-major-mode 'python-mode-hook "Py")
 #+END_SRC
+
+#+RESULTS:
+| lambda | nil | (setq mode-name Py) |
+
 * Interface tweaks
 ** Start up
 #+BEGIN_SRC emacs-lisp
@@ -235,6 +242,11 @@ side and font, though.
 
 If this code is being evaluated by =emacs --daemon=, ensure that each subsequent
 frame is themed appropriately.
+
+
+#+BEGIN_SRC emacs-lisp
+;    (load-theme 'zenburn t)
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp
   (if (daemonp)
@@ -492,7 +504,7 @@ Org bullets makes things look pretty
 (delete-other-windows)
 (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
   (org-capture)))
-
+#+END_SRC
 ** org confluence
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/lisp/")
@@ -503,16 +515,22 @@ Org bullets makes things look pretty
 
 #+RESULTS:
 : t
-** org confluence
+** org journal
 #+BEGIN_SRC emacs-lisp
-(use-package org-journal
-  :ensure t
-  :defer t
-  :custom
-  (org-journal-dir "~/Dropbox/orgfiles/journal/"))
+;  (when (string= (user-login-name) "vinodh")
+    (use-package org-journal
+      :ensure t
+      :defer t
+      :custom
+      (org-journal-dir "~/Dropbox/orgfiles/journal/"))
+;)
 
 ;(icalendar-import-file "~/Downloads/fixturelist.ics" "~/.emacs.d/diary")
 #+END_SRC
+
+#+RESULTS:
+: ~/Dropbox/orgfiles/journal/
+
 * smex
 #+BEGIN_SRC emacs-lisp
 
@@ -629,7 +647,7 @@ See https://github.com/abo-abo/avy for more info
            ("g" goto-line "goto-line")
            ))
         (global-set-key
-         (kbd "C-c t")
+         (kbd "C-c T")
          (defhydra hydra-global-org (:color blue)
            "Org"
            ("t" org-timer-start "Start Timer")
@@ -753,7 +771,6 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 
 #+RESULTS:
-| (lambda nil (setq flycheck-clang-language-standard c++11)) | (lambda nil (setq flycheck-gcc-language-standard c++11)) | irony-mode | er/add-cc-mode-expansions | (lambda nil (sb-rtags--menu-adds C++)) | (lambda nil (easy-menu-add-item nil (quote (C++)) (rtags-submenu-list))) |
 
 ** Yasnippet
 #+BEGIN_SRC emacs-lisp
@@ -832,49 +849,66 @@ See https://github.com/abo-abo/avy for more info
 
 
 #+RESULTS:
-=narrow-or-widen-dwim
-=** Dired
+
+** Dired
+*** dired subtree
 #+BEGIN_SRC emacs-lisp
-    (add-to-list 'load-path "~/.emacs.d/lisp/")
-    (load "dired+")
+(use-package dired-subtree
+  :config
+  (bind-keys :map dired-mode-map
+             ("i" . dired-subtree-insert)
+             (";" . dired-subtree-remove)))
+#+END_SRC
+*** dired plus
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/lisp/")
+  (load "dired+")
+#+END_SRC
+*** dired quicksort
+#+BEGIN_SRC emacs-lisp
+  (use-package dired-quick-sort
+    :ensure t
+    :config
+    (dired-quick-sort-setup))
+#+END_SRC
+*** dired peep
+#+BEGIN_SRC emacs-lisp
+  (use-package peep-dired
+    :ensure t
+    :defer t ; don't access `dired-mode-map' until `peep-dired' is loaded
+    :bind (:map dired-mode-map
+                ("P" . peep-dired))
+    :config
+    (setq peep-dired-cleanup-on-disable t)
+    (setq peep-dired-enable-on-directories t)
+    (setq peep-dired-ignored-extensions '("mkv" "iso" "mp4" "slx" "mdl")))
 
-    (use-package dired-quick-sort
-      :ensure t
-      :config
-      (dired-quick-sort-setup))
 
-    (use-package peep-dired
-      :ensure t
-      :defer t ; don't access `dired-mode-map' until `peep-dired' is loaded
-      :bind (:map dired-mode-map
-                  ("P" . peep-dired))
-      :config
-      (setq peep-dired-cleanup-on-disable t)
-      (setq peep-dired-enable-on-directories t)
-      (setq peep-dired-ignored-extensions '("mkv" "iso" "mp4" "slx" "mdl")))
+                                          ; copy to the other open dired buffer
+  (setq dired-listing-switches "-al --group-directories-first")
 
-
-                                            ; copy to the other open dired buffer
-    (setq dired-listing-switches "-al --group-directories-first")
-
-    (setq dired-dwim-target t)
-    (setq dired-recursive-copies 'always)
+  (setq dired-dwim-target t)
+  (setq dired-recursive-copies 'always)
 
   (setq dired-omit-mode t)
 
-    (set-face-foreground 'diredp-dir-name "IndianRed")
-    (set-face-foreground 'diredp-file-name "gray")
-    (set-face-foreground 'diredp-ignored-file-name "dim gray")
-    (set-face-foreground 'diredp-file-suffix "dark cyan")
-    (set-face-background 'diredp-dir-name "#002b36")
+  (set-face-foreground 'diredp-dir-name "IndianRed")
+  (set-face-foreground 'diredp-file-name "gray")
+  (set-face-foreground 'diredp-ignored-file-name "dim gray")
+  (set-face-foreground 'diredp-file-suffix "dark cyan")
+  (set-face-background 'diredp-dir-name "#002b36")
 
-    (setq dired-dwim-target t)
-    (setq dired-recursive-copies 'always)
+  (setq dired-dwim-target t)
+  (setq dired-recursive-copies 'always)
 #+END_SRC
-
-#+RESULTS:
-: always
-
+*** dired narrow
+#+BEGIN_SRC emacs-lisp
+;;narrow dired to match filter
+(use-package dired-narrow
+  :ensure t
+  :bind (:map dired-mode-map
+              ("/" . dired-narrow)))
+#+END_SRC
 ** Ibuffer
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -901,6 +935,10 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 
 #+RESULTS:
+** tramp
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
 
 * Programming essentials
 ** Babel
@@ -915,7 +953,7 @@ See https://github.com/abo-abo/avy for more info
      (ditaa . t)
      (dot . t)
      (org . t)
-     (sh . t )
+;     (sh . t )
      (latex . t )
      ))
 #+END_SRC
@@ -1246,32 +1284,31 @@ See https://github.com/abo-abo/avy for more info
 *** rtags
 #+BEGIN_SRC emacs-lisp
 
-(use-package ivy-rtags)
-(use-package flycheck-rtags)
+  ;; (use-package ivy-rtags)
+  ;; (use-package flycheck-rtags)
 
-(setq rtags-display-result-backend 'ivy)
+  ;; (setq rtags-display-result-backend 'ivy)
 
-(define-key c-mode-base-map (kbd "M-.") (function rtags-find-symbol-at-point))
-(define-key c-mode-base-map (kbd "M-,") (function rtags-find-references-at-point))
-(define-key c-mode-base-map (kbd "M-:") (function rtags-find-file))
-(define-key c-mode-base-map (kbd "C-.") (function rtags-find-symbol))
-(define-key c-mode-base-map (kbd "C-,") (function rtags-find-references))
-;(define-key c-mode-base-map (kbd "C-<") (function rtags-find-virtuals-at-point))
-(define-key c-mode-base-map (kbd "M-i") (function rtags-imenu))
+  ;; (define-key c-mode-base-map (kbd "M-.") (function rtags-find-symbol-at-point))
+  ;; (define-key c-mode-base-map (kbd "M-,") (function rtags-find-references-at-point))
+  ;; (define-key c-mode-base-map (kbd "M-:") (function rtags-find-file))
+  ;; (define-key c-mode-base-map (kbd "C-.") (function rtags-find-symbol))
+  ;; (define-key c-mode-base-map (kbd "C-,") (function rtags-find-references))
+  ;; ;(define-key c-mode-base-map (kbd "C-<") (function rtags-find-virtuals-at-point))
+  ;; (define-key c-mode-base-map (kbd "M-i") (function rtags-imenu))
 
-(setq rtags-autostart-diagnostics t)
-(defun my-flycheck-rtags-setup ()
-  (flycheck-select-checker 'rtags)
-  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
-  (setq-local flycheck-check-syntax-automatically nil))
-(add-hook 'c-mode-hook #'my-flycheck-rtags-setup)
-(add-hook 'c++-mode-hook #'my-flycheck-rtags-setup)
-(add-hook 'objc-mode-hook #'my-flycheck-rtags-setup)
+  ;; (setq rtags-autostart-diagnostics t)
+  ;; (defun my-flycheck-rtags-setup ()
+  ;;   (flycheck-select-checker 'rtags)
+  ;;   (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+  ;;   (setq-local flycheck-check-syntax-automatically nil))
+  ;; (add-hook 'c-mode-hook #'my-flycheck-rtags-setup)
+  ;; (add-hook 'c++-mode-hook #'my-flycheck-rtags-setup)
+  ;; (add-hook 'objc-mode-hook #'my-flycheck-rtags-setup)
 
 #+END_SRC
 
 #+RESULTS:
-| my-flycheck-rtags-setup | er/add-cc-mode-expansions | (lambda nil (sb-rtags--menu-adds ObjC)) | (lambda nil (easy-menu-add-item nil (quote (ObjC)) (rtags-submenu-list))) |
 
 *** indentation
 #+BEGIN_SRC
@@ -1631,10 +1668,10 @@ Synosaurus is hooked up to wordnet to provide access to a thesaurus. Hitting
     (global-set-key (kbd "C-c r") 'synosaurus-choose-and-replace)
 
 
-  (use-package mw-thesaurus
-  :ensure t
-  :config
-  (setq mw-thesaurus--api-key "353fc03f-5f64-4d61-84a5-0e630f1c96ea"))
+  ;; (use-package mw-thesaurus
+  ;; :ensure t
+  ;; :config
+  ;; (setq mw-thesaurus--api-key "353fc03f-5f64-4d61-84a5-0e630f1c96ea"))
 
 
 #+END_SRC
@@ -1807,7 +1844,7 @@ Use flycheck in the appropriate buffers:
 
 
 (add-to-list 'purpose-user-name-purposes '("*compilation*" . comp))
-(add-to-list 'purpose-user-mode-purposes '(rtags-mode . tags))
+; (add-to-list 'purpose-user-mode-purposes '(rtags-mode . tags))
 (add-to-list 'purpose-user-mode-purposes '(help-mode . help))
 (add-to-list 'purpose-user-mode-purposes '(gud-mode . debug))
 ;;  (add-to-list 'purpose-user-mode-purposes '(c++-mode . cpp))
@@ -1826,110 +1863,109 @@ Use flycheck in the appropriate buffers:
 * compilation window
 #+BEGIN_SRC emacs-lisp
 
-(setq special-display-buffer-names
-      '("*compilation*"))
+  (setq special-display-buffer-names
+        '("*compilation*"))
 
-(setq special-display-function
-      (lambda (buffer &optional args)
-        (switch-to-buffer buffer)
-        (get-buffer-window buffer 0)))
+  (setq special-display-function
+        (lambda (buffer &optional args)
+          (switch-to-buffer buffer)
+          (get-buffer-window buffer 0)))
 
+  ;; (setq compilation-finish-functions
+  ;;       (lambda (buf str)
+  ;;         (if (null (string-match ".*exited abnormally.*" str))
+  ;;             ;;no errors, make the compilation window go away in a few seconds
+  ;;             (progn
+  ;;               (run-at-time "0.4 sec" nil
+  ;;                            (lambda ()
+  ;;                              (select-window (get-buffer-window (get-buffer-create "*compilation*")))
+  ;;                              (switch-to-buffer nil)))
+  ;;               (message "No Compilation Errors!")))))
 
-(setq compilation-finish-functions
-      (lambda (buf str)
-        (if (null (string-match ".*exited abnormally.*" str))
-            ;;no errors, make the compilation window go away in a few seconds
-            (progn
-              (run-at-time "0.4 sec" nil
-                           (lambda ()
-                             (select-window (get-buffer-window (get-buffer-create "*compilation*")))
-                             (switch-to-buffer nil)))
-              (message "No Compilation Errors!")))))
+    ;; (require 'compile)
+    ;; (setq compilation-last-buffer nil)
 
-  ;; (require 'compile)
-  ;; (setq compilation-last-buffer nil)
+    ;; (defun compile-again (ARG)
+    ;;   "Run the same compile as the last time.
 
-  ;; (defun compile-again (ARG)
-  ;;   "Run the same compile as the last time.
+    ;; If there is no last time, or there is a prefix argument, this acts like M-x compile."
+    ;;   (interactive "p")
+    ;;   (if (and (eq ARG 1)
+    ;;            compilation-last-buffer)
+    ;;       (progn
+    ;;         (set-buffer compilation-last-buffer)
+    ;;         (revert-buffer t t))
+    ;;     (progn
+    ;;       (call-interactively 'compile)
+    ;;       (setq cur (selected-window))
+    ;;       (setq w (get-buffer-window "*compilation*"))
+    ;;       (select-window w)
+    ;;       (setq h (window-height w))
+    ;;       (shrink-window (- h 10))
+    ;;       (select-window cur))))
+    ;; (global-set-key (kbd "C-x C-m") 'compile-again)
+    ;; (defun my-compilation-hook ()
+    ;;   "Make sure that the compile window is splitting vertically."
+    ;;   (progn
+    ;;     (if (not (get-buffer-window "*compilation*"))
+    ;;         (progn
+    ;;           (split-window-vertically)))))
+    ;; (add-hook 'compilation-mode-hook 'my-compilation-hook)
+    ;; (defun compilation-exit-autoclose (STATUS code msg)
+    ;;   "Close the compilation window if there was no error at all."
+    ;;   ;; If M-x compile exists with a 0
+    ;;   (when (and (eq STATUS 'exit) (zerop code))
+    ;;     ;; then bury the *compilation* buffer, so that C-x b doesn't go there
+    ;;     (bury-buffer)
+    ;;     ;; and delete the *compilation* window
+    ;;     (delete-window (get-buffer-window (get-buffer "*compilation*"))))
+    ;;   ;; Always return the anticipated result of compilation-exit-message-function
+    ;;   (cons msg code))
+    ;; (setq compilation-exit-message-function 'compilation-exit-autoclose)
+    ;; (defvar all-overlays ())
+    ;; (defun delete-this-overlay(overlay is-after begin end &optional len)
+    ;;   (delete-overlay overlay)
+    ;;   )
+    ;; (defun highlight-current-line ()
+    ;; "Highlight current line."
+    ;;   (interactive)
+    ;;   (setq current-point (point))
+    ;;   (beginning-of-line)
+    ;;   (setq beg (point))
+    ;;   (forward-line 1)
+    ;;   (setq end (point))
+    ;;   ;; Create and place the overlay
+    ;;   (setq error-line-overlay (make-overlay 1 1))
 
-  ;; If there is no last time, or there is a prefix argument, this acts like M-x compile."
-  ;;   (interactive "p")
-  ;;   (if (and (eq ARG 1)
-  ;;            compilation-last-buffer)
-  ;;       (progn
-  ;;         (set-buffer compilation-last-buffer)
-  ;;         (revert-buffer t t))
-  ;;     (progn
-  ;;       (call-interactively 'compile)
-  ;;       (setq cur (selected-window))
-  ;;       (setq w (get-buffer-window "*compilation*"))
-  ;;       (select-window w)
-  ;;       (setq h (window-height w))
-  ;;       (shrink-window (- h 10))
-  ;;       (select-window cur))))
-  ;; (global-set-key (kbd "C-x C-m") 'compile-again)
-  ;; (defun my-compilation-hook ()
-  ;;   "Make sure that the compile window is splitting vertically."
-  ;;   (progn
-  ;;     (if (not (get-buffer-window "*compilation*"))
-  ;;         (progn
-  ;;           (split-window-vertically)))))
-  ;; (add-hook 'compilation-mode-hook 'my-compilation-hook)
-  ;; (defun compilation-exit-autoclose (STATUS code msg)
-  ;;   "Close the compilation window if there was no error at all."
-  ;;   ;; If M-x compile exists with a 0
-  ;;   (when (and (eq STATUS 'exit) (zerop code))
-  ;;     ;; then bury the *compilation* buffer, so that C-x b doesn't go there
-  ;;     (bury-buffer)
-  ;;     ;; and delete the *compilation* window
-  ;;     (delete-window (get-buffer-window (get-buffer "*compilation*"))))
-  ;;   ;; Always return the anticipated result of compilation-exit-message-function
-  ;;   (cons msg code))
-  ;; (setq compilation-exit-message-function 'compilation-exit-autoclose)
-  ;; (defvar all-overlays ())
-  ;; (defun delete-this-overlay(overlay is-after begin end &optional len)
-  ;;   (delete-overlay overlay)
-  ;;   )
-  ;; (defun highlight-current-line ()
-  ;; "Highlight current line."
-  ;;   (interactive)
-  ;;   (setq current-point (point))
-  ;;   (beginning-of-line)
-  ;;   (setq beg (point))
-  ;;   (forward-line 1)
-  ;;   (setq end (point))
-  ;;   ;; Create and place the overlay
-  ;;   (setq error-line-overlay (make-overlay 1 1))
+    ;;   ;; Append to list of all overlays
+    ;;   (setq all-overlays (cons error-line-overlay all-overlays))
 
-  ;;   ;; Append to list of all overlays
-  ;;   (setq all-overlays (cons error-line-overlay all-overlays))
-
-  ;;   (overlay-put error-line-overlay
-  ;;                'face '(background-color . "red"))
-  ;;   (overlay-put error-line-overlay
-  ;;                'modification-hooks (list 'delete-this-overlay))
-  ;;   (move-overlay error-line-overlay beg end)
-  ;;   (goto-char current-point))
-  ;; (defun delete-all-overlays ()
-  ;;   "Delete all overlays"
-  ;;   (while all-overlays
-  ;;     (delete-overlay (car all-overlays))
-  ;;     (setq all-overlays (cdr all-overlays))))
-  ;; (defun highlight-error-lines(compilation-buffer process-result)
-  ;;   (interactive)
-  ;;   (delete-all-overlays)
-  ;;   (condition-case nil
-  ;;       (while t
-  ;;         (next-error)
-  ;;         (highlight-current-line))
-  ;;     (error nil)))
-  ;; (setq compilation-finish-functions 'highlight-error-lines)
+    ;;   (overlay-put error-line-overlay
+    ;;                'face '(background-color . "red"))
+    ;;   (overlay-put error-line-overlay
+    ;;                'modification-hooks (list 'delete-this-overlay))
+    ;;   (move-overlay error-line-overlay beg end)
+    ;;   (goto-char current-point))
+    ;; (defun delete-all-overlays ()
+    ;;   "Delete all overlays"
+    ;;   (while all-overlays
+    ;;     (delete-overlay (car all-overlays))
+    ;;     (setq all-overlays (cdr all-overlays))))
+    ;; (defun highlight-error-lines(compilation-buffer process-result)
+    ;;   (interactive)
+    ;;   (delete-all-overlays)
+    ;;   (condition-case nil
+    ;;       (while t
+    ;;         (next-error)
+    ;;         (highlight-current-line))
+    ;;     (error nil)))
+    ;; (setq compilation-finish-functions 'highlight-error-lines)
 
 
 #+END_SRC
 
 #+RESULTS:
-: highlight-error-lines
+| lambda | (buffer &optional args) | (switch-to-buffer buffer) | (get-buffer-window buffer 0) |
 * Start with scratch buffer always
 #+BEGIN_SRC emacs-lisp
   ;; Forces the messages to 0, and kills the *Messages* buffer
@@ -1938,3 +1974,25 @@ Use flycheck in the appropriate buffers:
 #+END_SRC
 
 #+RESULTS:
+* Music
+#+BEGIN_SRC emacs-lisp
+(use-package simple-mpc
+:ensure t)
+#+END_SRC
+
+#+RESULTS:
+* Keyboard macro counter
+#+BEGIN_SRC emacs-lisp
+(defun init-macro-counter-default ()
+  "Set the initial counter to 1 and reset every time it's called.
+To set to a different value call `kmacro-set-counter' interactively
+i.e M-x kmacro-set-counter."
+  (interactive)
+  (kmacro-set-counter 1))
+
+(global-set-key (kbd "<S-f3>") 'init-macro-counter-default)
+(global-set-key (kbd "<S-f4>") 'kmacro-insert-counter)
+#+END_SRC
+
+#+RESULTS:
+: kmacro-insert-counter

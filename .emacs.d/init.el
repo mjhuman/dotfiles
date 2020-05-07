@@ -10,8 +10,6 @@
                              ("melpa" . "https://melpa.org/packages/")                        
                              ("org" . "https://orgmode.org/elpa/")))
 
-(setq package-user-dir "/ssd2/dotfiles/.emacs.d/packages")
-
 ; initialize package.el
 (package-initialize)
 
@@ -37,7 +35,6 @@
 
 ;;(add-to-list 'load-path "~/.emacs.d/lisp")
 (org-babel-load-file (expand-file-name "~/.emacs.d/myinit.org"))
-<<<<<<< HEAD
 (org-babel-load-file (expand-file-name "~/.emacs.d/personal.org"))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -62,6 +59,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0)))))
-=======
+
 (org-babel-load-file (expand-file-name "~/house/orgfiles/mlinit.org"))
->>>>>>> 82b4acc5b531231cf6a78d78985d98b98efa7db9
+
