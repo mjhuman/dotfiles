@@ -1,44 +1,36 @@
 ;; INSTALL PACKAGES
 ;; --------------------------------------
 
+;/ (require 'package)
+
+;/ (setq package-enable-at-startup nil)
+
+; add MELPA to repository list
+;/ (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+;/                             ("melpa" . "https://melpa.org/packages/")                        
+;/                             ("org" . "https://orgmode.org/elpa/")))
+
+
+; initialize package.el
+
+(package-initialize)
+(package-refresh-contents)
+
 (require 'package)
 
-(setq package-enable-at-startup nil)
 
-; add MELPA to repository list
+;; add MELPA to repository list
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                             ("melpa" . "https://melpa.org/packages/")                        
-                             ("org" . "https://orgmode.org/elpa/")))
+                           ("melpa" . "https://melpa.org/packages/")                        
+                           ("org" . "https://orgmode.org/elpa/")))
 
-;;(setq package-user-dir "/ssd2/dotfiles/.emacs.d/packages")
-
-; initialize package.el
 (package-initialize)
 
-
-; start package.el with emacs
-;(require 'package)
-;(setq package-enable-at-startup nil)
-
-; add MELPA to repository list
-;(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-;                         ("melpa" . "https://melpa.org/packages/")))
-
-; initialize package.el
-;(package-initialize)
-
-;; Bootstrap `use-package'
-;(unless (package-installed-p 'use-package)
-;	(package-refresh-contents)
-;	(package-install 'use-package))
-
-;(set-default-coding-systems 'utf-8)
-;(prefer-coding-system 'utf-8)
-
-;;(add-to-list 'load-path "~/.emacs.d/lisp")
+(unless (package-installed-p 'org-plus-contrib)
+   (package-install 'org-plus-contrib))
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/myinit.org"))
-;;(org-babel-load-file (expand-file-name "~/.emacs.d/personal.org"))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

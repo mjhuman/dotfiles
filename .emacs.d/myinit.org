@@ -11,26 +11,10 @@ I've stolen many a configuration from Mike Zamansky and Harry R Schwartz
   ;; INSTALL PACKAGES
   ;; --------------------------------------
 
-  (require 'package)
-
-  ;; add MELPA to repository list
-  (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                           ("melpa" . "https://melpa.org/packages/")                        
-                           ("org" . "https://orgmode.org/elpa/")))
-
-  (when (not (string= (user-login-name) "mj"))
-      (setq package-user-dir "/ssd2/dotfiles/.emacs.d/packages"))
-
-                                          ; initialize package.el
-  (package-initialize)
-
-;  (package-install 'org-plus-contrib)
-
-
   ;; Bootstrap `use-package'
   (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
     (package-install 'use-package))
+
 
   (setq use-package-verbose t)
   (setq use-package-always-ensure t)
