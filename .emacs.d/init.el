@@ -44,7 +44,7 @@
  '(org-startup-indented t)
  '(package-selected-packages
    (quote
-    (spinner yasnippet-snippets which-key web-mode virtualenvwrapper use-package undo-tree tern-auto-complete synosaurus spacemacs-theme solarized-theme smex smartparens shell-switcher peep-dired paradox ox-reveal ox-pandoc origami org-plus-contrib org-journal-list org-journal org-gcal org-bullets org-ac mw-thesaurus moe-theme magit-popup magit ivy-rtags irony-eldoc iedit hungry-delete htmlize hideshow-org graphql ghub ggtags fountain-mode flycheck-rtags flycheck-irony expand-region excorporate epresent engine-mode elpy elfeed-org elfeed-goodies edit-server dired-quick-sort dired+ diminish deft default-text-scale counsel-projectile company-irony-c-headers company-irony bm beacon base16-theme ag ace-window)))
+    (gnu-elpa-keyring-update spinner yasnippet-snippets which-key web-mode virtualenvwrapper use-package undo-tree tern-auto-complete synosaurus spacemacs-theme solarized-theme smex smartparens shell-switcher peep-dired paradox ox-reveal ox-pandoc origami org-plus-contrib org-journal-list org-journal org-gcal org-bullets org-ac mw-thesaurus moe-theme magit-popup magit ivy-rtags irony-eldoc iedit hungry-delete htmlize hideshow-org graphql ghub ggtags fountain-mode flycheck-rtags flycheck-irony expand-region excorporate epresent engine-mode elpy elfeed-org elfeed-goodies edit-server dired-quick-sort dired+ diminish deft default-text-scale counsel-projectile company-irony-c-headers company-irony bm beacon base16-theme ag ace-window)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

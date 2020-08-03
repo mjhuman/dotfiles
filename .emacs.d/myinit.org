@@ -5,27 +5,19 @@
 #+OPTIONS: toc:nil num:nil
 
 * Pre-requisites
-I've stolen many a configuration from Mike Zamansky and Harry R Schwartz
 #+BEGIN_SRC emacs-lisp
 
   ;; INSTALL PACKAGES
-  ;; --------------------------------------
 
-  ;; Bootstrap `use-package'
+  ;; use-package
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
-
 
   (setq use-package-verbose t)
   (setq use-package-always-ensure t)
 
   (set-default-coding-systems 'utf-8)
   (prefer-coding-system 'utf-8)
-
-
-  ;;Install paradox package manager
-;  (use-package paradox
- ;   :ensure t)
 
   ;; set browser to firefox
   (setq browse-url-browser-function 'browse-url-firefox)
@@ -35,8 +27,25 @@ I've stolen many a configuration from Mike Zamansky and Harry R Schwartz
 #+RESULTS:
 : browse-url-firefox
 
+* paradox
+#+BEGIN_SRC emacs-lisp
+;; Some combination of GNU TLS and Emacs fail to retrieve archive
+;; contents over https.
+;; https://www.reddit.com/r/emacs/comments/cdei4p/failed_to_download_gnu_archive_bad_request/etw48ux
+;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
+
+(if (and (version< emacs-version "26.3") (>= libgnutls-version 30603))
+    (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+
+
+  ;;Install paradox package manager
+  (use-package paradox
+   :ensure t)
+#+END_SRC
+
+#+RESULTS:
+
 * vmj custom
-Most of these things are stolen from HRS
 ** General
 #+BEGIN_SRC emacs-lisp
   (defun vmj/view-buffer-name ()
@@ -1925,7 +1934,7 @@ Use flycheck in the appropriate buffers:
 #+END_SRC
 
 #+RESULTS:
-* flycheck and 
+* flycheck
 #+BEGIN_SRC emacs-lisp
 (require 'epa-file)
 (epa-file-enable)
