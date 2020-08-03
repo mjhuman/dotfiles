@@ -1772,7 +1772,7 @@ Use flycheck in the appropriate buffers:
 
 #+RESULTS:
 : Excorporate diary support enabled.
-* manjari font
+* Malayalam font
 #+BEGIN_SRC elisp
 
 (set-fontset-font t 'malayalam "AnjaliOldLipi")
