@@ -27,7 +27,7 @@
 #+RESULTS:
 : browse-url-firefox
 
-* paradox
+* Paradox
 #+BEGIN_SRC emacs-lisp
 ;; Some combination of GNU TLS and Emacs fail to retrieve archive
 ;; contents over https.
@@ -44,7 +44,6 @@
 #+END_SRC
 
 #+RESULTS:
-
 * vmj custom
 ** General
 #+BEGIN_SRC emacs-lisp
@@ -159,14 +158,7 @@ package.
   (setq ivy-format-function 'ivy-format-function-line)
   (setq ivy-display-style 'fancy)
   ;;(setq view-read-only t)
-
-
-
 #+END_SRC
-
-#+RESULTS:
-: 0
-
 ** Ace windows for easy window switching
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
@@ -303,7 +295,7 @@ Org bullets makes things look pretty
   (setq org-file-apps
         (append '(
                   ("\\.pdf\\'" . "evince %s")
-                  ) org-file-apps ))
+                  )))
 
 #+END_SRC
 ** org agenda
