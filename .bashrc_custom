@@ -1,3 +1,19 @@
-alias fstart='cd /home/mj/startup'
-alias fdiary='cd /home/mj/startup/diary'
+# 2.5) sort options
+# Ensures cross-platform sorting behavior of GNU sort.
+# http://www.gnu.org/software/coreutils/faq/coreutils-faq.html#Sort-does-not-sort-in-normal-order_0021
+unset LANG
+export LC_ALL=POSIX
+
+export ALTERNATE_EDITOR=""
+export EDITOR=emacsclient
+## ------------------------------
+## -- 3) User-customized code  --
+## ------------------------------
+
+export TERM=xterm-256color
+
+
+# export WORKON_HOME=$HOME/.virtualenvs
+# export PROJECT_HOME=$HOME/projects
+# source /usr/local/bin/virtualenvwrapper.sh
 

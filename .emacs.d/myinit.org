@@ -11,23 +11,10 @@ I've stolen many a configuration from Mike Zamansky and Harry R Schwartz
   ;; INSTALL PACKAGES
   ;; --------------------------------------
 
-  (when (not (string= (user-login-name) "mj"))
-    (setq package-user-dir "/ssd2/dotfiles/.emacs.d/packages"))
-
-  (require 'package)
-
-  (setq package-archives
-        '(("org"          . "http://orgmode.org/elpa/")
-          ("melpa"        . "http://melpa.org/packages/")
-          ("melpa-stable" . "http://stable.melpa.org/packages/")
-          ("gnu"          . "http://elpa.gnu.org/packages/")))
-
-  (package-initialize)
-  (package-install 'org-plus-contrib)
-
+  ;; Bootstrap `use-package'
   (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
     (package-install 'use-package))
+
 
   (setq use-package-verbose t)
   (setq use-package-always-ensure t)
@@ -37,10 +24,8 @@ I've stolen many a configuration from Mike Zamansky and Harry R Schwartz
 
 
   ;;Install paradox package manager
-   (use-package spinner
-     :ensure t)
-   (use-package paradox
-     :ensure t)
+;  (use-package paradox
+ ;   :ensure t)
 
   ;; set browser to firefox
   (setq browse-url-browser-function 'browse-url-firefox)
@@ -117,9 +102,7 @@ I'd rather have only a few necessary mode identifiers on my modeline. This
 either hides or "renames" a variety of major or minor modes using the =diminish=
 package.
 
-#+BEGIN_SRC emacs-lisp
-(use-package diminish
-:ensure t)
+#+BEGIN_SRC 
   (defmacro diminish-minor-mode (filename mode &optional abbrev)
     `(eval-after-load (symbol-name ,filename)
        '(diminish ,mode ,abbrev)))
@@ -210,8 +193,8 @@ package.
                                           ;(powerline-moe-theme)
     (setq moe-theme-highlight-buffer-id t)
     )
-  (set-frame-font "DejaVu Sans Mono 11" nil t)
-  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 11"))
+  (set-frame-font "DejaVu Sans Mono 13" nil t)
+  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
 
 ;;(set-frame-font "Inconsolata Medium 14" nil t)
 ;;(add-to-list 'default-frame-alist '(font . "Inconsolata Medium 14"))
@@ -219,7 +202,7 @@ package.
 #+END_SRC
 
 #+RESULTS:
-: t 
+: ((font . DejaVu Sans Mono 13) (font . DejaVu Sans Mono 11) (fullscreen . maximized))
 ** Custom solarized-dark theme
 
 I like the solarized-dark theme. I prefer keeping all the characters in the same
@@ -228,7 +211,6 @@ side and font, though.
 #+BEGIN_SRC emacs-lisp
 (use-package solarized-theme
 :ensure t)
-
   (defun vmj/apply-solarized-theme ()
     (setq solarized-use-variable-pitch nil)
     (setq solarized-height-plus-1 1.0)
@@ -357,7 +339,7 @@ Org bullets makes things look pretty
       :custom
       (org-journal-dir "~/Dropbox/orgfiles/journal/")
       (org-journal-date-format "%A, %d %B %Y")
-      (org-journal-file-type `monthly)
+      (org-journal-file-type `yearly)
       (org-journal-encrypt-journal t)
       (org-journal-enable-agenda-integration t))
 
@@ -518,7 +500,7 @@ Org bullets makes things look pretty
 #+END_SRC
 
 ** org confluence
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC
   (add-to-list 'load-path "~/.emacs.d/lisp/")
   (load "ox-confluence.el")
 
@@ -931,7 +913,6 @@ See https://github.com/abo-abo/avy for more info
      (ditaa . t)
      (dot . t)
      (org . t)
-     (shell . t )
      (latex . t )
      ))
 #+END_SRC
@@ -1794,25 +1775,15 @@ Use flycheck in the appropriate buffers:
 
 #+RESULTS:
 : Excorporate diary support enabled.
-* manjari font
+* Malayalam font
 #+BEGIN_SRC elisp
-  (defun use-ml-font (&optional frame)
-    "Call function to set fonts for FRAME with an override for malayalam."
-    (when frame
-      (select-frame frame))
-    (set-face-font 'default "DejaVu Sans Mono 11")
-  (set-fontset-font t
-                        (cons (decode-char 'ucs #x0D00)
-                              (decode-char 'ucs #x0D7f))
-                        "Manjari"))
 
-  ;; Make sure this function is called when frames are created
-  (add-hook 'after-make-frame-functions #'use-ml-font)
-
+(set-fontset-font t 'malayalam "AnjaliOldLipi")
+(set-fontset-font t 'malayalam "Manjari" nil 'append)
+(set-fontset-font t 'thai (font-spec :script 'thai) nil 'append)
 #+END_SRC
 
 #+RESULTS:
-| use-ml-font | (lambda (frame) (vmj/apply-solarized-theme)) | x-dnd-init-frame |
 
 * purpose mode
 #+BEGIN_SRC 
