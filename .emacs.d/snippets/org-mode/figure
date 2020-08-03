@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: figure
+# key: fig
+# --
+$0
+#+CAPTION: $1
+#+NAME:   fig:$1
+[[~/Dropbox/script/characters/$1.png]]
