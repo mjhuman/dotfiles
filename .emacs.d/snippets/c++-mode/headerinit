@@ -1,0 +1,35 @@
+# -*- mode: snippet -*-
+#name: Boiler plate for header file
+#key: /fil
+#group: doxygen
+# --
+/**
+ *   \file ${1:`(file-name-nondirectory(buffer-file-name))`}
+ *   \brief ${2:A Documented file.}
+ *
+ *  ${3:Detailed description}
+ *
+ *   \copyright Copyright 2018 The MathWorks, Inc.
+ *   \remark
+ *   CONFIDENTIAL AND CONTAINING PROPRIETARY TRADE SECRETS
+ *   The source code contained in this listing contains proprietary and
+ *   confidential trade secrets of The MathWorks, Inc.  The use, modification,
+ *   or development of derivative work based on the code or ideas obtained
+ *   from the code is prohibited without the express written permission of The
+ *   MathWorks, Inc. The disclosure of this code to any party not authorized
+ *   by The MathWorks, Inc. is strictly forbidden.
+}*/
+// --------------------------------------------------
+
+#ifdef SUPPORTS_PRAGMA_ONCE
+#pragma once
+#endif
+
+#ifndef ${4:`(upcase (file-name-nondirectory (file-name-sans-extension (or (buffer-file-name) ""))))`_SLCHECK_H}
+#define $4
+// --------------------------------------------------
+
+$0
+
+// --------------------------------------------------
+#endif /* $4 */

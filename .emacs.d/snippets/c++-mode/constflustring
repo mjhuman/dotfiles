@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: constflustring
+# key: fls
+# --
+const fl::ustring&

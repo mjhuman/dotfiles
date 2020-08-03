@@ -1,0 +1,7 @@
+# name: pragma once
+# key: ponce
+# --
+#ifdef SUPPORTS_PRAGMA_ONCE
+#pragma once
+#endif
+

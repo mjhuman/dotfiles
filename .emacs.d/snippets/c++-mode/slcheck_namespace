@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: slcheck namespace
+# key: /ns
+# --
+namespace slcheck {
+namespace filter {
+
+$0
+
+} // end of namespace filter
+} // end of namespace slcheck

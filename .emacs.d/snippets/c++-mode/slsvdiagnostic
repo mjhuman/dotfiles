@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: slsvdiagnostic
+# key: slsvd
+# --
+slsvDiagnostic d = slsvCreateDiagnostic(slcheck::filtercatalog::CustomMessage($0));
+slsvThrowIException(d);

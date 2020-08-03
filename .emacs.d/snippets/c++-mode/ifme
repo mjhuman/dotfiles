@@ -1,0 +1,7 @@
+# name:ifme 
+# key: ifme
+# --
+if (${1:enumerate})
+{
+$0
+} // $1

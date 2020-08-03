@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: My Function
+# key: /f
+# --
+
+/**
+ *  \brief $1
+ *
+ *  Detailed description
+ *
+ *  \param param
+ *  \return return type
+ */
+$2 `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`::$1($3) {
+$0
+} // end of $1
+// --------------------------------------------------
+
+
