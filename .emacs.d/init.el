@@ -36,6 +36,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   (quote
+    ("~/Dropbox/orgfiles/i.org" "~/Dropbox/orgfiles/arts.org" "~/Dropbox/orgfiles/books.org" "~/Dropbox/orgfiles/eee.org" "~/Dropbox/orgfiles/gcal.org" "~/Dropbox/orgfiles/inbox.org")))
  '(org-default-notes-file (concat org-directory "/notes.org"))
  '(org-directory "~/Dropbox/orgfiles")
  '(org-export-html-postamble nil)
@@ -44,11 +47,12 @@
  '(org-startup-indented t)
  '(package-selected-packages
    (quote
-    (gnu-elpa-keyring-update spinner yasnippet-snippets which-key web-mode virtualenvwrapper use-package undo-tree tern-auto-complete synosaurus spacemacs-theme solarized-theme smex smartparens shell-switcher peep-dired paradox ox-reveal ox-pandoc origami org-plus-contrib org-journal-list org-journal org-gcal org-bullets org-ac mw-thesaurus moe-theme magit-popup magit ivy-rtags irony-eldoc iedit hungry-delete htmlize hideshow-org graphql ghub ggtags fountain-mode flycheck-rtags flycheck-irony expand-region excorporate epresent engine-mode elpy elfeed-org elfeed-goodies edit-server dired-quick-sort dired+ diminish deft default-text-scale counsel-projectile company-irony-c-headers company-irony bm beacon base16-theme ag ace-window)))
+    (true fountain org-latex openwith org-tempo gnu-elpa-keyring-update spinner yasnippet-snippets which-key web-mode virtualenvwrapper use-package undo-tree tern-auto-complete synosaurus spacemacs-theme solarized-theme smex smartparens shell-switcher peep-dired paradox ox-reveal ox-pandoc origami org-plus-contrib org-journal-list org-journal org-gcal org-bullets org-ac mw-thesaurus moe-theme magit-popup magit ivy-rtags irony-eldoc iedit hungry-delete htmlize hideshow-org graphql ghub ggtags fountain-mode flycheck-rtags flycheck-irony expand-region excorporate epresent engine-mode elpy elfeed-org elfeed-goodies edit-server dired-quick-sort dired+ diminish deft default-text-scale counsel-projectile company-irony-c-headers company-irony bm beacon base16-theme ag ace-window)))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((((class color) (min-colors 4096)) (:foreground "#c6c6c6" :background "#303030")) (((class color) (min-colors 256)) (:foreground "#c6c6c6" :background "#303030")) (((class color) (min-colors 89)) (:foreground "#c6c6c6" :background "#303030"))))
  '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0)))))
