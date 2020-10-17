@@ -44,6 +44,14 @@
 #+END_SRC
 
 #+RESULTS:
+* better defualts
+#+begin_src 
+    (use-package better-defaults
+      :ensure t)
+#+end_src
+
+#+RESULTS:
+
 * vmj custom
 ** General
 #+BEGIN_SRC emacs-lisp
@@ -185,20 +193,11 @@ package.
 
 ** Themes and modeline:
 #+BEGIN_SRC emacs-lisp
-  (use-package moe-theme
-    :ensure t)
-
-  (use-package powerline
-    :ensure t
-    :config
-                                          ;(powerline-moe-theme)
-    (setq moe-theme-highlight-buffer-id t)
-    )
   (set-frame-font "DejaVu Sans Mono 13" nil t)
   (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
 
-;;(set-frame-font "Inconsolata Medium 14" nil t)
-;;(add-to-list 'default-frame-alist '(font . "Inconsolata Medium 14"))
+  ;;(set-frame-font "Inconsolata Medium 14" nil t)
+  ;;(add-to-list 'default-frame-alist '(font . "Inconsolata Medium 14"))
 
 #+END_SRC
 
@@ -220,12 +219,12 @@ side and font, though.
     (setq solarized-height-plus-4 1.0)
     (setq solarized-high-contrast-mode-line t)
     (load-theme 'solarized-dark t))
-#+END_SRC
 
-If this code is being evaluated by =emacs --daemon=, ensure that each subsequent
-frame is themed appropriately.
 
-#+BEGIN_SRC emacs-lisp
+;;If this code is being evaluated by =emacs --daemon=, ensure that each subsequent
+;; frame is themed appropriately.
+
+
   (if (daemonp)
       (add-hook 'after-make-frame-functions
                 (lambda (frame)
@@ -262,7 +261,7 @@ Org bullets makes things look pretty
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
   ;;I like seeing a little downward-pointing arrow instead of the usual ellipsis (...) that org displays when there?s stuff under a header.
-  (setq org-ellipsis "?")
+;;  (setq org-ellipsis "?")
 
   ;; Use syntax highlighting in source blocks while editing.
   (setq org-src-fontify-natively t)
@@ -1349,10 +1348,37 @@ See https://github.com/abo-abo/avy for more info
     (setq web-mode-enable-auto-closing t))
   (setq web-mode-enable-auto-quoting t) ; this fixes the quote problem I mentioned
   (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
+(setq web-mode-css-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
 
 #+END_SRC
+
+** Python
+#+BEGIN_SRC emacs-lisp
+  (use-package elpy
+        :ensure t)
+
+  (elpy-enable)
+
+  (use-package conda
+    :ensure t)
+
+;; if you want interactive shell support, include:
+(conda-env-initialize-interactive-shells)
+;; if you want eshell support, include:
+(conda-env-initialize-eshell)
+;; if you want auto-activation (see below for details), include:
+(conda-env-autoactivate-mode t)
+
+(custom-set-variables
+ '(conda-anaconda-home "/home/mj/anaconda3/"))
+
+(setq conda-env-home-directory (expand-file-name "~/anaconda3/"))
+#+END_SRC
+
+#+RESULTS:
+: /home/mj/anaconda3/
+
 * Shell
 ** Better Shell
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -1986,3 +2012,4 @@ Use flycheck in the appropriate buffers:
 
 #+RESULTS:
 : t
+
