@@ -45,6 +45,13 @@
 
 #+RESULTS:
 * better defualts
+#+BEGIN_SRC emacs-lisp
+  (scroll-bar-mode -1)
+  (menu-bar-mode -1)
+#+END_SRC
+
+#+RESULTS:
+
 #+begin_src 
     (use-package better-defaults
       :ensure t)
@@ -156,7 +163,8 @@ package.
   (tool-bar-mode -1)
   (fset 'yes-or-no-p 'y-or-n-p)
   (global-linum-mode t) ;; enable line numbers globally
-  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  (add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(fullscreen . fullboth))
   (setq ivy-use-virtual-buffers t)
   (defun jump-to-next-newline()
     "Move to the end of the line and return"
@@ -167,6 +175,10 @@ package.
   (setq ivy-display-style 'fancy)
   ;;(setq view-read-only t)
 #+END_SRC
+
+#+RESULTS:
+: fancy
+
 ** Ace windows for easy window switching
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
@@ -193,16 +205,15 @@ package.
 
 ** Themes and modeline:
 #+BEGIN_SRC emacs-lisp
-  (set-frame-font "DejaVu Sans Mono 13" nil t)
   (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
 
-  ;;(set-frame-font "Inconsolata Medium 14" nil t)
-  ;;(add-to-list 'default-frame-alist '(font . "Inconsolata Medium 14"))
+    ;;(set-frame-font "Inconsolata Medium 14" nil t)
+    ;;(add-to-list 'default-frame-alist '(font . "Inconsolata Medium 14"))
 
 #+END_SRC
 
 #+RESULTS:
-: ((font . DejaVu Sans Mono 13) (font . DejaVu Sans Mono 11) (fullscreen . maximized))
+: ((font . DejaVu Sans Mono 13) (fullscreen . fullboth) (vertical-scroll-bars))
 ** Custom solarized-dark theme
 
 I like the solarized-dark theme. I prefer keeping all the characters in the same
@@ -293,10 +304,14 @@ Org bullets makes things look pretty
 
   (setq org-file-apps
         (append '(
-                  ("\\.pdf\\'" . "evince %s")
+                  ("\\.pdf\\'" . "okular %s")
                   )))
 
 #+END_SRC
+
+#+RESULTS:
+: ((\.pdf\' . okular %s))
+
 ** org agenda
 #+BEGIN_SRC emacs-lisp
 
@@ -378,6 +393,8 @@ Org bullets makes things look pretty
            "* %?\n" :prepend t)
           ("p" "Phrase" entry (file+headline "~/Dropbox/orgfiles/Words.org" "Phrases")
            "* %?\n" :prepend t)
+          ("e" "EPSE" entry (file+headline "~/Dropbox/orgfiles/epse.org" "Unsorted Notes")
+           "* %?\n%u" :prepend t)
           ("j" "Journal entry" entry (function org-journal-find-location)
            "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?")
         ))
@@ -385,6 +402,9 @@ Org bullets makes things look pretty
 
 #+RESULTS:
 | a | Appointment | entry | (file ~/Dropbox/orgfiles/gcal.org) | * %? |
+
+
+
 ** org mobile   
 #+BEGIN_SRC emacs-lisp        
   ;; Set to the name of the file where new notes will be stored
@@ -608,6 +628,7 @@ See https://github.com/abo-abo/avy for more info
        ("c" flycheck-mode "flycheck")
        ("o" dired-omit-mode "dired omit mode")
        ("h" window-split-toggle "window split toggle")
+       ("m" menu-bar-mode "menu bar")
        ("q" nil "cancel")))
     (global-set-key
      (kbd "C-x j")
@@ -637,7 +658,7 @@ See https://github.com/abo-abo/avy for more info
     ;;            ("j" org-clock-goto "Clock Goto") ; global visit the clocked task
     ;;            ("c" org-capture "Capture") ; Don't forget to define the captures you want http://orgmode.org/manual/Capture.html
     ;;            ("l" (or )rg-capture-goto-last-stored "Last Capture")))
-    
+
 
   (global-set-key
    (kbd "C-x f")
@@ -649,9 +670,10 @@ See https://github.com/abo-abo/avy for more info
      ("2" (find-file "/ssd2") "ssd2")
      ("b" (find-file "~/Dropbox") "DB")
      ("d" (find-file "~/Downloads") "Downloads")
-     ("m" (find-file "~/mindtoilet/posts") "mindtoilet")
-     ("n" (find-file "/mathworks/devel/sandbox/vjayakri") "sbs")
-     ("v" peep-dired "peep view")
+     ("v" (find-file "~/vinotes/posts") "mindtoilet")
+     ("m" (find-file "~/projects/msc") "msc")
+     ("n" narrow-or-widen-dwim "narrow-or-widen")
+     ("V" peep-dired "peep view")
      ("l" mlint-clear-warnings "mlint clear")
      ("r" revert-buffer "refresh")
      ("p" crepro "projectile")
@@ -661,6 +683,8 @@ See https://github.com/abo-abo/avy for more info
      ("i" yas/insert-snippet "insert snippet")
      ("t" (counsel-find-file "~/temper") "temper")
      ("h" (counsel-find-file "~/") "home")))
+
+
 
 #+END_SRC
 
@@ -783,18 +807,19 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 ** Reveal.js
 #+BEGIN_SRC emacs-lisp
-  (use-package ox-reveal
+    (use-package ox-reveal
     :ensure ox-reveal)
 
-  (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-  (setq org-reveal-mathjax t)
+    (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+    (setq org-reveal-mathjax t)
 
-  (use-package htmlize
+    (use-package htmlize
     :ensure t)
+
+  (setq process-connection-type nil)
 #+END_SRC
 
 #+RESULTS:
-: t
 
 ** iedit and narrow / widen dwim
 
@@ -837,6 +862,7 @@ See https://github.com/abo-abo/avy for more info
 
 
 #+RESULTS:
+: narrow-or-widen-dwim
 =narrow-or-widen-dwim
 =** Dired
 #+BEGIN_SRC emacs-lisp
@@ -1045,92 +1071,76 @@ See https://github.com/abo-abo/avy for more info
 
 #+END_SRC
 ** LaTeX
-#+BEGIN_SRC emacs-lisp
-
-  ;; latex
-                                          ;(use-package tex
-                                          ;:ensure auctex)
-
-                                          ;(defun tex-view ()
-                                          ;    (interactive)
-                                          ;    (tex-send-command "evince" (tex-append tex-print-file ".pdf")))
-#+END_SRC
-** irony
 #+BEGIN_SRC
-  ;; == irony-mode ==
 
-  (use-package irony
-    :ensure t)
+  (add-to-list 'org-latex-classes
+                 '("apa6"
+                   "\\documentclass{apa6}"
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'objc-mode-hook 'irony-mode)
+    (use-package org-ref)
+    (use-package  ivy-bibtex)
 
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (setq bibtex-completion-bibliography '("~/Dropbox/emacs/bibliography/references.bib")
+            bibtex-completion-library-path '("~/Dropbox/emacs/bibliography/bibtex-pdfs/")
+            bibtex-completion-notes-path "~/Dropbox/emacs/bibliography/notes/"
+            bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+
+            bibtex-completion-additional-search-fields '(keywords)
+            bibtex-completion-display-formats
+            '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+              (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+              (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+              (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+              (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
+            bibtex-completion-pdf-open-function
+            (lambda (fpath)
+              (call-process "open" nil 0 nil fpath)))
+
+
+    (require 'bibtex)
+
+    (setq bibtex-autokey-year-length 4
+            bibtex-autokey-name-year-separator "-"
+            bibtex-autokey-year-title-separator "-"
+            bibtex-autokey-titleword-separator "-"
+            bibtex-autokey-titlewords 2
+            bibtex-autokey-titlewords-stretch 1
+            bibtex-autokey-titleword-length 5
+            org-ref-bibtex-hydra-key-binding (kbd "H-b"))
+
+    (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)
+
+    (require 'org-ref-ivy)
+
+    (setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
+          org-ref-insert-cite-function 'org-ref-cite-insert-ivy
+          org-ref-insert-label-function 'org-ref-insert-label-link
+          org-ref-insert-ref-function 'org-ref-insert-ref-link
+          org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body)))
+
+    (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+  ;  (setq org-pandoc-options-for-beamer-pdf '((pdf-engine . "xelatex"))) ;
+  ;  (setq org-pandoc-options-for-latex-pdf '((pdf-engine . "pdflatex"))) ;
 
 #+END_SRC
+
+#+begin_src elisp
+(defun my-org-latex-yas ()
+  "Activate org and LaTeX yas expansion in org-mode buffers."
+  (yas-minor-mode)
+  (yas-activate-extra-mode 'latex-mode))
+
+(add-hook 'org-mode-hook #'my-org-latex-yas)  
+#+end_src
 
 #+RESULTS:
-: t
+| my-org-latex-yas | flycheck-mode | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | er/add-org-mode-expansions | turn-on-auto-fill | (lambda nil (setq fill-column 80)) | flyspell-mode | (lambda nil (org-bullets-mode 1)) | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | org-eldoc-load | org-ac/setup-current-buffer |
 
-#+BEGIN_SRC 
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-
-(defun my-irony-mode-hook ()
-  (define-key irony-mode-map
-      [remap completion-at-point] 'counsel-irony)
-  (define-key irony-mode-map
-      [remap complete-symbol] 'counsel-irony))
-(add-hook 'irony-mode-hook 'my-irony-mode-hook)
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-#+END_SRC
-
-#+RESULTS:
-| irony-cdb-autosetup-compile-options | my-irony-mode-hook | company-irony-setup-begin-commands |
-
-#+BEGIN_SRC 
-   (use-package irony
-            :ensure t
-              :defer t
-              :init
-              (add-hook 'c++-mode-hook 'irony-mode)
-              (add-hook 'c-mode-hook 'irony-mode)
-              (add-hook 'objc-mode-hook 'irony-mode)
-              :config
-              ;; replace the `completion-at-point' and `complete-symbol' bindings in
-              ;; irony-mode's buffers by irony-mode's function
-      (defun my-irony-mode-hook ()
-        (define-key irony-mode-map
-            [remap completion-at-point] 'counsel-irony)
-        (define-key irony-mode-map
-            [remap complete-symbol] 'counsel-irony))
-      (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-;;  == company-mode ==
-  (use-package company
-    :ensure t
-    :defer t
-    :init (add-hook 'after-init-hook 'global-company-mode)
-    :config
-    (use-package company-irony :ensure t :defer t)
-    (setq company-idle-delay              nil
-          company-minimum-prefix-length   2
-          company-show-numbers            t
-          company-tooltip-limit           20
-          company-dabbrev-downcase        nil
-          company-backends                '(company-rtags company-nxml company-css)))
-
-
-#+END_SRC
-
-
-
-#+RESULTS:
-: t
 ** hideshow
 #+BEGIN_SRC emacs-lisp
   (use-package hideshow
@@ -1142,7 +1152,7 @@ See https://github.com/abo-abo/avy for more info
 #+RESULTS:
 : hs-toggle-hiding
 ** find other file
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC 
                                             ; Non-nil means ignore cases in matches (see `case-fold-search').
                                             ; If you have extensions in different cases, you will want this to be nil.
     (setq ff-case-fold-search "on")
@@ -1236,8 +1246,48 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 * Programming
 ** c++
+*** irony
+#+BEGIN_SRC 
+    ;; == irony-mode ==
+
+    (use-package company-c-headers)
+    (use-package company
+      :ensure t
+      :defer t
+      :init (add-hook 'after-init-hook 'global-company-mode)
+      :config
+      (setq company-idle-delay              nil
+            company-minimum-prefix-length   2
+            company-show-numbers            t
+            company-tooltip-limit           20
+            company-dabbrev-downcase        nil))
+
+
+    (use-package irony
+      :ensure t)
+
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+
+  (use-package company-irony :ensure t :defer t)
+  (use-package flycheck-irony :ensure t :defer t)
+
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map
+        [remap completion-at-point] 'counsel-irony)
+    (define-key irony-mode-map
+        [remap complete-symbol] 'counsel-irony))
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+#+END_SRC
+
+#+RESULTS:
+| my-irony-mode-hook | irony-cdb-autosetup-compile-options |
+
 *** ggtags
-#+BEGIN_SRC
+#+BEGIN_SRC 
   (use-package ggtags
     :ensure t
     :config 
@@ -1246,7 +1296,17 @@ See https://github.com/abo-abo/avy for more info
                 (when (derived-mode-p 'c-mode 'c++-mode)
                   (ggtags-mode 1))))
     )
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (setq exec-path-from-shell-variables '("PATH"))
+  (exec-path-from-shell-initialize))
 #+END_SRC
+
+#+RESULTS:
+: t
+
 *** rtags
 #+BEGIN_SRC
 
@@ -1276,6 +1336,59 @@ See https://github.com/abo-abo/avy for more info
 
 #+RESULTS:
 | my-flycheck-rtags-setup | er/add-cc-mode-expansions | (lambda nil (sb-rtags--menu-adds ObjC)) | (lambda nil (easy-menu-add-item nil (quote (ObjC)) (rtags-submenu-list))) |
+
+*** lsp ccls
+#+BEGIN_SRC emacs-lisp
+
+(use-package lsp-mode :commands lsp :ensure t)
+(use-package lsp-ui :commands lsp-ui-mode :ensure t)
+(use-package lsp-treemacs :ensure t)
+
+(use-package ccls
+  :ensure t
+  :config
+  (setq ccls-executable "ccls")
+  (setq lsp-prefer-flymake nil)
+  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc))
+  :hook ((c-mode c++-mode objc-mode) .
+         (lambda () (require 'ccls) (lsp))))
+
+(setq ccls-executable "/usr/bin/ccls"
+      ccls-initialization-options `(:cache (:directory ".cache"), :compilationDatabaseDirectory "build"))
+
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      treemacs-space-between-root-nodes nil
+      company-idle-delay 0.0
+      company-minimum-prefix-length 1
+      lsp-idle-delay 0.1)  ;; clangd is fast
+
+(with-eval-after-load 'lsp-mode
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+  (yas-global-mode))
+
+#+END_SRC
+
+#+RESULTS:
+: t
+
+**** ivy-xref
+#+BEGIN_SRC emacs-lisp
+(use-package ivy-xref
+  :ensure t
+  :init
+  ;; xref initialization is different in Emacs 27 - there are two different
+  ;; variables which can be set rather than just one
+  (when (>= emacs-major-version 27)
+    (setq xref-show-definitions-function #'ivy-xref-show-defs))
+  ;; Necessary in Emacs <27. In Emacs 27 it will affect all xref-based
+  ;; commands other than xref-find-definitions (e.g. project-find-regexp)
+  ;; as well
+  (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+#+END_SRC
+
+#+RESULTS:
+
 
 *** indentation
 #+BEGIN_SRC
@@ -1331,6 +1444,18 @@ See https://github.com/abo-abo/avy for more info
 
 #+RESULTS:
 : gud-step
+*** cpputils-cmake
+#+BEGIN_SRC
+(use-package cpputils-cmake)
+
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (if (derived-mode-p 'c-mode 'c++-mode)
+                (cppcm-reload-all)
+              )))
+#+END_SRC
+
+#+RESULTS:
 
 ** Web Mode
 #+BEGIN_SRC emacs-lisp
@@ -1355,25 +1480,25 @@ See https://github.com/abo-abo/avy for more info
 
 ** Python
 #+BEGIN_SRC emacs-lisp
-  (use-package elpy
-        :ensure t)
+    (use-package elpy
+          :ensure t)
 
-  (elpy-enable)
+    (elpy-enable)
 
-  (use-package conda
-    :ensure t)
+  ;;   (use-package conda
+  ;;     :ensure t)
 
-;; if you want interactive shell support, include:
-(conda-env-initialize-interactive-shells)
-;; if you want eshell support, include:
-(conda-env-initialize-eshell)
-;; if you want auto-activation (see below for details), include:
-(conda-env-autoactivate-mode t)
+  ;; ;; if you want interactive shell support, include:
+  ;; (conda-env-initialize-interactive-shells)
+  ;; ;; if you want eshell support, include:
+  ;; (conda-env-initialize-eshell)
+  ;; ;; if you want auto-activation (see below for details), include:
+  ;; (conda-env-autoactivate-mode t)
 
-(custom-set-variables
- '(conda-anaconda-home "/home/mj/anaconda3/"))
+  ;; (custom-set-variables
+  ;;  '(conda-anaconda-home "/home/mj/anaconda3/"))
 
-(setq conda-env-home-directory (expand-file-name "~/anaconda3/"))
+  ;; (setq conda-env-home-directory (expand-file-name "~/anaconda3/"))
 #+END_SRC
 
 #+RESULTS:
@@ -1771,8 +1896,8 @@ Use flycheck in the appropriate buffers:
 * Malayalam font
 #+BEGIN_SRC elisp
 
-(set-fontset-font t 'malayalam "Manjari")
-(set-fontset-font t 'malayalam "AnjaliOldLipi" nil 'append)
+(set-fontset-font t 'malayalam "Chilanka")
+(set-fontset-font t 'malayalam "Chilanka" nil 'append)
 (set-fontset-font t 'malayalam (font-spec :script 'malayalam) nil 'append)
 #+END_SRC
 
@@ -1910,7 +2035,7 @@ Use flycheck in the appropriate buffers:
 
 #+RESULTS:
 : highlight-error-lines
-* Start with scratch buffer always
+* Start from scratch
 #+BEGIN_SRC emacs-lisp
   ;; Forces the messages to 0, and kills the *Messages* buffer
   (switch-to-buffer "*scratch*")
@@ -1954,7 +2079,7 @@ Use flycheck in the appropriate buffers:
              '("\\.chm" "kchmviewer" (file))
              (list (openwith-make-extension-regexp
                     '("pdf" "ps" "ps.gz" "dvi"))
-                   "evince"
+                   "okular"
                    '(file))
              ))
       (openwith-mode 1))
@@ -2012,4 +2137,12 @@ Use flycheck in the appropriate buffers:
 
 #+RESULTS:
 : t
+* Gnu plot
+#+BEGIN_SRC emacs-lisp
+  (use-package gnuplot)
+  (use-package gnuplot-mode)
+#+END_SRC
+
+#+RESULTS:
+
 
