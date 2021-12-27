@@ -1,0 +1,18 @@
+# sample xbindkeys config
+# place this file at ~/.xbindkeysrc
+
+# make Super+f launch firefox
+"exo-open --launch TerminalEmulator"
+Mod4 + t
+
+# make Super+f launch firefox
+"firefox"
+Mod4 + f
+
+# make Super+Shift+f launch firefox
+"firefox -private-window"
+Shift+Mod4 + f
+
+# make Super+i launch emacs
+"emacs"
+Mod4 + i

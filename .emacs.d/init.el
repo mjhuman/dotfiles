@@ -17,8 +17,7 @@
 
 ;; add MELPA to repository list
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                           ("melpa" . "https://melpa.org/packages/")                        
-                           ("org" . "https://orgmode.org/elpa/")))
+                           ("melpa" . "https://melpa.org/packages/")))
 
 ;; Initializes the package infrastructure
 (package-initialize)
@@ -47,7 +46,7 @@
  '(org-startup-folded 'overview)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(gnuplot-mode gnuplot bibtex-completion ivy-bibtex org-ref org-ref-prettify org-contrib org-latex auctex bibtex-utils latex-preview-pane company-math lsp-treemacs ivy-xref dash-functional dash lsp-ivy eglot ccls company-lsp lsp-ui lsp-mode counsel-irony counse-irony flycheck-irony company-c-headers cpputils-cmake flycheck-aspell flymake-aspell ac-clang exec-path-from-shell gtags ggtags fountain-mode openwith mw-thesaurus synosaurus engine-mode edit-server elfeed-goodies elfeed-org shell-switcher conda company-irony elpy web-mode bm company magit smartparens peep-dired dired-quick-sort iedit htmlize ox-reveal yasnippet-snippets yasnippet flycheck which-key origami default-text-scale expand-region hungry-delete beacon counsel smex ox-pandoc noflet org-journal org-ac org-bullets solarized-theme ace-window paradox use-package org-plus-contrib))
+   '(org gnuplot-mode gnuplot bibtex-completion ivy-bibtex org-ref org-ref-prettify org-contrib org-latex auctex bibtex-utils latex-preview-pane company-math lsp-treemacs ivy-xref dash-functional dash lsp-ivy eglot ccls company-lsp lsp-ui lsp-mode counsel-irony counse-irony flycheck-irony company-c-headers cpputils-cmake flycheck-aspell flymake-aspell ac-clang exec-path-from-shell gtags ggtags fountain-mode openwith mw-thesaurus synosaurus engine-mode edit-server elfeed-goodies elfeed-org shell-switcher conda company-irony elpy web-mode bm company magit smartparens peep-dired dired-quick-sort iedit htmlize ox-reveal yasnippet-snippets yasnippet flycheck which-key origami default-text-scale expand-region hungry-delete beacon counsel smex ox-pandoc noflet org-journal org-ac org-bullets solarized-theme ace-window paradox use-package org-plus-contrib))
  '(paradox-github-token t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
