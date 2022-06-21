@@ -51,3 +51,6 @@ bin/python -m pip install -U "Nikola[extras]"
 
 # install xbindkeys
 sudo apt-get install xbindkeys
+
+# install Indian fonts
+sudo apt-get install fonts-indic

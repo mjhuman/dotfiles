@@ -1,0 +1,44 @@
+#+STARTUP: overview
+# +date: \today
+# +author: Vinodh Jayakrishnan
+# +email: vinodh.jayakrishnan@postgrad.manchester.ac.uk
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 27.2 (Org mode 9.4.5)
+#+options: toc:nil
+#+LATEX_CLASS_OPTIONS: [11pt]
+#+latex_header: \usepackage[a4paper]{geometry}
+#+latex_header: \usepackage[scaled]{times} \renewcommand\familydefault{\sfdefault}
+#+latex_header: \usepackage{mathtools}
+#+latex_header: \usepackage{float}
+#+latex_header: \restylefloat{table}
+#+latex_header: \restylefloat{image}
+#+latex_header: \usepackage{textcomp}
+#+latex_header: \usepackage{siunitx}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+LATEX_HEADER: \usepackage{xcolor}
+#+LATEX_HEADER: \usepackage{colortbl}
+#+LATEX_HEADER: \makeatletter \@ifpackageloaded{geometry}{\geometry{margin=2cm}}{\usepackage[margin=2cm]{geometry}} \makeatother
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{hyperref}
+#+LATEX_HEADER: \usepackage{wrapfig}
+#+LATEX_HEADER: \hypersetup{colorlinks=true,linkcolor=blue,filecolor=blue,citecolor = black,urlcolor=cyan,}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage[demo]{graphicx}
+#+LATEX_HEADER: \usepackage{subfig}
+#+LATEX_HEADER: \usepackage{lastpage}
+#+LATEX_HEADER: \usepackage{fancyhdr}
+#+LATEX_HEADER: \pagestyle{fancyplain}
+#+LATEX_HEADER: \chead{override}
+#+LATEX_HEADER: \lhead{override}
+#+LATEX_HEADER: \rhead{\today}
+#+LATEX_HEADER: \cfoot{\thepage/\pageref{LastPage}}
+#+LATEX_HEADER: \lfoot{}
+#+LATEX_HEADER: \rfoot{}
+#+LATEX_HEADER: \usepackage{parskip}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+LATEX_HEADER: \usepackage[table]{xcolor}
+#+LATEX_HEADER: \usepackage{colortbl}
+#+LATEX_HEADER: \usepackage{cite}
+#+EXPORT_EXCLUDE_TAGS: noexport

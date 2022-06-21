@@ -6,7 +6,6 @@
 
 * Pre-requisites
 #+BEGIN_SRC emacs-lisp
-
   ;; INSTALL PACKAGES
 
   ;; use-package
@@ -103,6 +102,10 @@
       (message (concat fpln " copied to clipboard"))))
 
 #+END_SRC
+
+#+RESULTS:
+: vmj/copy-file-line-matlab
+
 ** Frame title
 The default frame title isn't useful. This binds it to the name of the current
 project:
@@ -118,6 +121,9 @@ Why not?
 #+BEGIN_SRC emacs-lisp
   (global-prettify-symbols-mode t)
 #+END_SRC
+
+#+RESULTS:
+: t
 
 ** Hide certain modes from the modeline
 
@@ -144,7 +150,6 @@ package.
   (diminish-minor-mode 'projectile 'projectile-mode)
   (diminish-minor-mode 'ruby-end 'ruby-end-mode)
   (diminish-minor-mode 'subword 'subword-mode)
-  (diminish-minor-mode 'undo-tree 'undo-tree-mode)
   (diminish-minor-mode 'yard-mode 'yard-mode)
   (diminish-minor-mode 'yasnippet 'yas-minor-mode)
   (diminish-minor-mode 'wrap-region 'wrap-region-mode)
@@ -213,7 +218,7 @@ package.
 #+END_SRC
 
 #+RESULTS:
-: ((font . DejaVu Sans Mono 13) (fullscreen . fullboth) (vertical-scroll-bars))
+: ((font . DejaVu Sans Mono 11) (font . DejaVu Sans Mono 13) (fullscreen . fullboth) (vertical-scroll-bars))
 ** Custom solarized-dark theme
 
 I like the solarized-dark theme. I prefer keeping all the characters in the same
@@ -242,6 +247,10 @@ side and font, though.
                   (vmj/apply-solarized-theme)))
     (vmj/apply-solarized-theme))
 #+END_SRC
+
+#+RESULTS:
+: t
+
 ** Windows
 #+BEGIN_SRC emacs-lisp
 
@@ -289,7 +298,6 @@ Org bullets makes things look pretty
 #+END_SRC
 
 #+RESULTS:
-| flycheck-mode | er/add-org-mode-expansions | turn-on-auto-fill | (lambda nil (setq fill-column 80)) | flyspell-mode | (lambda nil (org-bullets-mode 1)) | (closure (org--rds reftex-docstruct-symbol org-element-greater-elements org-clock-history org-agenda-current-date org-with-time org-defdecode org-def org-read-date-inactive org-ans2 org-ans1 org-columns-current-fmt-compiled org-clock-current-task org-clock-effort org-agenda-skip-function org-agenda-skip-comment-trees org-agenda-archives-mode org-end-time-was-given org-time-was-given org-log-note-extra org-log-note-purpose org-log-post-message org-last-inserted-timestamp org-last-changed-timestamp org-entry-property-inherited-from org-blocked-by-checkboxes org-state org-agenda-headline-snapshot-before-repeat org-capture-last-stored-marker org-agenda-start-on-weekday org-agenda-buffer-tmp-name org-priority-regexp org-mode-abbrev-table org-mode-syntax-table buffer-face-mode-face org-tbl-menu org-org-menu org-struct-menu org-entities org-last-state org-id-track-globally org-clock-start-time texmathp-why remember-data-file org-agenda-tags-todo-honor-ignore-options iswitchb-temp-buflist calc-embedded-open-mode calc-embedded-open-formula calc-embedded-close-formula align-mode-rules-list org-emphasis-alist org-emphasis-regexp-components org-export-registered-backends org-modules org-babel-load-languages org-id-overriding-file-name org-indent-indentation-per-level org-element-paragraph-separate ffap-url-regexp org-inlinetask-min-level t) nil (add-hook (quote change-major-mode-hook) (quote org-show-all) (quote append) (quote local))) | (closure (org-src-window-setup *this* org-babel-confirm-evaluate-answer-no org-babel-tangle-uncomment-comments org-src-preserve-indentation org-src-lang-modes org-edit-src-content-indentation org-babel-library-of-babel t) nil (add-hook (quote change-major-mode-hook) (quote org-babel-show-result-all) (quote append) (quote local))) | org-babel-result-hide-spec | org-babel-hide-all-hashes | org-eldoc-load | org-ac/setup-current-buffer |
 
 ** org custom variables
 #+BEGIN_SRC emacs-lisp
@@ -304,13 +312,13 @@ Org bullets makes things look pretty
 
   (setq org-file-apps
         (append '(
-                  ("\\.pdf\\'" . "okular %s")
+                  ("\\.pdf\\'" . "evince %s")
                   )))
 
 #+END_SRC
 
 #+RESULTS:
-: ((\.pdf\' . okular %s))
+: ((\.pdf\' . evince %s))
 
 ** org agenda
 #+BEGIN_SRC emacs-lisp
@@ -326,7 +334,6 @@ Org bullets makes things look pretty
   (setq org-agenda-files (list "~/Dropbox/orgfiles/i.org"
                                "~/Dropbox/orgfiles/arts.org"
                                "~/Dropbox/orgfiles/books.org"
-                               "~/Dropbox/orgfiles/eee.org"
                                "~/Dropbox/orgfiles/gcal.org"
                                "~/Dropbox/orgfiles/inbox.org"))
 
@@ -391,7 +398,7 @@ Org bullets makes things look pretty
            "* %?\n%u" :prepend t)
           ("w" "Word" entry (file+headline "~/Dropbox/orgfiles/books.org" "Words")
            "* %?\n" :prepend t)
-          ("p" "Phrase" entry (file+headline "~/Dropbox/orgfiles/Words.org" "Phrases")
+          ("p" "Phrase" entry (file+headline "~/Dropbox/orgfiles/books.org" "Phrases")
            "* %?\n" :prepend t)
           ("e" "EPSE" entry (file+headline "~/Dropbox/orgfiles/epse.org" "Unsorted Notes")
            "* %?\n%u" :prepend t)
@@ -402,6 +409,7 @@ Org bullets makes things look pretty
 
 #+RESULTS:
 | a | Appointment | entry | (file ~/Dropbox/orgfiles/gcal.org) | * %? |
+
 
 
 
@@ -666,17 +674,14 @@ See https://github.com/abo-abo/avy for more info
      "frequent"
      ("f" counsel-find-file "find-file")
      ("j" org-journal-new-entry "journal new entry")
-     ("s" (find-file "/local-ssd/vjayakri") "ssd")
-     ("2" (find-file "/ssd2") "ssd2")
      ("b" (find-file "~/Dropbox") "DB")
      ("d" (find-file "~/Downloads") "Downloads")
      ("v" (find-file "~/vinotes/posts") "mindtoilet")
      ("m" (find-file "~/projects/msc") "msc")
+     ("p" (find-file "~/projects") "projects")
      ("n" narrow-or-widen-dwim "narrow-or-widen")
      ("V" peep-dired "peep view")
-     ("l" mlint-clear-warnings "mlint clear")
      ("r" revert-buffer "refresh")
-     ("p" crepro "projectile")
      ("w" auto-fill-mode "auto wrap")
      ("g" (find-file "~/projects/cpp/graph") "graph")
      ("c" vmj/copy-file-line-matlab "copy file line to clipboard")
@@ -797,14 +802,6 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 
 #+RESULTS:
-
-** Undo Tree
-#+BEGIN_SRC
-    (use-package undo-tree
-      :ensure t
-      :init
-      (global-undo-tree-mode))
-#+END_SRC
 ** Reveal.js
 #+BEGIN_SRC emacs-lisp
     (use-package ox-reveal
@@ -857,7 +854,6 @@ See https://github.com/abo-abo/avy for more info
   ;; This line actually replaces Emacs' entire narrowing keymap, that's
   ;; how much I like this command. Only copy it if that's what you want.
   (define-key ctl-x-map "n" #'narrow-or-widen-dwim)
-
 #+END_SRC
 
 
@@ -948,6 +944,9 @@ See https://github.com/abo-abo/avy for more info
      (org . t)
      (latex . t )
      ))
+
+(setq org-babel-python-command "python3")
+(setq org-latex-caption-above nil)
 #+END_SRC
 ** Projectile
 #+BEGIN_SRC
@@ -1071,63 +1070,74 @@ See https://github.com/abo-abo/avy for more info
 
 #+END_SRC
 ** LaTeX
-#+BEGIN_SRC
+#+begin_src emacs-lisp
+(defun org-export-as-pdf-and-open ()
+  (interactive)
+  (save-buffer)
+  (org-open-file (org-latex-export-to-pdf)))
 
-  (add-to-list 'org-latex-classes
-                 '("apa6"
-                   "\\documentclass{apa6}"
-                   ("\\section{%s}" . "\\section*{%s}")
-                   ("\\subsection{%s}" . "\\subsection*{%s}")
-                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                   ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+(add-hook 
+ 'org-mode-hook
+ (lambda()
+   (define-key org-mode-map 
+       (kbd "<f5>") 'org-export-as-pdf-and-open)))
+#+end_src
 
-    (use-package org-ref)
-    (use-package  ivy-bibtex)
+#+RESULTS:
+| (lambda nil (define-key org-mode-map (kbd <f5>) 'org-export-as-pdf-and-open)) | flycheck-mode | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | er/add-org-mode-expansions | turn-on-auto-fill | (lambda nil (setq fill-column 80)) | flyspell-mode | (lambda nil (org-bullets-mode 1)) | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | org-ac/setup-current-buffer |
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-ref)
+  (use-package bibtex-completion)
+  (use-package ivy-bibtex)
 
   (setq bibtex-completion-bibliography '("~/Dropbox/emacs/bibliography/references.bib")
-            bibtex-completion-library-path '("~/Dropbox/emacs/bibliography/bibtex-pdfs/")
-            bibtex-completion-notes-path "~/Dropbox/emacs/bibliography/notes/"
-            bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+        bibtex-completion-library-path '("~/Dropbox/emacs/bibliography/bibtex-pdfs/")
+        bibtex-completion-notes-path "~/Dropbox/emacs/bibliography/notes/"
+        bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
 
-            bibtex-completion-additional-search-fields '(keywords)
-            bibtex-completion-display-formats
-            '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
-              (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
-              (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-              (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-              (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
-            bibtex-completion-pdf-open-function
-            (lambda (fpath)
-              (call-process "open" nil 0 nil fpath)))
+        bibtex-completion-additional-search-fields '(keywords)
+        bibtex-completion-display-formats
+        '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+          (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+          (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+          (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+          (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
+        bibtex-completion-pdf-open-function
+        (lambda (fpath)
+          (call-process "open" nil 0 nil fpath)))
 
 
-    (require 'bibtex)
+        ;; (require 'bibtex)			
 
-    (setq bibtex-autokey-year-length 4
-            bibtex-autokey-name-year-separator "-"
-            bibtex-autokey-year-title-separator "-"
-            bibtex-autokey-titleword-separator "-"
-            bibtex-autokey-titlewords 2
-            bibtex-autokey-titlewords-stretch 1
-            bibtex-autokey-titleword-length 5
-            org-ref-bibtex-hydra-key-binding (kbd "H-b"))
+        ;; (setq bibtex-autokey-year-length 4
+        ;;         bibtex-autokey-name-year-separator "-"
+        ;;         bibtex-autokey-year-title-separator "-"
+        ;;         bibtex-autokey-titleword-separator "-"
+        ;;         bibtex-autokey-titlewords 2
+        ;;         bibtex-autokey-titlewords-stretch 1
+        ;;         bibtex-autokey-titleword-length 5
+        ;;         org-ref-bibtex-hydra-key-binding (kbd "H-b"))
 
-    (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)
+        ;; (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)
 
-    (require 'org-ref-ivy)
+        ;; (require 'org-ref-ivy)
 
-    (setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
-          org-ref-insert-cite-function 'org-ref-cite-insert-ivy
-          org-ref-insert-label-function 'org-ref-insert-label-link
-          org-ref-insert-ref-function 'org-ref-insert-ref-link
-          org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body)))
+        ;; (setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
+        ;;       org-ref-insert-cite-function 'org-ref-cite-insert-ivy
+        ;;       org-ref-insert-label-function 'org-ref-insert-label-link
+        ;;       org-ref-insert-ref-function 'org-ref-insert-ref-link
+        ;;       org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body)))
 
-    (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
-  ;  (setq org-pandoc-options-for-beamer-pdf '((pdf-engine . "xelatex"))) ;
-  ;  (setq org-pandoc-options-for-latex-pdf '((pdf-engine . "pdflatex"))) ;
+    ;    (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+    (setq org-latex-pdf-process (list "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
+      ;  (setq org-pandoc-options-for-beamer-pdf '((pdf-engine . "xelatex"))) ;
+      ;  (setq org-pandoc-options-for-latex-pdf '((pdf-engine . "pdflatex"))) ;
 
 #+END_SRC
+
+#+RESULTS:
+| latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f |
 
 #+begin_src elisp
 (defun my-org-latex-yas ()
@@ -1440,6 +1450,7 @@ See https://github.com/abo-abo/avy for more info
    (global-set-key (kbd "<f9>") 'gud-print)
    (global-set-key (kbd "<f10>") 'gud-next)
    (global-set-key (kbd "<f11>") 'gud-step)
+
 #+END_SRC
 
 #+RESULTS:
@@ -2072,14 +2083,14 @@ Use flycheck in the appropriate buffers:
                    "geeqie"
                    '(file))
              (list (openwith-make-extension-regexp
-                    '("doc" "xls" "ppt" "odt" "ods" "odg" "odp"))
+                    '("doc" "docx" "xls" "ppt" "odt" "ods" "odg" "odp"))
                    "libreoffice"
                    '(file))
              '("\\.lyx" "lyx" (file))
              '("\\.chm" "kchmviewer" (file))
              (list (openwith-make-extension-regexp
                     '("pdf" "ps" "ps.gz" "dvi"))
-                   "okular"
+                   "evince"
                    '(file))
              ))
       (openwith-mode 1))
@@ -2090,40 +2101,41 @@ Use flycheck in the appropriate buffers:
 : t
 * Key bindings 
 #+BEGIN_SRC emacs-lisp
-    ;;Keyboard mappings
+      ;;Keyboard mappings
 
-    (global-set-key (kbd "\e\ei") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/i.org")))
-    (global-set-key (kbd "\e\el") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/links.org")))
-    (global-set-key (kbd "\e\ea") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/arts.org")))
-    (global-set-key (kbd "\e\en") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/notes.org")))
-    (global-set-key (kbd "\e\ec") (lambda () (interactive) (find-file "~/.emacs.d/myinit.org")))
-    (global-set-key (kbd "\e\eb") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/books.org")))
-    (global-set-key (kbd "\e\em") (lambda () (interactive) (find-file "~/Dropbox/music/sangeetham.org")))
+      (global-set-key (kbd "\e\ei") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/i.org")))
+      (global-set-key (kbd "\e\el") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/links.org")))
+      (global-set-key (kbd "\e\ea") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/arts.org")))
+      (global-set-key (kbd "\e\en") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/notes.org")))
+      (global-set-key (kbd "\e\ec") (lambda () (interactive) (find-file "~/.emacs.d/myinit.org")))
+      (global-set-key (kbd "\e\eb") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/books.org")))
+      (global-set-key (kbd "\e\ee") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/epse.org")))
+      (global-set-key (kbd "\e\em") (lambda () (interactive) (find-file "~/Dropbox/music/sangeetham.org")))
 
 
 
-    (global-set-key (kbd "<f4>") 'kmacro-end-and-call-macro)
-    (global-set-key (kbd "<C-f5>") 'revert-buffer)
-    (global-set-key (kbd "C-\\") "\C-a\C- \C-e\M-w") ;copy current line
-    (global-set-key (kbd "<C-f7>") 'toggle-truncate-lines)
-    (global-set-key (kbd "C-`") 'other-window)
-    (global-set-key (kbd "C-o") 'other-window)
-    (global-set-key (kbd "<C-iso-lefttab>") 'other-window)
-    (global-set-key (kbd "C-<return>") 'jump-to-next-newline)
-    (global-set-key (kbd "C-x o") 'swap-window)
-    (global-set-key (kbd "<C-f6>") 'mlint-clear-warnings)
+      (global-set-key (kbd "<f4>") 'kmacro-end-and-call-macro)
+      (global-set-key (kbd "<C-f5>") 'revert-buffer)
+      (global-set-key (kbd "C-\\") "\C-a\C- \C-e\M-w") ;copy current line
+      (global-set-key (kbd "<C-f7>") 'toggle-truncate-lines)
+      (global-set-key (kbd "C-`") 'other-window)
+      (global-set-key (kbd "C-o") 'other-window)
+      (global-set-key (kbd "<C-iso-lefttab>") 'other-window)
+      (global-set-key (kbd "C-<return>") 'jump-to-next-newline)
+      (global-set-key (kbd "C-x o") 'swap-window)
+      (global-set-key (kbd "<C-f6>") 'mlint-clear-warnings)
 
-    (global-set-key (kbd "C-<") 'beginning-of-buffer)
-    (global-set-key (kbd "C->") 'end-of-buffer)
+      (global-set-key (kbd "C-<") 'beginning-of-buffer)
+      (global-set-key (kbd "C->") 'end-of-buffer)
 
-    (global-set-key (kbd "<C-f8>") 'view-mode)
+      (global-set-key (kbd "<C-f8>") 'view-mode)
 
-    (global-set-key (kbd "C-:") 'iedit-mode)
+      (global-set-key (kbd "C-:") 'iedit-mode)
 
-  ;; example of binding keys only when html-mode is active
+    ;; example of binding keys only when html-mode is active
 
-  (define-key dired-mode-map "\C-o"    'other-window)
-;;  (define-key  compilation-mode-map "\C-o"  'other-window)
+    (define-key dired-mode-map "\C-o"    'other-window)
+  ;;  (define-key  compilation-mode-map "\C-o"  'other-window)
 
 
 #+END_SRC
@@ -2144,5 +2156,11 @@ Use flycheck in the appropriate buffers:
 #+END_SRC
 
 #+RESULTS:
+* keys
+#+begin_src 
+(require 'epa-file)
+(epa-file-enable)
+#+end_src
 
-
+#+RESULTS:
+: ‘epa-file’ already enabled
