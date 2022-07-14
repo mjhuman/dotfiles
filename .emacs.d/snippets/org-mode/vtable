@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name:vtbl
+# key:vtbl
+# --
+#+CAPTION:$1
+#+NAME:tbl:$2
+#+ATTR_LATEX: :placement [H] :center t :align
+$0

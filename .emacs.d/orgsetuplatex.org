@@ -7,18 +7,15 @@
 #+exclude_tags: noexport
 #+creator: Emacs 27.2 (Org mode 9.4.5)
 #+options: toc:nil
-#+LATEX_CLASS_OPTIONS: [11pt]
+#+LATEX_CLASS_OPTIONS: [12pt]
 #+latex_header: \usepackage[a4paper]{geometry}
 #+latex_header: \usepackage[scaled]{times} \renewcommand\familydefault{\sfdefault}
 #+latex_header: \usepackage{mathtools}
 #+latex_header: \usepackage{float}
-#+latex_header: \restylefloat{table}
 #+latex_header: \restylefloat{image}
 #+latex_header: \usepackage{textcomp}
 #+latex_header: \usepackage{siunitx}
 #+LATEX_HEADER: \usepackage{booktabs}
-#+LATEX_HEADER: \usepackage{xcolor}
-#+LATEX_HEADER: \usepackage{colortbl}
 #+LATEX_HEADER: \makeatletter \@ifpackageloaded{geometry}{\geometry{margin=2cm}}{\usepackage[margin=2cm]{geometry}} \makeatother
 #+LATEX_HEADER: \usepackage{amsmath}
 #+LATEX_HEADER: \usepackage{hyperref}
@@ -38,7 +35,5 @@
 #+LATEX_HEADER: \rfoot{}
 #+LATEX_HEADER: \usepackage{parskip}
 #+LATEX_HEADER: \usepackage{booktabs}
-#+LATEX_HEADER: \usepackage[table]{xcolor}
-#+LATEX_HEADER: \usepackage{colortbl}
 #+LATEX_HEADER: \usepackage{cite}
 #+EXPORT_EXCLUDE_TAGS: noexport

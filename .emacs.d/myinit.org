@@ -224,7 +224,7 @@ package.
 I like the solarized-dark theme. I prefer keeping all the characters in the same
 side and font, though.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC  emacs-lisp
 (use-package solarized-theme
 :ensure t)
   (defun vmj/apply-solarized-theme ()
@@ -246,6 +246,15 @@ side and font, though.
                 (lambda (frame)
                   (vmj/apply-solarized-theme)))
     (vmj/apply-solarized-theme))
+#+END_SRC
+
+#+RESULTS:
+: t
+
+** apropos theme
+#+BEGIN_SRC 
+(use-package apropospriate-theme)
+(load-theme 'apropospriate-dark t)
 #+END_SRC
 
 #+RESULTS:
@@ -946,7 +955,6 @@ See https://github.com/abo-abo/avy for more info
      ))
 
 (setq org-babel-python-command "python3")
-(setq org-latex-caption-above nil)
 #+END_SRC
 ** Projectile
 #+BEGIN_SRC
@@ -1085,6 +1093,14 @@ See https://github.com/abo-abo/avy for more info
 
 #+RESULTS:
 | (lambda nil (define-key org-mode-map (kbd <f5>) 'org-export-as-pdf-and-open)) | flycheck-mode | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | er/add-org-mode-expansions | turn-on-auto-fill | (lambda nil (setq fill-column 80)) | flyspell-mode | (lambda nil (org-bullets-mode 1)) | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | org-ac/setup-current-buffer |
+
+#+BEGIN_SRC emacs-lisp
+; table caption
+;; (setq org-latex-caption-above 'table)
+#+END_SRC
+
+#+RESULTS:
+: table
 
 #+BEGIN_SRC emacs-lisp
   (use-package org-ref)
@@ -1491,11 +1507,22 @@ See https://github.com/abo-abo/avy for more info
 
 ** Python
 #+BEGIN_SRC emacs-lisp
-    (use-package elpy
-          :ensure t)
+(setq python-shell-interpreter "python3")
+(setq python-shell-interpreter-args "-m IPython --simple-prompt -i")
+(setq flycheck-python-pycompile-executable "python3")
+(add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
 
-    (elpy-enable)
+(set-language-environment "UTF-8")
+(setenv "PYTHONIOENCODING" "utf-8") 
+(add-to-list 'process-coding-system-alist '("elpy" . (utf-8 . utf-8))) 
+(add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
+(add-to-list 'process-coding-system-alist '("flake8" . (utf-8 . utf-8)))
 
+(use-package elpy
+  :ensure t
+  :defer t
+  :init
+  (advice-add 'python-mode :before 'elpy-enable))
   ;;   (use-package conda
   ;;     :ensure t)
 
@@ -1513,7 +1540,6 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 
 #+RESULTS:
-: /home/mj/anaconda3/
 
 * Shell
 ** Better Shell
@@ -2111,6 +2137,8 @@ Use flycheck in the appropriate buffers:
       (global-set-key (kbd "\e\eb") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/books.org")))
       (global-set-key (kbd "\e\ee") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/epse.org")))
       (global-set-key (kbd "\e\em") (lambda () (interactive) (find-file "~/Dropbox/music/sangeetham.org")))
+      (global-set-key (kbd "\e\ef") (lambda () (interactive) (find-file "~/fre/fre.org")))
+      (global-set-key (kbd "\e\ed") (lambda () (interactive) (find-file "~/dissertation/journal.org")))
 
 
 

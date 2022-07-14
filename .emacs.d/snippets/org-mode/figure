@@ -1,8 +1,9 @@
 # -*- mode: snippet -*-
-# name: figure
-# key: fig
+# name:figure
+# key:vfig
 # --
+#+CAPTION:$1
+#+NAME:fig:$2
+#+ATTR_LATEX: :placement [H] :scale 0.3 
+[[file:images/$3.png]]
 $0
-#+CAPTION: $1
-#+NAME:   fig:$1
-[[~/Dropbox/script/characters/$1.png]]

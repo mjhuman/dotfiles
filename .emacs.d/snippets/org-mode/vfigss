@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: vfigure side by side
+# key: vfigss
+# --
+#+BEGIN_SRC latex
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering $1]{{\includegraphics[width=8cm]{images/$2.PNG} }}%
+    \qquad
+    \subfloat[\centering $3]{{\includegraphics[width=8cm]{images/$4.PNG} }}%
+    \caption{$5}%
+    \label{fig:$6}%
+\end{figure}
+#+END_SRC
