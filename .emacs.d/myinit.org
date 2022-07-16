@@ -720,49 +720,49 @@ See https://github.com/abo-abo/avy for more info
 * Necessary
 ** Misc packages
 #+BEGIN_SRC emacs-lisp
-      
-                                          ; Highlights the current cursor line
-  (when window-system
-    (global-hl-line-mode))
 
-                                          ; flashes the cursor's line when you scroll
-  (use-package beacon
-    :ensure t
-    :config
-    (beacon-mode 1)
-                                          ; (setq beacon-color "#666600")
-    )
+                                            ; Highlights the current cursor line
+    (when window-system
+      (global-hl-line-mode))
 
-                                          ; deletes all the whitespace when you hit backspace or delete
+                                            ; flashes the cursor's line when you scroll
+    (use-package beacon
+      :ensure t
+      :config
+      (beacon-mode 1)
+                                            ; (setq beacon-color "#666600")
+      )
+
+                                            ; deletes all the whitespace when you hit backspace or delete
   (use-package hungry-delete
-    :ensure t
-    :config
-    (global-hungry-delete-mode))
+    :diminish
+    :hook (after-init . global-hungry-delete-mode)
+    :init (setq hungry-delete-except-modes
+                '(help-mode minibuffer-mode minibuffer-inactive-mode calc-mode)))
+                                            ; expand the marked region in semantic increments (negative prefix to reduce region)
+    (use-package expand-region
+      :ensure t
+      :after (org)
+      :config 
+      (global-set-key (kbd "C-=") 'er/expand-region))
 
-                                          ; expand the marked region in semantic increments (negative prefix to reduce region)
-  (use-package expand-region
-    :ensure t
-    :after (org)
-    :config 
-    (global-set-key (kbd "C-=") 'er/expand-region))
+    (setq save-interprogram-paste-before-kill t)
 
-  (setq save-interprogram-paste-before-kill t)
+                                            ; font scaling
+    (use-package default-text-scale
+      :ensure t
+      :config
+      (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
+      (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
 
-                                          ; font scaling
-  (use-package default-text-scale
-    :ensure t
-    :config
-    (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
-    (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
+                                            ;origami folding
+    (use-package origami
+      :ensure t)
 
-                                          ;origami folding
-  (use-package origami
-    :ensure t)
-
-  (use-package which-key
-    :ensure t 
-    :config
-    (which-key-mode))
+    (use-package which-key
+      :ensure t 
+      :config
+      (which-key-mode))
 
 #+END_SRC
 
@@ -1506,37 +1506,37 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 
 ** Python
+*** default settings
 #+BEGIN_SRC emacs-lisp
-(setq python-shell-interpreter "python3")
-(setq python-shell-interpreter-args "-m IPython --simple-prompt -i")
-(setq flycheck-python-pycompile-executable "python3")
-(add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
+  (setq python-shell-interpreter "python3")
+  (setq python-shell-interpreter-args "-m IPython --simple-prompt -i")
+  (setq flycheck-python-pycompile-executable "python3")
+  (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
 
-(set-language-environment "UTF-8")
-(setenv "PYTHONIOENCODING" "utf-8") 
-(add-to-list 'process-coding-system-alist '("elpy" . (utf-8 . utf-8))) 
-(add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
-(add-to-list 'process-coding-system-alist '("flake8" . (utf-8 . utf-8)))
+  (set-language-environment "UTF-8")
+  (setenv "PYTHONIOENCODING" "utf-8") 
+  (add-to-list 'process-coding-system-alist '("elpy" . (utf-8 . utf-8))) 
+  (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
+  (add-to-list 'process-coding-system-alist '("flake8" . (utf-8 . utf-8)))
+#+END_SRC
+*** elpy
+#+BEGIN_SRC emacs-lisp
+  (use-package elpy
+    :ensure t
+    :defer t
+    :init
+    (advice-add 'python-mode :before 'elpy-enable))
+#+END_SRC
+*** pipenv
+#+BEGIN_SRC emacs-lisp
+  (use-package pipenv
+    :hook (python-mode . pipenv-mode)
+    :init
+    (setq
+     pipenv-projectile-after-switch-function
+     #'pipenv-projectile-after-switch-extended))
 
-(use-package elpy
-  :ensure t
-  :defer t
-  :init
-  (advice-add 'python-mode :before 'elpy-enable))
-  ;;   (use-package conda
-  ;;     :ensure t)
-
-  ;; ;; if you want interactive shell support, include:
-  ;; (conda-env-initialize-interactive-shells)
-  ;; ;; if you want eshell support, include:
-  ;; (conda-env-initialize-eshell)
-  ;; ;; if you want auto-activation (see below for details), include:
-  ;; (conda-env-autoactivate-mode t)
-
-  ;; (custom-set-variables
-  ;;  '(conda-anaconda-home "/home/mj/anaconda3/"))
-
-  ;; (setq conda-env-home-directory (expand-file-name "~/anaconda3/"))
+  (setq pipenv-with-flycheck nil)
 #+END_SRC
 
 #+RESULTS:
