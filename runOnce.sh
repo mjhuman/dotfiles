@@ -2,6 +2,8 @@
 
 # install git
 sudo apt-get install git
+git config --global user.name "vinodhmj"
+git config --global user.email "vinodhmj@gmail.com"
 
 # clone dotfiles
 git clone https://github.com/vinodhmj/dotfiles.git dotfiles
