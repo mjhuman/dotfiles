@@ -4,11 +4,6 @@
 unset LANG
 export LC_ALL=POSIX
 
-export ALTERNATE_EDITOR=""
-export EDITOR=emacsclient
-## ------------------------------
-## -- 3) User-customized code  --
-## ------------------------------
 
 export TERM=xterm-256color
 
