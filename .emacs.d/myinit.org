@@ -343,10 +343,12 @@ Org bullets makes things look pretty
   (setq org-agenda-files (list "~/Dropbox/orgfiles/i.org"
                                "~/Dropbox/orgfiles/arts.org"
                                "~/Dropbox/orgfiles/books.org"
-                               "~/Dropbox/orgfiles/gcal.org"
                                "~/Dropbox/orgfiles/inbox.org"))
 
 #+END_SRC
+
+#+RESULTS:
+| ~/Dropbox/orgfiles/i.org | ~/Dropbox/orgfiles/arts.org | ~/Dropbox/orgfiles/books.org | ~/Dropbox/orgfiles/inbox.org |
 
 ** org ac
 #+BEGIN_SRC emacs-lisp
