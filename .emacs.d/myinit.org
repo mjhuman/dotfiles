@@ -6,25 +6,30 @@
 
 * Pre-requisites
 #+BEGIN_SRC emacs-lisp
-  ;; INSTALL PACKAGES
+   ;; INSTALL PACKAGES
 
-  ;; use-package
-  (unless (package-installed-p 'use-package)
-    (package-install 'use-package))
+   ;; use-package
+   (unless (package-installed-p 'use-package)
+     (package-install 'use-package))
 
-  (setq use-package-verbose t)
-  (setq use-package-always-ensure t)
+   (setq use-package-verbose t)
+   (setq use-package-always-ensure t)
 
-  (set-default-coding-systems 'utf-8)
-  (prefer-coding-system 'utf-8)
+   (set-default-coding-systems 'utf-8)
+   (prefer-coding-system 'utf-8)
 
-  ;; set browser to firefox
-  (setq browse-url-browser-function 'browse-url-firefox)
+   ;; set browser to firefox
+   (setq browse-url-browser-function 'browse-url-firefox)
+
+  ; HRS: Disable deprecation warnings about cl. The cl library has been deprecated, but lots of packages still use it. I can’t control that, but I can disable the warnings.
+   (setq byte-compile-warnings '(cl-functions))
+
+  (setq-default tab-width 2)
 
 #+END_SRC
 
 #+RESULTS:
-: browse-url-firefox
+: 2
 
 * Paradox
 #+BEGIN_SRC emacs-lisp
@@ -46,7 +51,6 @@
 * better defualts
 #+BEGIN_SRC emacs-lisp
   (scroll-bar-mode -1)
-  (menu-bar-mode -1)
 #+END_SRC
 
 #+RESULTS:
@@ -772,7 +776,7 @@ See https://github.com/abo-abo/avy for more info
 : t
 
 ** Autocomplete
-#+BEGIN_SRC  emacs-lisp
+#+BEGIN_SRC  
   (use-package auto-complete
     :ensure t
     :init
@@ -1258,6 +1262,13 @@ See https://github.com/abo-abo/avy for more info
          ("<f2>" . bm-next)
          ("<S-f2>" . bm-previous)))
 #+END_SRC
+** realgud
+#+BEGIN_SRC emacs-lisp
+(use-package realgud)
+#+END_SRC
+
+#+RESULTS:
+
 ** misc
 #+BEGIN_SRC emacs-lisp
   (global-auto-revert-mode 1)
@@ -1521,6 +1532,17 @@ See https://github.com/abo-abo/avy for more info
   (add-to-list 'process-coding-system-alist '("python" . (utf-8 . utf-8)))
   (add-to-list 'process-coding-system-alist '("flake8" . (utf-8 . utf-8)))
 #+END_SRC
+*** pylint
+#+BEGIN_SRC emacs-lisp
+  (use-package pylint
+    :ensure t)
+    (add-hook 'after-init-hook #'global-flycheck-mode)
+    
+#+END_SRC
+
+#+RESULTS:
+| global-flycheck-mode | synosaurus-mode | global-hungry-delete-mode | x-wm-set-size-hint | tramp-register-archive-file-name-handler | magit-maybe-define-global-key-bindings | table--make-cell-map |
+
 *** elpy
 #+BEGIN_SRC emacs-lisp
   (use-package elpy
