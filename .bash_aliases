@@ -30,4 +30,6 @@ alias fqt='cd ~/projects/qt'
 alias em='emacs -nw'     # No X11 windows
 alias eqq='emacs -nw -Q' # No config and no X11
 alias ec='emacsclient -c -a ""'
+alias pishell='pipenv shell'
+alias jlab='jupyter-lab'
 
