@@ -36,4 +36,5 @@
 #+LATEX_HEADER: \usepackage{parskip}
 #+LATEX_HEADER: \usepackage{booktabs}
 #+LATEX_HEADER: \usepackage{cite}
+#+LATEX_HEADER: \usepackage{biblatex}
 #+EXPORT_EXCLUDE_TAGS: noexport

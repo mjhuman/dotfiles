@@ -1,0 +1,45 @@
+#+LATEX_HEADER: \RequirePackage{pdfmanagement-testphase}
+#+LATEX_HEADER: \DeclareDocumentMetadata{pdfversion=1.7,lang=en-UK}
+#+LaTeX_CLASS: uom-thesis
+#+LaTeX_CLASS_OPTIONS: [times, thesis]
+#+LATEX_HEADER: \usepackage{graphicx,psfrag,color} % for postscript graphics files
+#+LATEX_HEADER: \graphicspath{ {./images/} }
+#+LATEX_HEADER: \usepackage{amsmath}               % assumes amsmath package installed
+#+LATEX_HEADER: \allowdisplaybreaks[1]           % allow eqnarrays to break across pages
+#+LATEX_HEADER: \usepackage{amssymb}               % assumes amsmath package installed 
+#+LATEX_HEADER: \usepackage{url}                   % format hyperlinks correctly
+#+LATEX_HEADER: \usepackage{rotating}              % allow portrait figures and tables
+#+LATEX_HEADER: \usepackage{multirow}              % allows merging of rows in tables
+#+LATEX_HEADER: \usepackage{lscape}                % allows pages to be typeset in landscape mode
+#+LATEX_HEADER: \usepackage{tabularx}              % allows fixed width tables
+#+LATEX_HEADER: \usepackage{verbatim}              % enhanced version of built-in verbatim environment
+#+LATEX_HEADER: \usepackage{footnote}              % allows more control over footnote environments
+#+LATEX_HEADER: \usepackage{float}                 % allows H option on floats to force here placement
+#+LATEX_HEADER: \usepackage{booktabs}              % improve table line spacing
+#+LATEX_HEADER: \usepackage{lipsum}                % for adding dummy text here
+#+LATEX_HEADER: \usepackage{subcaption}            % for multiple sub-figures in a single float
+
+#+LATEX_HEADER: % Add your packages here
+#+LATEX_HEADER: % Optional: for adding alt-text to images:
+#+LATEX_HEADER: %\usepackage{pdfcomment}            % for alt text for accessibility
+#+LATEX_HEADER: % Then to add images use:
+#+LATEX_HEADER: % \pdftooltip{\includegraphics[width=0.5\textwidth]{image.pdf}}{Alt-text here}
+#+LATEX_HEADER: % This makes the text in the image non-select-able though (assuming it's a vector file)
+
+#+LATEX_HEADER: % Custom commands
+#+LATEX_HEADER: \newcommand{\degree}{\ensuremath{^\circ}}
+#+LATEX_HEADER: \newcommand{\sus}[1]{$^{\mbox{\scriptsize #1}}$} % superscript in text (e.g. 1st)
+#+LATEX_HEADER: \newcommand{\sub}[1]{$_{\mbox{\scriptsize #1}}$} % subscript in text
+#+LATEX_HEADER: \newcommand{\sect}[1]{Section~\ref{#1}}
+#+LATEX_HEADER: \newcommand{\fig}[1]{Fig.~\ref{#1}}
+#+LATEX_HEADER: \newcommand{\tab}[1]{Table~\ref{#1}}
+#+LATEX_HEADER: \newcommand{\equ}[1]{(\ref{#1})}
+#+LATEX_HEADER: \newcommand{\appx}[1]{Appendix~\ref{#1}}
+
+#+LATEX_HEADER: %%%%%%%%%%%%%%%%%% REFERENCES SETUP %%%%%%%%%%%%%%%%%%
+#+LATEX_HEADER: \usepackage[backend=biber,style=ieee,bibencoding=utf8,hyperref=auto]{biblatex}
+#+LATEX_HEADER:   \addbibresource{references.bib}
+#+LATEX_HEADER:   % Add more .bib files here if wanted
+
+#+LATEX_HEADER: % Bug fix which can't be applied in the .cls file
+#+LATEX_HEADER: \renewcommand*{\bibfont}{\large} 

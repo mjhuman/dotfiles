@@ -377,8 +377,8 @@ Org bullets makes things look pretty
         (org-journal-date-format "%d %B, %a")
         (org-journal-file-type `yearly)
         (org-journal-encrypt-journal t)
-        (org-journal-file-format "%Y")
-        (org-journal-enable-agenda-integration t))
+        (org-journal-file-format "%Y"))
+;        (org-journal-enable-agenda-integration t))
 
     (defun org-journal-find-location ()
       ;; Open today's journal, but specify a non-nil prefix argument in order to
@@ -509,8 +509,8 @@ Org bullets makes things look pretty
 ;; cancel above settings only for 'docx' format
 (setq org-pandoc-options-for-docx '((standalone . nil)))
 ;; special settings for beamer-pdf and latex-pdf exporters
-(setq org-pandoc-options-for-beamer-pdf '((pdf-engine . "xelatex")))
-(setq org-pandoc-options-for-latex-pdf '((pdf-engine . "pdflatex")))
+;; (setq org-pandoc-options-for-beamer-pdf '((pdf-engine . "xelatex")))
+;; (setq org-pandoc-options-for-latex-pdf '((pdf-engine . "pdflatex")))
 ;; special extensions for markdown_github output
 (setq org-pandoc-format-extensions '(markdown_github+pipe_tables+raw_html)))
 
@@ -1109,57 +1109,74 @@ See https://github.com/abo-abo/avy for more info
 : table
 
 #+BEGIN_SRC emacs-lisp
-  (use-package org-ref)
-  (use-package bibtex-completion)
-  (use-package ivy-bibtex)
+    (use-package org-ref)
+    (use-package bibtex-completion)
+    (use-package ivy-bibtex)
+    (require 'ox-latex)
 
-  (setq bibtex-completion-bibliography '("~/Dropbox/emacs/bibliography/references.bib")
-        bibtex-completion-library-path '("~/Dropbox/emacs/bibliography/bibtex-pdfs/")
-        bibtex-completion-notes-path "~/Dropbox/emacs/bibliography/notes/"
-        bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
+    ;; (setq bibtex-completion-bibliography '("~/Dropbox/emacs/bibliography/references.bib")
+    ;;       bibtex-completion-library-path '("~/Dropbox/emacs/bibliography/bibtex-pdfs/")
+    ;;       bibtex-completion-notes-path "~/Dropbox/emacs/bibliography/notes/"
+    ;;       bibtex-completion-notes-template-multiple-files "* ${author-or-editor}, ${title}, ${journal}, (${year}) :${=type=}: \n\nSee [[cite:&${=key=}]]\n"
 
-        bibtex-completion-additional-search-fields '(keywords)
-        bibtex-completion-display-formats
-        '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
-          (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
-          (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-          (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
-          (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
-        bibtex-completion-pdf-open-function
-        (lambda (fpath)
-          (call-process "open" nil 0 nil fpath)))
+    ;;       bibtex-completion-additional-search-fields '(keywords)
+    ;;       bibtex-completion-display-formats
+    ;;       '((article       . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${journal:40}")
+    ;;         (inbook        . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} Chapter ${chapter:32}")
+    ;;         (incollection  . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+    ;;         (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
+    ;;         (t             . "${=has-pdf=:1}${=has-note=:1} ${year:4} ${author:36} ${title:*}"))
+    ;;       bibtex-completion-pdf-open-function
+    ;;       (lambda (fpath)
+    ;;         (call-process "open" nil 0 nil fpath)))
 
 
-        ;; (require 'bibtex)			
+    ;; (require 'bibtex)			
 
-        ;; (setq bibtex-autokey-year-length 4
-        ;;         bibtex-autokey-name-year-separator "-"
-        ;;         bibtex-autokey-year-title-separator "-"
-        ;;         bibtex-autokey-titleword-separator "-"
-        ;;         bibtex-autokey-titlewords 2
-        ;;         bibtex-autokey-titlewords-stretch 1
-        ;;         bibtex-autokey-titleword-length 5
-        ;;         org-ref-bibtex-hydra-key-binding (kbd "H-b"))
+    ;; (setq bibtex-autokey-year-length 4
+    ;;         bibtex-autokey-name-year-separator "-"
+    ;;         bibtex-autokey-year-title-separator "-"
+    ;;         bibtex-autokey-titleword-separator "-"
+    ;;         bibtex-autokey-titlewords 2
+    ;;         bibtex-autokey-titlewords-stretch 1
+    ;;         bibtex-autokey-titleword-length 5
+    ;;         org-ref-bibtex-hydra-key-binding (kbd "H-b"))
 
-        ;; (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)
+    ;; (define-key bibtex-mode-map (kbd "H-b") 'org-ref-bibtex-hydra/body)
 
-        ;; (require 'org-ref-ivy)
+    ;; (require 'org-ref-ivy)
 
-        ;; (setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
-        ;;       org-ref-insert-cite-function 'org-ref-cite-insert-ivy
-        ;;       org-ref-insert-label-function 'org-ref-insert-label-link
-        ;;       org-ref-insert-ref-function 'org-ref-insert-ref-link
-        ;;       org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body)))
+    ;; (setq org-ref-insert-link-function 'org-ref-insert-link-hydra/body
+    ;;       org-ref-insert-cite-function 'org-ref-cite-insert-ivy
+    ;;       org-ref-insert-label-function 'org-ref-insert-label-link
+    ;;       org-ref-insert-ref-function 'org-ref-insert-ref-link
+    ;;       org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body)))
 
-    ;    (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+                                            ;    (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
     (setq org-latex-pdf-process (list "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
-      ;  (setq org-pandoc-options-for-beamer-pdf '((pdf-engine . "xelatex"))) ;
-      ;  (setq org-pandoc-options-for-latex-pdf '((pdf-engine . "pdflatex"))) ;
+                                            ;  (setq org-pandoc-options-for-beamer-pdf '((pdf-engine . "xelatex"))) ;
+                                            ;  (setq org-pandoc-options-for-latex-pdf '((pdf-engine . "pdflatex"))) ;
+
+
+  (with-eval-after-load 'ox-latex
+        (add-to-list 'org-latex-classes
+        '("uom-thesis"
+           "\\documentclass{uom_eee_dissertation_casson}
+           [NO-DEFAULT-PACKAGES]
+           [PACKAGES]
+           [EXTRA]"
+           ("\\section{%s}" . "\\section*{%s}")
+           ("\\subsection{%s}" . "\\subsection*{%s}")
+           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+           ("\\paragraph{%s}" . "\\paragraph*{%s}")
+           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
+  ;  (eval-after-load 'ox-latex (add-to-list 'org-export-latex-classes 'uom-thesis')) 
 
 #+END_SRC
 
 #+RESULTS:
-| latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f |
+| uom-thesis | \documentclass{uom_eee_dissertation_casson} |
 
 #+begin_src elisp
 (defun my-org-latex-yas ()
@@ -2130,7 +2147,7 @@ Use flycheck in the appropriate buffers:
              (list (openwith-make-extension-regexp
                     '("xbm" "pbm" "pgm" "ppm" "pnm"
                       "png" "gif" "bmp" "tif" "jpeg" "jpg"))
-                   "geeqie"
+                   "viewnior"
                    '(file))
              (list (openwith-make-extension-regexp
                     '("doc" "docx" "xls" "ppt" "odt" "ods" "odg" "odp"))

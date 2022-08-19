@@ -3,7 +3,7 @@
 # key:vfig
 # --
 #+CAPTION:$1
-#+NAME:fig:$2
+#+NAME:fig_$2
 #+ATTR_LATEX: :placement [H] :scale 0.3 
 [[file:images/$3.png]]
 $0
