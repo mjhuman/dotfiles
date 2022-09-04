@@ -1,5 +1,5 @@
-#+LATEX_HEADER: \RequirePackage{pdfmanagement-testphase}
-#+LATEX_HEADER: \DeclareDocumentMetadata{pdfversion=1.7,lang=en-UK}
+#+LATEX_HEADER: % START OF DOC CLASS 
+#+LATEX_HEADER: % -----------------------------------------
 #+LaTeX_CLASS: uom-thesis
 #+LaTeX_CLASS_OPTIONS: [times, thesis]
 #+LATEX_HEADER: \usepackage{graphicx,psfrag,color} % for postscript graphics files
@@ -38,8 +38,30 @@
 
 #+LATEX_HEADER: %%%%%%%%%%%%%%%%%% REFERENCES SETUP %%%%%%%%%%%%%%%%%%
 #+LATEX_HEADER: \usepackage[backend=biber,style=ieee,bibencoding=utf8,hyperref=auto]{biblatex}
-#+LATEX_HEADER:   \addbibresource{references.bib}
+#+LATEX_HEADER: \addbibresource{references.bib}
 #+LATEX_HEADER:   % Add more .bib files here if wanted
 
 #+LATEX_HEADER: % Bug fix which can't be applied in the .cls file
 #+LATEX_HEADER: \renewcommand*{\bibfont}{\large} 
+
+#+LATEX_HEADER: \usepackage{nomencl}
+#+LATEX_HEADER: \makenomenclature
+
+
+#+LATEX_HEADER: % This code creates the groups
+#+LATEX_HEADER: % -----------------------------------------
+#+LATEX_HEADER: \usepackage{etoolbox}
+#+LATEX_HEADER: \renewcommand\nomgroup[1]{%
+#+LATEX_HEADER:   \item[\bfseries
+#+LATEX_HEADER:   \ifstrequal{#1}{A}{Acronyms}{%
+#+LATEX_HEADER:   \ifstrequal{#1}{S}{Suffixes}{%
+#+LATEX_HEADER:   \ifstrequal{#1}{O}{Other symbols}{}}}%
+#+LATEX_HEADER: ]}
+#+LATEX_HEADER: % -----------------------------------------
+
+
+#+LATEX_HEADER: \nomlabelwidth=20mm
+#+LATEX_HEADER: \usepackage{pdfpages}
+
+#+LATEX_HEADER: % END OF DOC CLASS
+#+LATEX_HEADER: % -----------------------------------------

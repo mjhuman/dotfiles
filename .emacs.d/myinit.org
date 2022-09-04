@@ -355,7 +355,7 @@ Org bullets makes things look pretty
 | ~/Dropbox/orgfiles/i.org | ~/Dropbox/orgfiles/arts.org | ~/Dropbox/orgfiles/books.org | ~/Dropbox/orgfiles/inbox.org |
 
 ** org ac
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC
 
   (use-package org-ac
     :ensure t
@@ -417,14 +417,15 @@ Org bullets makes things look pretty
            "* %?\n" :prepend t)
           ("e" "EPSE" entry (file+headline "~/Dropbox/orgfiles/epse.org" "Unsorted Notes")
            "* %?\n%u" :prepend t)
+          ("i" "TIL" entry (file+headline "~/Dropbox/orgfiles/til.org" "TIL")
+           "* %^C %? \n%u" :prepend t)
           ("j" "Journal entry" entry (function org-journal-find-location)
            "* %(format-time-string org-journal-time-format)%^{Title}\n%i%?")
-        ))
+          ))
 #+END_SRC
 
 #+RESULTS:
 | a | Appointment | entry | (file ~/Dropbox/orgfiles/gcal.org) | * %? |
-
 
 
 
@@ -1114,6 +1115,8 @@ See https://github.com/abo-abo/avy for more info
     (use-package ivy-bibtex)
     (require 'ox-latex)
 
+  (setq bibtex-completion-bibliography
+      '("~/dissertation/report/referencesf.bib"))
     ;; (setq bibtex-completion-bibliography '("~/Dropbox/emacs/bibliography/references.bib")
     ;;       bibtex-completion-library-path '("~/Dropbox/emacs/bibliography/bibtex-pdfs/")
     ;;       bibtex-completion-notes-path "~/Dropbox/emacs/bibliography/notes/"
@@ -1153,25 +1156,39 @@ See https://github.com/abo-abo/avy for more info
     ;;       org-ref-cite-onclick-function (lambda (_) (org-ref-citation-hydra/body)))
 
                                             ;    (setq org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+                                            ;    (setq org-latex-pdf-process (list "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
     (setq org-latex-pdf-process (list "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
+  ;  "bibtex %b"
+   ; "makeindex %b.nlo -s nomencl.ist -o %b.nls"
                                             ;  (setq org-pandoc-options-for-beamer-pdf '((pdf-engine . "xelatex"))) ;
                                             ;  (setq org-pandoc-options-for-latex-pdf '((pdf-engine . "pdflatex"))) ;
 
 
-  (with-eval-after-load 'ox-latex
-        (add-to-list 'org-latex-classes
-        '("uom-thesis"
-           "\\documentclass{uom_eee_dissertation_casson}
-           [NO-DEFAULT-PACKAGES]
-           [PACKAGES]
-           [EXTRA]"
-           ("\\section{%s}" . "\\section*{%s}")
-           ("\\subsection{%s}" . "\\subsection*{%s}")
-           ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-           ("\\paragraph{%s}" . "\\paragraph*{%s}")
-           ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+    ;; (with-eval-after-load 'ox-latex
+    ;;       (add-to-list 'org-latex-classes
+    ;;       '("uom-thesis"
+    ;;          "\\documentclass{uom_eee_dissertation_casson}
+    ;;          [NO-DEFAULT-PACKAGES]
+    ;;          [PACKAGES]
+    ;;          [EXTRA]")))
 
-  ;  (eval-after-load 'ox-latex (add-to-list 'org-export-latex-classes 'uom-thesis')) 
+
+    (with-eval-after-load 'ox-latex
+      (add-to-list 'org-latex-classes
+                   '("uom-thesis"
+                     "\\documentclass{uom_eee_dissertation_casson}
+                    [NO-DEFAULT-PACKAGES]
+                    [PACKAGES]
+                    [EXTRA]"
+                     ("\\section{%s}" . "\\section*{%s}")
+                     ("\\subsection{%s}" . "\\subsection*{%s}")
+                     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                     ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                     ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
+                                            ;  (eval-after-load 'ox-latex (add-to-list 'org-export-latex-classes 'uom-thesis'))
+
+
 
 #+END_SRC
 
