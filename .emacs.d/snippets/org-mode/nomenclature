@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: nomenclature
+# key: nomen
+# --
+\nomenclature[$1]{$2}{$3}
+$0

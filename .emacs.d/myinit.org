@@ -369,24 +369,25 @@ Org bullets makes things look pretty
 #+END_SRC
 ** org journal
 #+BEGIN_SRC emacs-lisp
-      (use-package org-journal
-        :ensure t
-        :defer t
-        :custom
-        (org-journal-dir "~/Dropbox/orgfiles/journal/")
-        (org-journal-date-format "%d %B, %a")
-        (org-journal-file-type `yearly)
-        (org-journal-encrypt-journal t)
-        (org-journal-file-format "%Y"))
-;        (org-journal-enable-agenda-integration t))
+        (use-package org-journal
+          :ensure t
+          :defer t
+          :custom
+          (org-journal-dir "~/Dropbox/orgfiles/journal/")
+          (org-journal-date-format "%d %B, %a")
+          (org-journal-file-type `yearly)
+          (org-journal-file-format "%Y"))
+  ;        (org-journal-enable-agenda-integration t))
 
-    (defun org-journal-find-location ()
-      ;; Open today's journal, but specify a non-nil prefix argument in order to
-      ;; inhibit inserting the heading; org-capture will insert the heading.
-      (org-journal-new-entry t)
-      ;; Position point on the journal's top-level heading so that org-capture
-      ;; will add the new entry as a child entry.
-      (goto-char (point-min)))
+;          (org-journal-encrypt-journal t)
+
+      (defun org-journal-find-location ()
+        ;; Open today's journal, but specify a non-nil prefix argument in order to
+        ;; inhibit inserting the heading; org-capture will insert the heading.
+        (org-journal-new-entry t)
+        ;; Position point on the journal's top-level heading so that org-capture
+        ;; will add the new entry as a child entry.
+        (goto-char (point-min)))
 #+END_SRC
 
 #+RESULTS:
@@ -426,9 +427,6 @@ Org bullets makes things look pretty
 
 #+RESULTS:
 | a | Appointment | entry | (file ~/Dropbox/orgfiles/gcal.org) | * %? |
-
-
-
 ** org mobile   
 #+BEGIN_SRC emacs-lisp        
   ;; Set to the name of the file where new notes will be stored

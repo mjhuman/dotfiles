@@ -35,7 +35,7 @@
  '(custom-safe-themes
 	 '("5a0eee1070a4fc64268f008a4c7abfda32d912118e080e18c3c865ef864d1bea" "51ec7bfa54adf5fff5d466248ea6431097f5a18224788d0bd7eb1257a4f7b773" "833ddce3314a4e28411edf3c6efde468f6f2616fc31e17a62587d6a9255f4633" "830877f4aab227556548dc0a28bf395d0abe0e3a0ab95455731c9ea5ab5fe4e1" "7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" "c3e6b52caa77cb09c049d3c973798bc64b5c43cc437d449eacf35b3e776bf85c" default))
  '(org-agenda-files
-	 '("~/Dropbox/orgfiles/i.org" "~/Dropbox/orgfiles/arts.org" "~/Dropbox/orgfiles/books.org" "~/Dropbox/orgfiles/gcal.org" "~/Dropbox/orgfiles/inbox.org" "/home/vj/Dropbox/orgfiles/journal/2022.gpg"))
+	 '("/home/vj/Dropbox/orgfiles/i.org" "/home/vj/Dropbox/orgfiles/arts.org" "/home/vj/Dropbox/orgfiles/books.org" "/home/vj/Dropbox/orgfiles/gcal.org" "/home/vj/Dropbox/orgfiles/inbox.org"))
  '(org-default-notes-file (concat org-directory "/notes.org"))
  '(org-directory "~/Dropbox/orgfiles")
  '(org-export-html-postamble nil)
