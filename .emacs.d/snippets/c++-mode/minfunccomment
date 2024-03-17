@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: Min. Func. Comment
+# key: /fmin
+# --
+
+/**
+ *  \brief $1
+ *
+ *  Detailed description
+ *
+ *  \param param
+ *  \return return type
+ */

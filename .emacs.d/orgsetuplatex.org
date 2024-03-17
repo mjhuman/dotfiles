@@ -1,7 +1,7 @@
 #+STARTUP: overview
 #+date: \today
 #+author: Vinodh Jayakrishnan
-#+email: vinodh.jayakrishnan@postgrad.manchester.ac.uk
+#+email: vinodhmjhuman@gmail.com
 #+language: en
 #+select_tags: export
 #+exclude_tags: noexport
@@ -17,6 +17,7 @@
 #+LATEX_HEADER: \usepackage{booktabs}
 #+LATEX_HEADER: \makeatletter \@ifpackageloaded{geometry}{\geometry{margin=2cm}}{\usepackage[margin=2cm]{geometry}} \makeatother
 #+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage{titletoc} % needs to be befor hyperref package
 #+LATEX_HEADER: \usepackage{hyperref}
 #+LATEX_HEADER: \usepackage{wrapfig}
 #+LATEX_HEADER: \hypersetup{colorlinks=true,linkcolor=blue,filecolor=blue,citecolor = black,urlcolor=cyan,}

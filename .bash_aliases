@@ -26,10 +26,11 @@ alias fpy='cd ~/projects/python'
 alias fcp='cd ~/projects/cpp'
 alias fht='cd ~/projects/html'
 alias fqt='cd ~/projects/qt'
+alias gaia='cd ~/gaia'
 # 2.3) Text and editor commands
 alias em='emacs -nw'     # No X11 windows
 alias eqq='emacs -nw -Q' # No config and no X11
 alias ec='emacsclient -c -a ""'
-alias pishell='pipenv shell'
+alias pish='pipenv shell'
 alias jlab='jupyter-lab'
 

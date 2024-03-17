@@ -4,7 +4,8 @@
 #+EMAIL: 
 #+OPTIONS: toc:nil num:nil
 
-* Pre-requisites
+* Essentials
+** Use package, browser
 #+BEGIN_SRC emacs-lisp
    ;; INSTALL PACKAGES
 
@@ -26,12 +27,9 @@
 
   (setq-default tab-width 2)
 
+  (scroll-bar-mode -1)
 #+END_SRC
-
-#+RESULTS:
-: 2
-
-* Paradox
+** Paradox
 #+BEGIN_SRC emacs-lisp
 ;; Some combination of GNU TLS and Emacs fail to retrieve archive
 ;; contents over https.
@@ -47,147 +45,62 @@
    :ensure t)
 #+END_SRC
 
-#+RESULTS:
-* better defualts
-#+BEGIN_SRC emacs-lisp
-  (scroll-bar-mode -1)
-#+END_SRC
-
-#+RESULTS:
-
-#+begin_src 
-    (use-package better-defaults
-      :ensure t)
-#+end_src
-
-#+RESULTS:
-
-* vmj custom
-** General
+* Ente customisation
+** Buffer
 #+BEGIN_SRC emacs-lisp
   (defun vmj/view-buffer-name ()
-    "Display the filename of the current buffer."
-    (interactive)
-    (message (buffer-file-name)))
+      "Display the filename of the current buffer."
+      (interactive)
+      (message (buffer-file-name)))
 
+  (defun vmj/copy-buffer-path ()
+      "Copy current file path"
+      (interactive)
+      (let (fpln)
+        (setq fpln buffer-file-name)
+        (kill-new fpln)
+        (message (buffer-file-name))))
 
-(defun vmj/copy-buffer-path ()
-    "Copy current file path"
-    (interactive)
-    (let (fpln)
-      (setq fpln buffer-file-name)
-      (kill-new fpln)
-      (message (buffer-file-name))))
-
-(defun vmj/copy-buffer-name ()
-    "Copy current file name"
-    (interactive)
-  (insert (buffer-name (window-buffer (minibuffer-selected-window)))))
+  (defun vmj/copy-buffer-name ()
+      "Copy current file name"
+      (interactive)
+    (insert (buffer-name (window-buffer (minibuffer-selected-window)))))
 
   (defun vmj/generate-scratch-buffer ()
-    "Create and switch to a temporary scratch buffer with a random
-         name."
-    (interactive)
-    (switch-to-buffer (make-temp-name "scratch-")))
+      "Create and switch to a temporary scratch buffer with a random
+           name."
+      (interactive)
+      (switch-to-buffer (make-temp-name "scratch-")))
 
-  (defun vmj/kill-current-buffer ()
-    "Kill the current buffer without prompting."
-    (interactive)
-    (kill-buffer (current-buffer)))
-
-  (defun vmj/copy-file-line-matlab ()
-    "Copy current file path and line number to clipboard and trim till matlabroot"
-    (interactive)
-    (let (fpln)
-      (setq fpln (concatenate 'string (buffer-file-name) ":" (number-to-string (line-number-at-pos))))
-      (setq fpln (split-string fpln "/matlab/"))
-      (setq fpln (car (last fpln)))
-      (kill-new fpln)
-      (message (concat fpln " copied to clipboard"))))
+    (defun vmj/kill-current-buffer ()
+      "Kill the current buffer without prompting."
+      (interactive)
+      (kill-buffer (current-buffer)))
 
 #+END_SRC
 
 #+RESULTS:
 : vmj/copy-file-line-matlab
-
-** Frame title
-The default frame title isn't useful. This binds it to the name of the current
-project:
-
+** General
 #+BEGIN_SRC emacs-lisp
-                                          ;  (setq frame-title-format '((:eval (projectile-project-name))))
+  (setq inhibit-startup-message t)
+  (tool-bar-mode -1)
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (global-display-line-numbers-mode)
+  ;	(global-linum-mode t) ;; enable line numbers globally
+  (add-to-list 'initial-frame-alist '(fullscreen . maximized))
+  (add-to-list 'default-frame-alist '(fullscreen . fullboth))
+  (setq ivy-use-virtual-buffers t)
+  (defun jump-to-next-newline()
+    "Move to the end of the line and return"
+    (interactive)
+    (move-end-of-line)
+    (newline))
+  (setq ivy-format-function 'ivy-format-function-line)
+  (setq ivy-display-style 'fancy)
+  (global-prettify-symbols-mode t) ; use fancy lambdas
+  ;;(setq view-read-only t)
 #+END_SRC
-
-** Use fancy lambdas
-
-Why not?
-
-#+BEGIN_SRC emacs-lisp
-  (global-prettify-symbols-mode t)
-#+END_SRC
-
-#+RESULTS:
-: t
-
-** Hide certain modes from the modeline
-
-I'd rather have only a few necessary mode identifiers on my modeline. This
-either hides or "renames" a variety of major or minor modes using the =diminish=
-package.
-
-#+BEGIN_SRC 
-  (defmacro diminish-minor-mode (filename mode &optional abbrev)
-    `(eval-after-load (symbol-name ,filename)
-       '(diminish ,mode ,abbrev)))
-
-  (defmacro diminish-major-mode (mode-hook abbrev)
-    `(add-hook ,mode-hook
-               (lambda () (setq mode-name ,abbrev))))
-
-  (diminish-minor-mode 'abbrev 'abbrev-mode)
-  (diminish-minor-mode 'simple 'auto-fill-function)
-  (diminish-minor-mode 'company 'company-mode)
-  (diminish-minor-mode 'eldoc 'eldoc-mode)
-  (diminish-minor-mode 'flycheck 'flycheck-mode)
-  (diminish-minor-mode 'flyspell 'flyspell-mode)
-  (diminish-minor-mode 'global-whitespace 'global-whitespace-mode)
-  (diminish-minor-mode 'projectile 'projectile-mode)
-  (diminish-minor-mode 'ruby-end 'ruby-end-mode)
-  (diminish-minor-mode 'subword 'subword-mode)
-  (diminish-minor-mode 'yard-mode 'yard-mode)
-  (diminish-minor-mode 'yasnippet 'yas-minor-mode)
-  (diminish-minor-mode 'wrap-region 'wrap-region-mode)
-
-  (diminish-minor-mode 'paredit 'paredit-mode " ?")
-
-  (diminish-major-mode 'emacs-lisp-mode-hook "el")
-  (diminish-major-mode 'haskell-mode-hook "?=")
-  (diminish-major-mode 'lisp-interaction-mode-hook "?")
-  (diminish-major-mode 'python-mode-hook "Py")
-#+END_SRC
-* Interface tweaks
-** Start up
-#+BEGIN_SRC emacs-lisp
-		(setq inhibit-startup-message t)
-		(tool-bar-mode -1)
-		(fset 'yes-or-no-p 'y-or-n-p)
-	(global-display-line-numbers-mode)
-	;	(global-linum-mode t) ;; enable line numbers globally
-		(add-to-list 'initial-frame-alist '(fullscreen . maximized))
-	(add-to-list 'default-frame-alist '(fullscreen . fullboth))
-		(setq ivy-use-virtual-buffers t)
-		(defun jump-to-next-newline()
-			"Move to the end of the line and return"
-			(interactive)
-			(move-end-of-line)
-			(newline))
-		(setq ivy-format-function 'ivy-format-function-line)
-		(setq ivy-display-style 'fancy)
-		;;(setq view-read-only t)
-#+END_SRC
-
-#+RESULTS:
-: fancy
 
 ** Ace windows for easy window switching
 #+BEGIN_SRC emacs-lisp
@@ -213,7 +126,26 @@ package.
 
 #+RESULTS:
 
-** Themes and modeline:
+** Windows
+#+BEGIN_SRC emacs-lisp
+
+(defun window-split-toggle ()
+  "Toggle between horizontal and vertical split with two windows."
+  (interactive)
+  (if (> (length (window-list)) 2)
+      (error "Can't toggle with more than 2 windows!")
+    (let ((func (if (window-full-height-p)
+                    #'split-window-vertically
+                  #'split-window-horizontally)))
+      (delete-other-windows)
+      (funcall func)
+      (save-selected-window
+        (other-window 1)
+        (switch-to-buffer (other-buffer))))))
+
+(window-split-toggle)
+#+END_SRC
+* Themes and modeline:
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
 
@@ -225,7 +157,6 @@ package.
 #+RESULTS:
 : ((font . DejaVu Sans Mono 11) (font . DejaVu Sans Mono 13) (fullscreen . fullboth) (vertical-scroll-bars))
 ** Custom solarized-dark theme
-
 I like the solarized-dark theme. I prefer keeping all the characters in the same
 side and font, though.
 
@@ -265,25 +196,6 @@ side and font, though.
 #+RESULTS:
 : t
 
-** Windows
-#+BEGIN_SRC emacs-lisp
-
-(defun window-split-toggle ()
-  "Toggle between horizontal and vertical split with two windows."
-  (interactive)
-  (if (> (length (window-list)) 2)
-      (error "Can't toggle with more than 2 windows!")
-    (let ((func (if (window-full-height-p)
-                    #'split-window-vertically
-                  #'split-window-horizontally)))
-      (delete-other-windows)
-      (funcall func)
-      (save-selected-window
-        (other-window 1)
-        (switch-to-buffer (other-buffer))))))
-
-(window-split-toggle)
-#+END_SRC
 * Org mode
 ** org bullets
 Org bullets makes things look pretty
@@ -355,55 +267,18 @@ Org bullets makes things look pretty
 #+RESULTS:
 | ~/Dropbox/orgfiles/i.org | ~/Dropbox/orgfiles/arts.org | ~/Dropbox/orgfiles/words.org | ~/Dropbox/orgfiles/inbox.org |
 
-** org ac
-#+BEGIN_SRC
-
-  (use-package org-ac
-    :ensure t
-    :init (progn
-            (require 'org-ac)
-            (org-ac/config-default)
-            ))
-
-  (add-to-list 'ac-modes 'org-mode)
-
-#+END_SRC
 ** org journal
 #+BEGIN_SRC emacs-lisp
-
   (use-package org-journal
-  :ensure t
-  :defer t
-  :init
-  ;; Change default prefix key; needs to be set before loading org-journal
-  (setq org-journal-prefix-key "C-c j ")
-  :config
-  (setq org-journal-dir "~/Dropbox/orgfiles/journal/"
-        org-journal-file-type `yearly
-        org-journal-date-format "%d %B, %a"
-        org-journal-enable-agenda-integration t))
-
-
-          ;; (use-package org-journal
-          ;;   :ensure t
-          ;;   :defer t
-          ;;   :custom
-          ;;   (org-journal-dir "~/Dropbox/orgfiles/journal/")
-          ;;   (org-journal-date-format "%d %B, %a")
-          ;;   (org-journal-file-type `yearly)
-          ;;   (org-journal-file-format "%Y"))
-    ;        (org-journal-enable-agenda-integration t))
-
-  ;          (org-journal-encrypt-journal t)
-
-  ;; (defun org-journal-find-location ()
-  ;; ;; Open today's journal, but specify a non-nil prefix argument in order to
-  ;; ;; inhibit inserting the heading; org-capture will insert the heading.
-  ;; (org-journal-new-entry t)
-  ;; (unless (eq org-journal-file-type 'daily)
-  ;;   (org-narrow-to-subtree))
-  ;; (goto-char (point-max)))
-
+    :ensure t
+    :defer t
+    :init
+    ;; Change default prefix key; needs to be set before loading org-journal
+    (setq org-journal-prefix-key "C-c j ")
+    :config
+    (setq org-journal-dir "~/Dropbox/orgfiles/journal/"
+          org-journal-file-type `yearly
+          org-journal-date-format "%d %B, %a"))
 
 #+END_SRC
 
@@ -411,7 +286,6 @@ Org bullets makes things look pretty
 : org-journal-find-location
 ** org capture
 #+BEGIN_SRC emacs-lisp
-
   (global-set-key (kbd "C-c c") 'org-capture)
 
   (setq org-capture-templates
@@ -439,22 +313,8 @@ Org bullets makes things look pretty
 
 #+RESULTS:
 | a | Appointment | entry | (file ~/Dropbox/orgfiles/gcal.org) | * %? |
-
-
-
-
-** org mobile   
-#+BEGIN_SRC emacs-lisp        
-  ;; Set to the name of the file where new notes will be stored
-  (setq org-mobile-inbox-for-pull "~/Dropbox/orgfiles/mobile.org")
-  ;; Set to <your Dropbox root directory>/MobileOrg.
-  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
-  ;;(run-with-idle-timer 360 1 'org-mobile-pull)
-  ;;(run-with-idle-timer 300 1 'org-mobile-push)
-#+END_SRC
 ** org refile
 #+BEGIN_SRC emacs-lisp
-
   (setq org-refile-targets '((org-agenda-files :maxlevel . 1)))
   (setq org-refile-use-outline-path 'file)
   (setq org-outline-path-complete-in-steps nil)
@@ -463,48 +323,33 @@ Org bullets makes things look pretty
 ** org other stuff
 #+BEGIN_SRC emacs-lisp
 
-  ;(require 'org-mu4e)
+  (defadvice org-capture-finalize 
+      (after delete-capture-frame activate)  
+    "Advise capture-finalize to close the frame"  
+    (if (equal "capture" (frame-parameter nil 'name))  
+        (delete-frame)))
 
-    (defadvice org-capture-finalize 
-        (after delete-capture-frame activate)  
-      "Advise capture-finalize to close the frame"  
-      (if (equal "capture" (frame-parameter nil 'name))  
-          (delete-frame)))
-
-    (defadvice org-capture-destroy 
-        (after delete-capture-frame activate)  
-      "Advise capture-destroy to close the frame"  
-      (if (equal "capture" (frame-parameter nil 'name))  
-          (delete-frame)))  
-
-
-    ;; (use-package noflet
-    ;;   :ensure t )
-    ;; (defun make-capture-frame ()
-    ;;   "Create a new frame and run org-capture."
-    ;;   (interactive)
-    ;;   (make-frame '((name . "capture")))
-    ;;   (select-frame-by-name "capture")
-    ;;   (delete-other-windows)
-    ;;   (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
-    ;;     (org-capture)))
+  (defadvice org-capture-destroy 
+      (after delete-capture-frame activate)  
+    "Advise capture-destroy to close the frame"  
+    (if (equal "capture" (frame-parameter nil 'name))  
+        (delete-frame)))
 
   (with-eval-after-load 'org
     (require 'ox-md)
     (require 'ox-beamer))
 
-    ;; Don?t ask before evaluating code blocks.
-    (setq org-confirm-babel-evaluate nil)
+  ;; Don?t ask before evaluating code blocks.
+  (setq org-confirm-babel-evaluate nil)
 
-                                            ;(use-package epresent
-                                            ;:ensure t)
+                                          ;(use-package epresent
+                                          ;:ensure t)
 
 #+END_SRC
 
 #+RESULTS:
 ** org align, justify
 #+BEGIN_SRC emacs-lisp
-
   (add-hook 'org-mode-hook '(lambda () (setq fill-column 80)))
   (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
@@ -531,46 +376,8 @@ Org bullets makes things look pretty
 (setq org-pandoc-format-extensions '(markdown_github+pipe_tables+raw_html)))
 
 #+END_SRC
-** org capture screen
-#+BEGIN_SRC emacs-lisp
-(defadvice org-capture-finalize
-(after delete-capture-frame activate)
-"Advise capture-finalize to close the frame"
-(if (equal "capture" (frame-parameter nil 'name))
-(delete-frame)))
-
-(defadvice org-capture-destroy
-(after delete-capture-frame activate)
-"Advise capture-destroy to close the frame"
-(if (equal "capture" (frame-parameter nil 'name))
-(delete-frame)))
-
-(use-package noflet
-:ensure t )
-(defun make-capture-frame ()
-"Create a new frame and run org-capture."
-(interactive)
-(make-frame '((name . "capture")))
-(select-frame-by-name "capture")
-(delete-other-windows)
-(noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
-  (org-capture)))
-
-#+END_SRC
-
-** org confluence
-#+BEGIN_SRC
-  (add-to-list 'load-path "~/.emacs.d/lisp/")
-  (load "ox-confluence.el")
-
-#+END_SRC
-
-
-#+RESULTS:
-: t
 * smex
 #+BEGIN_SRC emacs-lisp
-
   (use-package smex
     :ensure t
     :config 
@@ -684,20 +491,6 @@ See https://github.com/abo-abo/avy for more info
        ("p" (lambda () (interactive) (forward-line -1))  "up")
        ("g" goto-line "goto-line")
        )))
-    ;;     (global-set-key
-    ;;          (kbd "C-c t")
-    ;;          (defhydra hydra-global-org (:color blue)
-    ;;            "Org"
-    ;;            ("t" org-timer-start "Start Timer")
-    ;;            ("s" org-timer-stop "Stop Timer")
-    ;;            ("r" org-timer-set-timer "Set Timer") ; This one requires you be in an orgmode doc, as it sets the timer for the header
-    ;;            ("p" org-timer "Print Timer") ; output timer value to buffer
-    ;;            ("w" (org-clock-in '(4)) "Clock-In") ; used with (org-clock-persistence-insinuate) (setq org-clock-persist t)
-    ;;            ("o" org-clock-out "Clock-Out") ; you might also want (setq org-log-note-clock-out t)
-    ;;            ("j" org-clock-goto "Clock Goto") ; global visit the clocked task
-    ;;            ("c" org-capture "Capture") ; Don't forget to define the captures you want http://orgmode.org/manual/Capture.html
-    ;;            ("l" (or )rg-capture-goto-last-stored "Last Capture")))
-
 
   (global-set-key
    (kbd "C-x f")
@@ -707,7 +500,7 @@ See https://github.com/abo-abo/avy for more info
      ("j" org-journal-new-entry "journal new entry")
      ("b" (find-file "~/Dropbox") "DB")
      ("d" (find-file "~/Downloads") "Downloads")
-     ("v" (find-file "~/vinotes/posts") "mindtoilet")
+     ("v" (find-file "~/vinotes/posts") "vinotes")
      ("m" (find-file "~/projects/msc") "msc")
      ("p" (find-file "~/projects") "projects")
      ("n" narrow-or-widen-dwim "narrow-or-widen")
@@ -717,75 +510,56 @@ See https://github.com/abo-abo/avy for more info
      ("g" (find-file "~/projects/cpp/graph") "graph")
      ("c" vmj/copy-file-line-matlab "copy file line to clipboard")
      ("l" calendar "Calendar")
+     (";" iedit-mode "iedit")
      ("i" yas/insert-snippet "insert snippet")
      ("t" (counsel-find-file "~/temper") "temper")
      ("h" (counsel-find-file "~/") "home")))
-
-
-
 #+END_SRC
 
 #+RESULTS:
 : frequent/body
-** Additional configuration
-#+BEGIN_SRC
-(setq counsel-find-file-ignore-regexp
-        (concat
-         ;; File names beginning with # or .
-;;         "\\(?:\\`[#.]\\)"
-         ;; File names ending with # or ~
-         "\\|\\(?:\\`.+?[#~]\\'\\)"))
-#+END_SRC
-
-#+RESULTS:
-: \|\(?:\`.+?[#~]\'\)
-
 * Necessary
 ** Misc packages
 #+BEGIN_SRC emacs-lisp
+                                          ; Highlights the current cursor line
+  (when window-system
+    (global-hl-line-mode))
 
-                                            ; Highlights the current cursor line
-    (when window-system
-      (global-hl-line-mode))
-
-                                            ; flashes the cursor's line when you scroll
-    (use-package beacon
-      :ensure t
-      :config
-      (beacon-mode 1)
-                                            ; (setq beacon-color "#666600")
-      )
-
-                                            ; deletes all the whitespace when you hit backspace or delete
+                                          ; flashes the cursor's line when you scroll
+  (use-package beacon
+    :ensure t
+    :config
+    (beacon-mode 1))
+                                          ; deletes all the whitespace when you hit backspace or delete
   (use-package hungry-delete
     :diminish
     :hook (after-init . global-hungry-delete-mode)
     :init (setq hungry-delete-except-modes
                 '(help-mode minibuffer-mode minibuffer-inactive-mode calc-mode)))
-                                            ; expand the marked region in semantic increments (negative prefix to reduce region)
-    (use-package expand-region
-      :ensure t
-      :after (org)
-      :config 
-      (global-set-key (kbd "C-=") 'er/expand-region))
+                                          ; expand the marked region in semantic increments (negative prefix to reduce region)
+  (use-package expand-region
+    :ensure t
+    :after (org)
+    :config 
+    (global-set-key (kbd "C-=") 'er/expand-region))
 
-    (setq save-interprogram-paste-before-kill t)
+  (setq save-interprogram-paste-before-kill t)
 
-                                            ; font scaling
-    (use-package default-text-scale
-      :ensure t
-      :config
-      (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
-      (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
+                                          ; font scaling
+  (use-package default-text-scale
+    :ensure t
+    :config
+    (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
+    (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
 
-                                            ;origami folding
-    (use-package origami
-      :ensure t)
+                                          ;origami folding
+  (use-package origami
+    :ensure t)
 
-    (use-package which-key
-      :ensure t 
-      :config
-      (which-key-mode))
+  (use-package which-key
+    :ensure t 
+    :config
+    (which-key-mode))
 
 #+END_SRC
 
@@ -804,8 +578,6 @@ See https://github.com/abo-abo/avy for more info
       (add-to-list 'ac-modes 'nxml-mode)
       ))
 #+END_SRC
-
-#+RESULTS:
   
 ** Flycheck
 #+BEGIN_SRC emacs-lisp
@@ -1484,8 +1256,6 @@ See https://github.com/abo-abo/avy for more info
 #+END_SRC
 
 #+RESULTS:
-
-
 *** indentation
 #+BEGIN_SRC
 (setq-default tab-width 4)
@@ -1622,6 +1392,138 @@ See https://github.com/abo-abo/avy for more info
 
 #+RESULTS:
 
+** compilation window
+#+BEGIN_SRC emacs-lisp
+
+(setq special-display-buffer-names
+      '("*compilation*"))
+
+(setq special-display-function
+      (lambda (buffer &optional args)
+        (switch-to-buffer buffer)
+        (get-buffer-window buffer 0)))
+
+
+(setq compilation-finish-functions
+      (lambda (buf str)
+        (if (null (string-match ".*exited abnormally.*" str))
+            ;;no errors, make the compilation window go away in a few seconds
+            (progn
+              (run-at-time "0.4 sec" nil
+                           (lambda ()
+                             (select-window (get-buffer-window (get-buffer-create "*compilation*")))
+                             (switch-to-buffer nil)))
+              (message "No Compilation Errors!")))))
+
+  ;; (require 'compile)
+  ;; (setq compilation-last-buffer nil)
+
+  ;; (defun compile-again (ARG)
+  ;;   "Run the same compile as the last time.
+
+  ;; If there is no last time, or there is a prefix argument, this acts like M-x compile."
+  ;;   (interactive "p")
+  ;;   (if (and (eq ARG 1)
+  ;;            compilation-last-buffer)
+  ;;       (progn
+  ;;         (set-buffer compilation-last-buffer)
+  ;;         (revert-buffer t t))
+  ;;     (progn
+  ;;       (call-interactively 'compile)
+  ;;       (setq cur (selected-window))
+  ;;       (setq w (get-buffer-window "*compilation*"))
+  ;;       (select-window w)
+  ;;       (setq h (window-height w))
+  ;;       (shrink-window (- h 10))
+  ;;       (select-window cur))))
+  ;; (global-set-key (kbd "C-x C-m") 'compile-again)
+  ;; (defun my-compilation-hook ()
+  ;;   "Make sure that the compile window is splitting vertically."
+  ;;   (progn
+  ;;     (if (not (get-buffer-window "*compilation*"))
+  ;;         (progn
+  ;;           (split-window-vertically)))))
+  ;; (add-hook 'compilation-mode-hook 'my-compilation-hook)
+  ;; (defun compilation-exit-autoclose (STATUS code msg)
+  ;;   "Close the compilation window if there was no error at all."
+  ;;   ;; If M-x compile exists with a 0
+  ;;   (when (and (eq STATUS 'exit) (zerop code))
+  ;;     ;; then bury the *compilation* buffer, so that C-x b doesn't go there
+  ;;     (bury-buffer)
+  ;;     ;; and delete the *compilation* window
+  ;;     (delete-window (get-buffer-window (get-buffer "*compilation*"))))
+  ;;   ;; Always return the anticipated result of compilation-exit-message-function
+  ;;   (cons msg code))
+  ;; (setq compilation-exit-message-function 'compilation-exit-autoclose)
+  ;; (defvar all-overlays ())
+  ;; (defun delete-this-overlay(overlay is-after begin end &optional len)
+  ;;   (delete-overlay overlay)
+  ;;   )
+  ;; (defun highlight-current-line ()
+  ;; "Highlight current line."
+  ;;   (interactive)
+  ;;   (setq current-point (point))
+  ;;   (beginning-of-line)
+  ;;   (setq beg (point))
+  ;;   (forward-line 1)
+  ;;   (setq end (point))
+  ;;   ;; Create and place the overlay
+  ;;   (setq error-line-overlay (make-overlay 1 1))
+
+  ;;   ;; Append to list of all overlays
+  ;;   (setq all-overlays (cons error-line-overlay all-overlays))
+
+  ;;   (overlay-put error-line-overlay
+  ;;                'face '(background-color . "red"))
+  ;;   (overlay-put error-line-overlay
+  ;;                'modification-hooks (list 'delete-this-overlay))
+  ;;   (move-overlay error-line-overlay beg end)
+  ;;   (goto-char current-point))
+  ;; (defun delete-all-overlays ()
+  ;;   "Delete all overlays"
+  ;;   (while all-overlays
+  ;;     (delete-overlay (car all-overlays))
+  ;;     (setq all-overlays (cdr all-overlays))))
+  ;; (defun highlight-error-lines(compilation-buffer process-result)
+  ;;   (interactive)
+  ;;   (delete-all-overlays)
+  ;;   (condition-case nil
+  ;;       (while t
+  ;;         (next-error)
+  ;;         (highlight-current-line))
+  ;;     (error nil)))
+  ;; (setq compilation-finish-functions 'highlight-error-lines)
+
+
+#+END_SRC
+
+#+RESULTS:
+: highlight-error-lines
+
+** purpose mode
+#+BEGIN_SRC 
+
+  (use-package window-purpose
+:ensure t)
+
+
+
+(add-to-list 'purpose-user-name-purposes '("*compilation*" . comp))
+(add-to-list 'purpose-user-mode-purposes '(rtags-mode . tags))
+(add-to-list 'purpose-user-mode-purposes '(help-mode . help))
+(add-to-list 'purpose-user-mode-purposes '(gud-mode . debug))
+;;  (add-to-list 'purpose-user-mode-purposes '(c++-mode . cpp))
+
+(add-to-list 'purpose-user-regexp-purposes '("\.cpp" . source))
+(add-to-list 'purpose-user-regexp-purposes '("\.hpp" . header))
+
+(purpose-compile-user-configuration)
+
+
+#+END_SRC
+
+#+RESULTS:
+: ((.hpp . header) (.cpp . source))
 * Shell
 ** Better Shell
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -1645,7 +1547,7 @@ See https://github.com/abo-abo/avy for more info
 #+RESULTS:
 : t
 * Elfeed
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC 
   (setq elfeed-db-directory "~/Dropbox/shared/elfeeddb")
 
   ;; use an org file to organise feeds
@@ -1747,7 +1649,7 @@ See https://github.com/abo-abo/avy for more info
 : move-line-down
 
 * edit server & emacs chrome
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC 
   (use-package edit-server
     :ensure t 
     :config
@@ -1971,46 +1873,6 @@ Use flycheck in the appropriate buffers:
   (put 'downcase-region 'disabled nil)
   (put 'upcase-region 'disabled nil)
 #+END_SRC
-* excorporate
-#+BEGIN_SRC 
-
-     (setq-default
-      ;; configure email address and office 365 exchange server adddress for exchange web services
-      excorporate-configuration
-       (quote
-        ("vjayakri@mathworks.com" . "https://outlook.office365.com/EWS/Exchange.asmx"))
-       ;; integrate emacs diary entries into org agenda
-       org-agenda-include-diary t
-       )
-
-  (add-hook 'diary-mark-entries-hook 'diary-mark-included-diary-files)
-
-  (defun my/agenda-update-diary ()
-    "Update exchange diary."
-    (interactive)
-    (exco-diary-diary-advice
-     (calendar-current-date)
-     (calendar-current-date)
-     #'message "Diary updated"))
-
-  (add-hook 'org-agenda-cleanup-fancy-diary-hook 'my/agenda-update-diary)
-  (excorporate)
-  (excorporate-diary-enable)
-
-     ;; ;; enable the diary integration (i.e. write exchange calendar to emacs diary file -> ~/.emacs.d/diary must exist)
-     ;; (excorporate-diary-enable)
-     ;; (defun ab/agenda-update-diary ()
-     ;;   "call excorporate to update the diary for today"
-     ;;   (exco-diary-diary-advice (calendar-current-date) (calendar-current-date) #'message "diary updated")
-     ;;   )
-
-     ;; ;; update the diary every time the org agenda is refreshed
-     ;; (add-hook 'org-agenda-cleanup-fancy-diary-hook 'ab/agenda-update-diary )
-
-#+END_SRC
-
-#+RESULTS:
-: Excorporate diary support enabled.
 * Malayalam font
 #+BEGIN_SRC elisp
 
@@ -2021,138 +1883,6 @@ Use flycheck in the appropriate buffers:
 
 #+RESULTS:
 
-* purpose mode
-#+BEGIN_SRC 
-
-  (use-package window-purpose
-:ensure t)
-
-
-
-(add-to-list 'purpose-user-name-purposes '("*compilation*" . comp))
-(add-to-list 'purpose-user-mode-purposes '(rtags-mode . tags))
-(add-to-list 'purpose-user-mode-purposes '(help-mode . help))
-(add-to-list 'purpose-user-mode-purposes '(gud-mode . debug))
-;;  (add-to-list 'purpose-user-mode-purposes '(c++-mode . cpp))
-
-(add-to-list 'purpose-user-regexp-purposes '("\.cpp" . source))
-(add-to-list 'purpose-user-regexp-purposes '("\.hpp" . header))
-
-(purpose-compile-user-configuration)
-
-
-#+END_SRC
-
-#+RESULTS:
-: ((.hpp . header) (.cpp . source))
-
-* compilation window
-#+BEGIN_SRC emacs-lisp
-
-(setq special-display-buffer-names
-      '("*compilation*"))
-
-(setq special-display-function
-      (lambda (buffer &optional args)
-        (switch-to-buffer buffer)
-        (get-buffer-window buffer 0)))
-
-
-(setq compilation-finish-functions
-      (lambda (buf str)
-        (if (null (string-match ".*exited abnormally.*" str))
-            ;;no errors, make the compilation window go away in a few seconds
-            (progn
-              (run-at-time "0.4 sec" nil
-                           (lambda ()
-                             (select-window (get-buffer-window (get-buffer-create "*compilation*")))
-                             (switch-to-buffer nil)))
-              (message "No Compilation Errors!")))))
-
-  ;; (require 'compile)
-  ;; (setq compilation-last-buffer nil)
-
-  ;; (defun compile-again (ARG)
-  ;;   "Run the same compile as the last time.
-
-  ;; If there is no last time, or there is a prefix argument, this acts like M-x compile."
-  ;;   (interactive "p")
-  ;;   (if (and (eq ARG 1)
-  ;;            compilation-last-buffer)
-  ;;       (progn
-  ;;         (set-buffer compilation-last-buffer)
-  ;;         (revert-buffer t t))
-  ;;     (progn
-  ;;       (call-interactively 'compile)
-  ;;       (setq cur (selected-window))
-  ;;       (setq w (get-buffer-window "*compilation*"))
-  ;;       (select-window w)
-  ;;       (setq h (window-height w))
-  ;;       (shrink-window (- h 10))
-  ;;       (select-window cur))))
-  ;; (global-set-key (kbd "C-x C-m") 'compile-again)
-  ;; (defun my-compilation-hook ()
-  ;;   "Make sure that the compile window is splitting vertically."
-  ;;   (progn
-  ;;     (if (not (get-buffer-window "*compilation*"))
-  ;;         (progn
-  ;;           (split-window-vertically)))))
-  ;; (add-hook 'compilation-mode-hook 'my-compilation-hook)
-  ;; (defun compilation-exit-autoclose (STATUS code msg)
-  ;;   "Close the compilation window if there was no error at all."
-  ;;   ;; If M-x compile exists with a 0
-  ;;   (when (and (eq STATUS 'exit) (zerop code))
-  ;;     ;; then bury the *compilation* buffer, so that C-x b doesn't go there
-  ;;     (bury-buffer)
-  ;;     ;; and delete the *compilation* window
-  ;;     (delete-window (get-buffer-window (get-buffer "*compilation*"))))
-  ;;   ;; Always return the anticipated result of compilation-exit-message-function
-  ;;   (cons msg code))
-  ;; (setq compilation-exit-message-function 'compilation-exit-autoclose)
-  ;; (defvar all-overlays ())
-  ;; (defun delete-this-overlay(overlay is-after begin end &optional len)
-  ;;   (delete-overlay overlay)
-  ;;   )
-  ;; (defun highlight-current-line ()
-  ;; "Highlight current line."
-  ;;   (interactive)
-  ;;   (setq current-point (point))
-  ;;   (beginning-of-line)
-  ;;   (setq beg (point))
-  ;;   (forward-line 1)
-  ;;   (setq end (point))
-  ;;   ;; Create and place the overlay
-  ;;   (setq error-line-overlay (make-overlay 1 1))
-
-  ;;   ;; Append to list of all overlays
-  ;;   (setq all-overlays (cons error-line-overlay all-overlays))
-
-  ;;   (overlay-put error-line-overlay
-  ;;                'face '(background-color . "red"))
-  ;;   (overlay-put error-line-overlay
-  ;;                'modification-hooks (list 'delete-this-overlay))
-  ;;   (move-overlay error-line-overlay beg end)
-  ;;   (goto-char current-point))
-  ;; (defun delete-all-overlays ()
-  ;;   "Delete all overlays"
-  ;;   (while all-overlays
-  ;;     (delete-overlay (car all-overlays))
-  ;;     (setq all-overlays (cdr all-overlays))))
-  ;; (defun highlight-error-lines(compilation-buffer process-result)
-  ;;   (interactive)
-  ;;   (delete-all-overlays)
-  ;;   (condition-case nil
-  ;;       (while t
-  ;;         (next-error)
-  ;;         (highlight-current-line))
-  ;;     (error nil)))
-  ;; (setq compilation-finish-functions 'highlight-error-lines)
-
-
-#+END_SRC
-
-#+RESULTS:
-: highlight-error-lines
 * Start from scratch
 #+BEGIN_SRC emacs-lisp
   ;; Forces the messages to 0, and kills the *Messages* buffer
@@ -2172,7 +1902,6 @@ Use flycheck in the appropriate buffers:
 #+RESULTS:
 | mode-enabled | save | new-line | idle-change |
 * openwith
-
 #+BEGIN_SRC emacs-lisp
 (use-package openwith)
 (when (require 'openwith nil 'noerror)
@@ -2209,7 +1938,6 @@ Use flycheck in the appropriate buffers:
 * Key bindings 
 #+BEGIN_SRC emacs-lisp
       ;;Keyboard mappings
-
       (global-set-key (kbd "\e\ei") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/i.org")))
       (global-set-key (kbd "\e\el") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/links.org")))
       (global-set-key (kbd "\e\ea") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/arts.org")))
@@ -2234,10 +1962,6 @@ Use flycheck in the appropriate buffers:
       (global-set-key (kbd "C-<return>") 'jump-to-next-newline)
       (global-set-key (kbd "C-x o") 'swap-window)
       (global-set-key (kbd "<C-f6>") 'mlint-clear-warnings)
-
-      (global-set-key (kbd "C-<") 'beginning-of-buffer)
-      (global-set-key (kbd "C->") 'end-of-buffer)
-
       (global-set-key (kbd "<C-f8>") 'view-mode)
 
       (global-set-key (kbd "C-:") 'iedit-mode)
