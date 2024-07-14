@@ -173,8 +173,8 @@ package.
 		(fset 'yes-or-no-p 'y-or-n-p)
 	(global-display-line-numbers-mode)
 	;	(global-linum-mode t) ;; enable line numbers globally
-		(add-to-list 'initial-frame-alist '(fullscreen . maximized))
-	(add-to-list 'default-frame-alist '(fullscreen . fullboth))
+;		(add-to-list 'initial-frame-alist '(maximized))
+;	(add-to-list 'default-frame-alist '(maximized))
 		(setq ivy-use-virtual-buffers t)
 		(defun jump-to-next-newline()
 			"Move to the end of the line and return"
@@ -223,7 +223,6 @@ package.
 #+END_SRC
 
 #+RESULTS:
-: ((font . DejaVu Sans Mono 11) (font . DejaVu Sans Mono 13) (fullscreen . fullboth) (vertical-scroll-bars))
 ** Custom solarized-dark theme
 
 I like the solarized-dark theme. I prefer keeping all the characters in the same

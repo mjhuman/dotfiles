@@ -88,8 +88,8 @@
   (fset 'yes-or-no-p 'y-or-n-p)
   (global-display-line-numbers-mode)
   ;	(global-linum-mode t) ;; enable line numbers globally
-  (add-to-list 'initial-frame-alist '(fullscreen . maximized))
-  (add-to-list 'default-frame-alist '(fullscreen . fullboth))
+  (add-to-list 'initial-frame-alist '(maximized))
+  (add-to-list 'default-frame-alist '(maximized))
   (setq ivy-use-virtual-buffers t)
   (defun jump-to-next-newline()
     "Move to the end of the line and return"
@@ -101,6 +101,9 @@
   (global-prettify-symbols-mode t) ; use fancy lambdas
   ;;(setq view-read-only t)
 #+END_SRC
+
+#+RESULTS:
+: t
 
 ** Ace windows for easy window switching
 #+BEGIN_SRC emacs-lisp
