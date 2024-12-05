@@ -1,7 +1,5 @@
 #+STARTUP: overview
 #+date: \today
-#+author: Vinodh Jayakrishnan
-#+email: vinodhmjhuman@gmail.com
 #+language: en
 #+select_tags: export
 #+exclude_tags: noexport

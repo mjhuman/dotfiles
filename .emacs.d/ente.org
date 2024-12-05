@@ -150,15 +150,21 @@
 #+END_SRC
 * Themes and modeline:
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
+	;;  (add-to-list 'default-frame-alist '(font . "DejaVu-Sans-Mono 13"))
+	 (add-to-list 'default-frame-alist '(font . "Menlo-13"))
 
-    ;;(set-frame-font "Inconsolata Medium 14" nil t)
-    ;;(add-to-list 'default-frame-alist '(font . "Inconsolata Medium 14"))
+	;; (set-face-attribute 'default nil
+	;; 										:family "Menlo" :height (case system-type
+	;; 																									('gnu/linux 130)
+	;; 																									('darwin 220)) :weight 'normal)
+
+
+	;;(set-frame-font "Inconsolata Medium 14" nil t)
+	;;(add-to-list 'default-frame-alist '(font . "Inconsolata Medium 14"))
 
 #+END_SRC
 
 #+RESULTS:
-: ((font . DejaVu Sans Mono 11) (font . DejaVu Sans Mono 13) (fullscreen . fullboth) (vertical-scroll-bars))
 ** Custom solarized-dark theme
 I like the solarized-dark theme. I prefer keeping all the characters in the same
 side and font, though.
@@ -674,6 +680,11 @@ See https://github.com/abo-abo/avy for more info
     (add-to-list 'load-path "~/.emacs.d/lisp/")
     (load "dired+")
 
+  (when (string= system-type "darwin")
+  (setq dired-use-ls-dired t
+        insert-directory-program "/opt/homebrew/bin/gls"
+        dired-listing-switches "-aBhl --group-directories-first"))
+  
     (use-package dired-quick-sort
       :ensure t
       :config
@@ -693,6 +704,9 @@ See https://github.com/abo-abo/avy for more info
                                             ; copy to the other open dired buffer
     (setq dired-listing-switches "-al --group-directories-first")
 
+    (setq insert-directory-program "gls" dired-use-ls-dired t)
+  (setq dired-listing-switches "-al --group-directories-first")
+
     (setq dired-dwim-target t)
     (setq dired-recursive-copies 'always)
 
@@ -706,10 +720,13 @@ See https://github.com/abo-abo/avy for more info
 
     (setq dired-dwim-target t)
     (setq dired-recursive-copies 'always)
+
+    (define-key global-map (kbd "M-6") 'dired-up-directory)
+
 #+END_SRC
 
 #+RESULTS:
-: always
+: dired-up-directory
 
 ** Ibuffer
 #+BEGIN_SRC emacs-lisp
@@ -808,7 +825,7 @@ See https://github.com/abo-abo/avy for more info
 : projectile-command-map
 
 ** Smart Parens
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC
   (use-package smartparens
     :ensure t
     :config
@@ -1089,11 +1106,74 @@ See https://github.com/abo-abo/avy for more info
 : projectile-find-other-file-other-frame
 ** bookmark in a file
 #+BEGIN_SRC emacs-lisp
-(use-package bm
-  :bind (("<C-f2>" . bm-toggle)
-         ("<f2>" . bm-next)
-         ("<S-f2>" . bm-previous)))
+  ;; (use-package bm
+  ;;   :bind (("<C-f2>" . bm-toggle)
+  ;;          ("<f2>" . bm-next)
+  ;;          ("<S-f2>" . bm-previous)))
+
+  (use-package bm
+         :ensure t
+         :demand t
+
+         :init
+         ;; restore on load (even before you require bm)
+         (setq bm-restore-repository-on-load t)
+
+
+         :config
+         ;; Allow cross-buffer 'next'
+         (setq bm-cycle-all-buffers t)
+
+         ;; where to store persistant files
+         (setq bm-repository-file "~/.emacs.d/bm-repository")
+
+         ;; save bookmarks
+         (setq-default bm-buffer-persistence t)
+
+         ;; Loading the repository from file when on start up.
+         (add-hook 'after-init-hook 'bm-repository-load)
+
+         ;; Saving bookmarks
+         (add-hook 'kill-buffer-hook #'bm-buffer-save)
+
+         ;; Saving the repository to file when on exit.
+         ;; kill-buffer-hook is not called when Emacs is killed, so we
+         ;; must save all bookmarks first.
+         (add-hook 'kill-emacs-hook #'(lambda nil
+                                          (bm-buffer-save-all)
+                                          (bm-repository-save)))
+
+         ;; The `after-save-hook' is not necessary to use to achieve persistence,
+         ;; but it makes the bookmark data in repository more in sync with the file
+         ;; state.
+         (add-hook 'after-save-hook #'bm-buffer-save)
+
+         ;; Restoring bookmarks
+         (add-hook 'find-file-hooks   #'bm-buffer-restore)
+         (add-hook 'after-revert-hook #'bm-buffer-restore)
+
+         ;; The `after-revert-hook' is not necessary to use to achieve persistence,
+         ;; but it makes the bookmark data in repository more in sync with the file
+         ;; state. This hook might cause trouble when using packages
+         ;; that automatically reverts the buffer (like vc after a check-in).
+         ;; This can easily be avoided if the package provides a hook that is
+         ;; called before the buffer is reverted (like `vc-before-checkin-hook').
+         ;; Then new bookmarks can be saved before the buffer is reverted.
+         ;; Make sure bookmarks is saved before check-in (and revert-buffer)
+         (add-hook 'vc-before-checkin-hook #'bm-buffer-save)
+
+         ;; If you need org-mode to expand the region containing a bookmark, add the following:
+         (add-hook 'bm-after-goto-hook 'org-bookmark-jump-unhide)
+
+         :bind (("<f2>" . bm-next)
+                ("S-<f2>" . bm-previous)
+                ("C-<f2>" . bm-toggle))
+         )
 #+END_SRC
+
+#+RESULTS:
+: bm-toggle
+
 ** realgud
 #+BEGIN_SRC emacs-lisp
 (use-package realgud)
@@ -1309,11 +1389,10 @@ See https://github.com/abo-abo/avy for more info
    (global-set-key (kbd "<f9>") 'gud-print)
    (global-set-key (kbd "<f10>") 'gud-next)
    (global-set-key (kbd "<f11>") 'gud-step)
-
 #+END_SRC
 
 #+RESULTS:
-: gud-step
+: diredp-up-directory
 *** cpputils-cmake
 #+BEGIN_SRC
 (use-package cpputils-cmake)
@@ -1744,7 +1823,7 @@ so these definitions are a lot of fun.
     (let* ((word (vmj/dictionary-prompt))
            (buffer-name (concat "Definition: " word)))
       (with-output-to-temp-buffer buffer-name
-        (shell-command (format "sdcv -n %s" word) buffer-name))))
+        (shell-command (format "sdcv --data-dir /Applications/StarDict.app/Contents/Resources/share/stardict/dic -n %s" word) buffer-name))))
 
   (define-key global-map (kbd "C-x l") 'vmj/dictionary-define-word)
 #+END_SRC
@@ -1877,7 +1956,7 @@ Use flycheck in the appropriate buffers:
   (put 'upcase-region 'disabled nil)
 #+END_SRC
 * Malayalam font
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 
 (set-fontset-font t 'malayalam "Chilanka")
 (set-fontset-font t 'malayalam "Chilanka" nil 'append)
@@ -1919,7 +1998,7 @@ Use flycheck in the appropriate buffers:
              (list (openwith-make-extension-regexp
                     '("xbm" "pbm" "pgm" "ppm" "pnm"
                       "png" "gif" "bmp" "tif" "jpeg" "jpg"))
-                   "viewnior"
+                   "Preview"
                    '(file))
              (list (openwith-make-extension-regexp
                     '("doc" "docx" "xls" "ppt" "odt" "ods" "odg" "odp"))
@@ -1945,12 +2024,12 @@ Use flycheck in the appropriate buffers:
       (global-set-key (kbd "\e\el") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/links.org")))
       (global-set-key (kbd "\e\ea") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/arts.org")))
       (global-set-key (kbd "\e\en") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/notes.org")))
-      (global-set-key (kbd "\e\ec") (lambda () (interactive) (find-file "~/.emacs.d/myinit.org")))
+      (global-set-key (kbd "\e\ec") (lambda () (interactive) (find-file "~/.emacs.d/ente.org")))
       (global-set-key (kbd "\e\ew") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/words.org")))
       (global-set-key (kbd "\e\ee") (lambda () (interactive) (find-file "~/Dropbox/orgfiles/epse.org")))
       (global-set-key (kbd "\e\em") (lambda () (interactive) (find-file "~/Dropbox/music/sangeetham.org")))
       (global-set-key (kbd "\e\ef") (lambda () (interactive) (find-file "~/fre/fre.org")))
-      (global-set-key (kbd "\e\ep") (lambda () (interactive) (find-file "/home/vj/fre/podcast/podcast.org")))
+      (global-set-key (kbd "\e\ep") (lambda () (interactive) (find-file "~/fre/podcast/podcast.org")))
       (global-set-key (kbd "\e\ed") (lambda () (interactive) (find-file "~/dissertation/journal.org")))
 
 
@@ -1972,13 +2051,17 @@ Use flycheck in the appropriate buffers:
     ;; example of binding keys only when html-mode is active
 
     (define-key dired-mode-map "\C-o"    'other-window)
+;    (define-key dired-mode-map (kbd "<SPC>") 'diredp-up-directory)
+
+
+
   ;;  (define-key  compilation-mode-map "\C-o"  'other-window)
 
 
 #+END_SRC
 
 #+RESULTS:
-: other-window
+: diredp-up-directory
 * fountain
 #+BEGIN_SRC emacs-lisp
   (use-package fountain-mode)
@@ -2001,3 +2084,12 @@ Use flycheck in the appropriate buffers:
 
 #+RESULTS:
 : ‘epa-file’ already enabled
+* hugo
+#+begin_src emacs-lisp
+(use-package ox-hugo
+  :ensure t   ;Auto-install the package from Melpa
+  :pin melpa  ;`package-archives' should already have ("melpa" . "https://melpa.org/packages/")
+  :after ox)
+#+end_src
+
+#+RESULTS:
